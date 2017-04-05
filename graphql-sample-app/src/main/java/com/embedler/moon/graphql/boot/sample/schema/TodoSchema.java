@@ -30,10 +30,14 @@ import com.oembedler.moon.graphql.engine.stereotype.GraphQLOut;
 import com.oembedler.moon.graphql.engine.stereotype.GraphQLSchema;
 import com.oembedler.moon.graphql.engine.stereotype.GraphQLSchemaQuery;
 import graphql.servlet.GraphQLContext;
+import org.apache.commons.fileupload.FileItem;
 
 import javax.servlet.http.Part;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @GraphQLSchema
@@ -149,7 +153,7 @@ public class TodoSchema {
     public
     @GraphQLOut("filename")
     String uploadFile(GraphQLContext graphQLContext) {
-        return graphQLContext.getParts().orElse(new ArrayList<>()).stream().map(Part::getName).collect(Collectors.joining(","));
+        return graphQLContext.getFiles().orElse(new HashMap<>()).values().stream().flatMap(Collection::stream).map(FileItem::getName).collect(Collectors.joining(", "));
     }
 
     @GraphQLMutation
