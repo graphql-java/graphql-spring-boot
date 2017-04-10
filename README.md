@@ -75,14 +75,14 @@ Dependency:
 
 ```xml
 <dependency>
-    <groupId>com.embedler.moon.graphql.boot</groupId>
+    <groupId>com.embedler.moon.graphql.boot.starter</groupId>
     <artifactId>graphql-spring-boot-starter</artifactId>
     <version>INSERT_LATEST_VERSION_HERE</version>
 </dependency>
 
 <!-- to embed GraphiQL tool -->
 <dependency>
-    <groupId>com.embedler.moon.graphql.boot</groupId>
+    <groupId>com.embedler.moon.graphql.boot.starter</groupId>
     <artifactId>graphiql-spring-boot-starter</artifactId>
     <version>INSERT_LATEST_VERSION_HERE</version>
 </dependency>
