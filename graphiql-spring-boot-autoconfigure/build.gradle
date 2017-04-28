@@ -17,5 +17,9 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 dependencies{
-    compile "org.webjars:react:$LIB_WEBJARS_REACT_VER"
+    compile "org.webjars.npm:es6-promise:$LIB_WEBJARS_ES6_PROMISE_VER"
+    compile "org.webjars.npm:whatwg-fetch:$LIB_WEBJARS_WHATWG_FETCH_VER"
+    compile "org.webjars.npm:react:$LIB_WEBJARS_REACT_VER"
+    compile "org.webjars.npm:react-dom:$LIB_WEBJARS_REACT_DOM_VER"
+    compile "org.webjars.npm:graphiql:$LIB_WEBJARS_GRAPHIQL_VER"
 }
