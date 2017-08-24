@@ -16,6 +16,7 @@ import java.io.IOException;
 public class GraphiQLController {
     @RequestMapping(value = "${graphiql.mapping:/graphiql}", produces = MediaType.TEXT_HTML_VALUE)
     public void graphiql(HttpServletResponse response) throws IOException {
+        response.setContentType("text/html")
         StreamUtils.copy(new ClassPathResource("graphiql.html").getInputStream(), response.getOutputStream());
     }
 }
