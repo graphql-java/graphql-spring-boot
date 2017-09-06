@@ -109,28 +109,28 @@ public class GraphQLWebAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public ExecutionStrategyProvider executionStrategyProvider() {
-        if (executionStrategies == null || executionStrategies.isEmpty()) {
+        if(executionStrategies == null || executionStrategies.isEmpty()) {
             return new DefaultExecutionStrategyProvider();
-        } else if (executionStrategies.entrySet().size() == 1) {
+        } else if(executionStrategies.entrySet().size() == 1) {
             return new DefaultExecutionStrategyProvider(executionStrategies.entrySet().stream().findFirst().get().getValue());
         } else {
 
-            if (!executionStrategies.containsKey(QUERY_EXECUTION_STRATEGY)) {
+            if(!executionStrategies.containsKey(QUERY_EXECUTION_STRATEGY)) {
                 throwIncorrectExecutionStrategyNameException();
             }
 
-            if (executionStrategies.size() == 2 && !(executionStrategies.containsKey(MUTATION_EXECUTION_STRATEGY) || executionStrategies.containsKey(SUBSCRIPTION_EXECUTION_STRATEGY))) {
+            if(executionStrategies.size() == 2 && !(executionStrategies.containsKey(MUTATION_EXECUTION_STRATEGY) || executionStrategies.containsKey(SUBSCRIPTION_EXECUTION_STRATEGY))) {
                 throwIncorrectExecutionStrategyNameException();
             }
 
-            if (executionStrategies.size() >= 3 && !(executionStrategies.containsKey(MUTATION_EXECUTION_STRATEGY) && executionStrategies.containsKey(SUBSCRIPTION_EXECUTION_STRATEGY))) {
+            if(executionStrategies.size() >= 3 && !(executionStrategies.containsKey(MUTATION_EXECUTION_STRATEGY) && executionStrategies.containsKey(SUBSCRIPTION_EXECUTION_STRATEGY))) {
                 throwIncorrectExecutionStrategyNameException();
             }
 
             return new DefaultExecutionStrategyProvider(
-                    executionStrategies.get(QUERY_EXECUTION_STRATEGY),
-                    executionStrategies.get(MUTATION_EXECUTION_STRATEGY),
-                    executionStrategies.get(SUBSCRIPTION_EXECUTION_STRATEGY)
+                executionStrategies.get(QUERY_EXECUTION_STRATEGY),
+                executionStrategies.get(MUTATION_EXECUTION_STRATEGY),
+                executionStrategies.get(SUBSCRIPTION_EXECUTION_STRATEGY)
             );
         }
     }
