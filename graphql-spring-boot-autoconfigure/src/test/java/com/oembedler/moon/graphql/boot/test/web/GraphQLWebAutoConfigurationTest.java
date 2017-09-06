@@ -2,8 +2,8 @@ package com.oembedler.moon.graphql.boot.test.web;
 
 import com.oembedler.moon.graphql.boot.GraphQLWebAutoConfiguration;
 import com.oembedler.moon.graphql.boot.test.AbstractAutoConfigurationTest;
+import graphql.execution.AsyncExecutionStrategy;
 import graphql.execution.ExecutionStrategy;
-import graphql.execution.SimpleExecutionStrategy;
 import graphql.schema.GraphQLObjectType;
 import graphql.schema.GraphQLSchema;
 import graphql.servlet.GraphQLServlet;
@@ -34,7 +34,7 @@ public class GraphQLWebAutoConfigurationTest extends AbstractAutoConfigurationTe
     static class OneExecutionStrategy extends SimpleConfiguration {
         @Bean
         public ExecutionStrategy executionStrategy() {
-            return new SimpleExecutionStrategy();
+            return new AsyncExecutionStrategy();
         }
     }
 
@@ -42,12 +42,12 @@ public class GraphQLWebAutoConfigurationTest extends AbstractAutoConfigurationTe
     static class TwoExecutionStrategies extends SimpleConfiguration {
         @Bean
         public ExecutionStrategy queryExecutionStrategy() {
-            return new SimpleExecutionStrategy();
+            return new AsyncExecutionStrategy();
         }
 
         @Bean
         public ExecutionStrategy mutationExecutionStrategy() {
-            return new SimpleExecutionStrategy();
+            return new AsyncExecutionStrategy();
         }
     }
 
@@ -55,17 +55,17 @@ public class GraphQLWebAutoConfigurationTest extends AbstractAutoConfigurationTe
     static class ThreeExecutionStrategies extends SimpleConfiguration {
         @Bean
         public ExecutionStrategy queryExecutionStrategy() {
-            return new SimpleExecutionStrategy();
+            return new AsyncExecutionStrategy();
         }
 
         @Bean
         public ExecutionStrategy mutationExecutionStrategy() {
-            return new SimpleExecutionStrategy();
+            return new AsyncExecutionStrategy();
         }
 
         @Bean
         public ExecutionStrategy subscriptionExecutionStrategy() {
-            return new SimpleExecutionStrategy();
+            return new AsyncExecutionStrategy();
         }
     }
 
@@ -77,7 +77,8 @@ public class GraphQLWebAutoConfigurationTest extends AbstractAutoConfigurationTe
     }
 
     @Test
-    public void appContextLoadsWithOneExecutionStrategy() { load(OneExecutionStrategy.class);
+    public void appContextLoadsWithOneExecutionStrategy() {
+        load(OneExecutionStrategy.class);
 
         Assert.assertNotNull(this.getContext().getBean(GraphQLServlet.class));
     }
