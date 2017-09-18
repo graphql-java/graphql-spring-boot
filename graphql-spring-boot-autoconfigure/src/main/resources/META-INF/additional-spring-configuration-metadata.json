@@ -1,0 +1,19 @@
+{
+  "groups": [
+    {
+      "name": "graphql"
+    }
+  ],
+  "properties": [
+    {
+      "name": "graphql.servlet.enabled",
+      "defaultValue": true,
+      "type": "java.lang.Boolean"
+    },
+    {
+      "name": "graphql.servlet.corsEnabled",
+      "defaultValue": true,
+      "type": "java.lang.Boolean"
+    }
+  ]
+}

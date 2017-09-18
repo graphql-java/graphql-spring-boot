@@ -30,3 +30,5 @@ dependencies {
     testCompile "org.springframework.boot:spring-boot-starter-test:$LIB_SPRING_BOOT_VER"
     testCompile "com.graphql-java:graphql-java-tools:$LIB_GRAPHQL_JAVA_TOOLS_VER"
 }
+
+compileJava.dependsOn(processResources)

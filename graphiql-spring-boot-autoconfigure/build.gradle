@@ -24,3 +24,5 @@ dependencies{
     testCompile "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"
     testCompile "org.springframework.boot:spring-boot-starter-test:$LIB_SPRING_BOOT_VER"
 }
+
+compileJava.dependsOn(processResources)
