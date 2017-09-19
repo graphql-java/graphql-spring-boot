@@ -163,7 +163,7 @@ public class GraphQLWebAutoConfiguration {
     static class OnSchemaOrSchemaProvider extends AnyNestedCondition {
 
         public OnSchemaOrSchemaProvider() {
-            super(ConfigurationPhase.PARSE_CONFIGURATION);
+            super(ConfigurationPhase.REGISTER_BEAN);
         }
 
         @ConditionalOnBean(GraphQLSchema.class)
