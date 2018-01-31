@@ -98,6 +98,7 @@ graphiql:
     mapping: /graphiql
     endpoint: /graphql
     enabled: true
+    pageTitle: GraphiQL
 ```
 
 # Supported GraphQL-Java Libraries

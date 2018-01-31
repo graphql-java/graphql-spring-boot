@@ -22,6 +22,9 @@ public class GraphiQLController {
     @Value("${graphiql.endpoint:/graphql}")
     private String graphqlEndpoint;
 
+    @Value("${graphiql.pageTitle:GraphiQL}")
+    private String pageTitle;
+
     @RequestMapping(value = "${graphiql.mapping:/graphiql}")
     public void graphiql(HttpServletResponse response) throws IOException {
         response.setContentType("text/html; charset=UTF-8");
@@ -29,6 +32,7 @@ public class GraphiQLController {
         String template = StreamUtils.copyToString(new ClassPathResource("graphiql.html").getInputStream(), Charset.defaultCharset());
         Map<String, String> replacements = new HashMap<>();
         replacements.put("graphqlEndpoint", graphqlEndpoint);
+        replacements.put("pageTitle", pageTitle);
 
         response.getOutputStream().write(StrSubstitutor.replace(template, replacements).getBytes(Charset.defaultCharset()));
     }
