@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>${pageTitle}</title>
+    <meta name="robots" content="noindex" />
+    <style>
+        body {
+            height: 100%;
+            margin: 0;
+            width: 100%;
+            overflow: hidden;
+        }
+        #voyager {
+            height: 100vh;
+        }
+    </style>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.1.1/es6-promise.auto.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.1/react.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.1/react-dom.min.js"></script>
+
+    <link rel="stylesheet" href="https://apis.guru/graphql-voyager/releases/v1.x/voyager.css" />
+    <script src="https://apis.guru/graphql-voyager/releases/v1.x/voyager.min.js"></script>
+</head>
+<body>
+<div id="voyager">Loading...</div>
+<script>
+    function introspectionProvider(introspectionQuery) {
+        return fetch('${graphqlEndpoint}', {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({query: introspectionQuery}),
+            credentials: 'include'
+        }).then(function (response) {
+            return response.text();
+        }).then(function (responseBody) {
+            try {
+                return JSON.parse(responseBody);
+            } catch (error) {
+                return responseBody;
+            }
+        });
+    }
+
+    // Render <Voyager /> into the body.
+    GraphQLVoyager.init(document.getElementById('voyager'), {
+        introspection: introspectionProvider
+    })
+</script>
+</body>
+</html>

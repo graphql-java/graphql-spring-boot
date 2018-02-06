@@ -1,0 +1,24 @@
+{
+  "groups": [
+    {
+      "name": "voyager"
+    }
+  ],
+  "properties": [
+    {
+      "name": "voyager.enabled",
+      "defaultValue": true,
+      "type": "java.lang.Boolean"
+    },
+    {
+      "name": "voyager.mapping",
+      "defaultValue": "/voyager",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "voyager.endpoint",
+      "defaultValue": "/graphql",
+      "type": "java.lang.String"
+    }
+  ]
+}

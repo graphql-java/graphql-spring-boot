@@ -16,16 +16,14 @@
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+dependencies{
+    compile "org.springframework.boot:spring-boot-configuration-processor:$LIB_SPRING_BOOT_VER"
+    compile "org.springframework.boot:spring-boot-autoconfigure:$LIB_SPRING_BOOT_VER"
+    compile "org.apache.commons:commons-text:1.1"
+    compileOnly "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"
 
-rootProject.name = PROJECT_NAME
+    testCompile "org.springframework.boot:spring-boot-starter-web:$LIB_SPRING_BOOT_VER"
+    testCompile "org.springframework.boot:spring-boot-starter-test:$LIB_SPRING_BOOT_VER"
+}
 
-include ":graphql-spring-boot-autoconfigure"
-include ":graphql-spring-boot-starter"
-include ":graphiql-spring-boot-autoconfigure"
-include ":graphiql-spring-boot-starter"
-include ":voyager-spring-boot-autoconfigure"
-include ":voyager-spring-boot-starter"
-
-include ":example"
-include ":example-spring-common"
-
+compileJava.dependsOn(processResources)

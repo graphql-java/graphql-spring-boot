@@ -16,16 +16,6 @@
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
-rootProject.name = PROJECT_NAME
-
-include ":graphql-spring-boot-autoconfigure"
-include ":graphql-spring-boot-starter"
-include ":graphiql-spring-boot-autoconfigure"
-include ":graphiql-spring-boot-starter"
-include ":voyager-spring-boot-autoconfigure"
-include ":voyager-spring-boot-starter"
-
-include ":example"
-include ":example-spring-common"
-
+dependencies {
+    compile(project(':voyager-spring-boot-autoconfigure'))
+}
