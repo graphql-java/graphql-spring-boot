@@ -46,6 +46,11 @@
       "type": "java.lang.String"
     },
     {
+      "name": "altair.google-analytics.enabled",
+      "defaultValue": true,
+      "type": "java.lang.Boolean"
+    },
+    {
       "name": "altair.props.resources.defaultQuery",
       "defaultValue": null,
       "type": "java.lang.String"
