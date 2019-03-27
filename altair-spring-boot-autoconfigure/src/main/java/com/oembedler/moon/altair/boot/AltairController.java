@@ -52,6 +52,9 @@ public class AltairController {
     @Value("${altair.cdn.version:2.1.4}")
     private String altairCdnVersion;
 
+    @Value("${altair.google-analytics.enabled:true}")
+    private boolean altairGoogleAnalyticsEnabled;
+
     @Autowired
     private Environment environment;
 
@@ -109,6 +112,7 @@ public class AltairController {
         replacements.put("graphqlEndpoint", graphqlEndpoint);
         replacements.put("subscriptionsEndpoint", subscriptionsEndpoint);
         replacements.put("pageTitle", pageTitle);
+        replacements.put("altairGoogleAnalyticsEnabled", Boolean.toString(altairGoogleAnalyticsEnabled));
         replacements.put("pageFavicon", getResourceUrl("favicon.ico", "favicon.ico"));
         replacements.put("altairBaseUrl", getResourceUrl(String.join(staticBasePath, "/vendor/altair/"),
                 joinJsUnpkgPath(ALTAIR, altairCdnVersion, "build/dist/")));

@@ -21,6 +21,7 @@
     window.__ALTAIR_INITIAL_VARIABLES__ = `${properties.variables}`;
     window.__ALTAIR_INITIAL_HEADERS__ = JSON.parse(`${headers}`);
 
+    window['ga-disable-UA-41432833-6'] = (`${altairGoogleAnalyticsEnabled}` === "false");
 </script>
 <app-root>
     <style>
