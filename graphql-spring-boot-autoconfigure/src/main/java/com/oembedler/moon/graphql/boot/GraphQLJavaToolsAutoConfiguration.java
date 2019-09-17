@@ -43,6 +43,9 @@ public class GraphQLJavaToolsAutoConfiguration {
     private List<SchemaDirective> directives;
 
     @Autowired(required = false)
+    private List<SchemaDirectiveWiring> directiveWirings;
+
+    @Autowired(required = false)
     private List<TypeDefinitionFactory> typeDefinitionFactories;
 
     @Autowired
@@ -91,6 +94,10 @@ public class GraphQLJavaToolsAutoConfiguration {
 
         if (directives != null) {
             directives.forEach(it -> builder.directive(it.getName(), it.getDirective()));
+        }
+
+        if (directingWirings != null) {
+            directingWirings.forEach(it -> builder.directiveWiring(it));
         }
 
         return builder
