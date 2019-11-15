@@ -28,7 +28,12 @@
         properties.headers[csrf.headerName] = csrf.token;
     }
     if (properties.tabs) {
-        properties.tabs.forEach(tab => tab.headers = Object.assign({}, properties.headers || {}, tab.headers || {}));
+        properties.tabs.forEach(tab => {
+            tab.headers = Object.assign({}, properties.headers || {}, tab.headers || {});
+            if (csrf) {
+                tab.headers[csrf.headerName] = csrf.token;
+            }
+        });
     }
     properties.setTitle = false;
     window.addEventListener('load', function (event) {
