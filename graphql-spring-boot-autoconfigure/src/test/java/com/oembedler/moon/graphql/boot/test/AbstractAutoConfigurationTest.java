@@ -1,7 +1,9 @@
 package com.oembedler.moon.graphql.boot.test;
 
 import org.junit.After;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigRegistry;
@@ -59,6 +61,7 @@ public abstract class AbstractAutoConfigurationTest {
 
         loadServletContext();
         getContext().refresh();
+        getContext().publishEvent(new ApplicationReadyEvent(new SpringApplication(), new String[0], getContext()));
     }
 
     private void loadServletContext() {
