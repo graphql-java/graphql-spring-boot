@@ -104,6 +104,18 @@ public class GraphQLTestTemplate {
         return perform(graphqlResource, null);
     }
 
+    /**
+     * Sends GraphQL query to the GraphQL server.
+     *
+     * @param query GraphQL query
+     * @return GraphQLResponse containing the result of query execution
+     * @throws JsonProcessingException if the query cannot be converted to json
+     */
+    public GraphQLResponse postForQuery(String query) throws JsonProcessingException {
+        String payload = createJsonQuery(query, null);
+        return post(payload);
+    }
+
     public GraphQLResponse postMultipart(String query, String variables) {
         return postRequest(RequestFactory.forMultipart(query, variables, headers));
     }
