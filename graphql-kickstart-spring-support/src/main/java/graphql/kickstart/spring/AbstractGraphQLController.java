@@ -34,9 +34,7 @@ public abstract class AbstractGraphQLController {
       @Nullable @RequestBody(required = false) String body,
       ServerWebExchange serverWebExchange) throws IOException {
 
-    if (body == null) {
-      body = "";
-    }
+    body = body != null ? body : "";
 
     // https://graphql.org/learn/serving-over-http/#post-request
     //
@@ -107,10 +105,7 @@ public abstract class AbstractGraphQLController {
   }
 
   private Map<String, Object> convertVariablesJson(String jsonMap) {
-    if (jsonMap == null) {
-      return Collections.emptyMap();
-    }
-    return objectMapper.deserializeVariables(jsonMap);
+    return jsonMap != null ? objectMapper.deserializeVariables(jsonMap) : Collections.emptyMap();
   }
 
   protected abstract Object executeRequest(
