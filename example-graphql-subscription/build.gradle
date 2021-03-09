@@ -4,6 +4,7 @@ dependencies {
     implementation(project(":graphql-spring-boot-starter"))
     implementation(project(":graphiql-spring-boot-starter"))
     implementation "com.graphql-java-kickstart:graphql-java-tools:$LIB_GRAPHQL_JAVA_TOOLS_VER"
+    implementation "com.graphql-java:graphql-java-extended-scalars:$LIB_EXTENDED_SCALARS_VERSION"
 
     implementation "io.reactivex.rxjava2:rxjava"
     implementation "io.projectreactor:reactor-core"

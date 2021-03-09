@@ -557,6 +557,12 @@ The available scalars are the following: `BigDecimal`, `BigInteger`, `Byte`, `Ch
 `Locale`, `Long`, `NegativeFloat`, `NegativeInt`, `NonNegativeFloat`, `NonNegativeInt`, `NonPositiveFloat`, 
 `NonPositiveInt`, `Object`, `PositiveFloat`, `PositiveInt`, `Short`, `Time`, `Url`.
 
+The `graphql-java-extended-scalars` dependency must be added to the project, e. g.:
+
+```groovy
+implementation "com.graphql-java:graphql-java-extended-scalars:16.0.0"
+```
+
 This setting works with both the [GraphQL Java Tools](#graphql-java-tools) and the
 [GraphQL Annotations](#graphql-annotations) integration.
 

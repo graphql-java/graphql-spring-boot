@@ -1,6 +1,5 @@
 package graphql.kickstart.spring.web.boot;
 
-import graphql.scalars.ExtendedScalars;
 import graphql.schema.GraphQLScalarType;
 import lombok.NoArgsConstructor;
 import org.springframework.context.ApplicationContextException;
@@ -18,11 +17,30 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class GraphQLExtendedScalarsInitializer implements ApplicationContextInitializer<GenericApplicationContext> {
 
+    private static final String EXTENDED_SCALARS_CLASS = "graphql.scalars.ExtendedScalars";
+
     @Override
     public void initialize(final GenericApplicationContext applicationContext) {
         final Collection<String> enabledExtendedScalars = getEnabledExtendedScalars(applicationContext);
+        try {
+            if (!enabledExtendedScalars.isEmpty()) {
+                loadExtendedScalars(applicationContext, enabledExtendedScalars);
+            }
+        } catch (ClassNotFoundException e) {
+            throw new ApplicationContextException(
+                "To use extended scalars please add a dependency on com.graphql-java:graphql-java-extended-scalars.",
+                e
+           );
+        }
+    }
+
+    private void loadExtendedScalars(
+        final GenericApplicationContext applicationContext,
+        final Collection<String> enabledExtendedScalars
+    ) throws ClassNotFoundException {
         final Collection<String> validScalarNames = new HashSet<>();
-        ReflectionUtils.doWithFields(ExtendedScalars.class, scalarField -> {
+        final Class<?> extendedScalarsClass = Class.forName(EXTENDED_SCALARS_CLASS);
+        ReflectionUtils.doWithFields(extendedScalarsClass, scalarField -> {
             if (Modifier.isPublic(scalarField.getModifiers()) && Modifier.isStatic(scalarField.getModifiers())
                 && scalarField.getType().equals(GraphQLScalarType.class)) {
                 final GraphQLScalarType graphQLScalarType = (GraphQLScalarType) scalarField.get(null);
