@@ -23,30 +23,31 @@ public class FooTypeFunction implements TypeFunction {
   }
 
   @Override
-  public GraphQLType buildType(boolean input,
+  public GraphQLType buildType(
+      boolean input,
       final Class<?> aClass,
       final AnnotatedType annotatedType,
-      final ProcessingElementsContainer container
-  ) {
+      final ProcessingElementsContainer container) {
     return newScalar()
         .name("Foo")
-        .coercing(new Coercing<Foo, String>() {
-          @Override
-          public String serialize(final Object dataFetcherResult)
-              throws CoercingSerializeException {
-            return "foo";
-          }
+        .coercing(
+            new Coercing<Foo, String>() {
+              @Override
+              public String serialize(final Object dataFetcherResult)
+                  throws CoercingSerializeException {
+                return "foo";
+              }
 
-          @Override
-          public Foo parseValue(final Object input) throws CoercingParseValueException {
-            return new Foo();
-          }
+              @Override
+              public Foo parseValue(final Object input) throws CoercingParseValueException {
+                return new Foo();
+              }
 
-          @Override
-          public Foo parseLiteral(final Object input) throws CoercingParseLiteralException {
-            return new Foo();
-          }
-        })
+              @Override
+              public Foo parseLiteral(final Object input) throws CoercingParseLiteralException {
+                return new Foo();
+              }
+            })
         .build();
   }
 }

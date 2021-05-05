@@ -20,13 +20,12 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @GraphQLTest
 class GraphQLToolsSampleApplicationTest {
 
-  @Autowired
-  private GraphQLTestTemplate graphQLTestTemplate;
+  @Autowired private GraphQLTestTemplate graphQLTestTemplate;
 
   @Test
   void get_comments() throws IOException {
-    GraphQLResponse response = graphQLTestTemplate
-        .postForResource("graphql/post-get-comments.graphql");
+    GraphQLResponse response =
+        graphQLTestTemplate.postForResource("graphql/post-get-comments.graphql");
     assertNotNull(response);
     assertThat(response.isOk()).isTrue();
     assertThat(response.get("$.data.post.id")).isEqualTo("1");
@@ -36,8 +35,9 @@ class GraphQLToolsSampleApplicationTest {
   void get_comments_withFragments() throws IOException {
     List<String> fragments = new ArrayList<>();
     fragments.add("graphql/all-comment-fields-fragment.graphql");
-    GraphQLResponse response = graphQLTestTemplate
-        .postForResource("graphql/post-get-comments-with-fragment.graphql", fragments);
+    GraphQLResponse response =
+        graphQLTestTemplate.postForResource(
+            "graphql/post-get-comments-with-fragment.graphql", fragments);
     assertNotNull(response);
     assertThat((response.isOk())).isTrue();
     assertThat(response.get("$.data.post.id")).isEqualTo("1");
@@ -47,10 +47,9 @@ class GraphQLToolsSampleApplicationTest {
   void create_post() throws IOException {
     ObjectNode variables = new ObjectMapper().createObjectNode();
     variables.put("text", "lorem ipsum dolor sit amet");
-    GraphQLResponse response = graphQLTestTemplate
-        .perform("graphql/create-post.graphql", variables);
+    GraphQLResponse response =
+        graphQLTestTemplate.perform("graphql/create-post.graphql", variables);
     assertThat(response).isNotNull();
     assertThat(response.get("$.data.createPost.id")).isNotNull();
   }
-
 }

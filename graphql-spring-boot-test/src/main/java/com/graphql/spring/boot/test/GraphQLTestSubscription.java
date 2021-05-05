@@ -42,15 +42,13 @@ import org.springframework.util.ResourceUtils;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import org.springframework.web.util.UriBuilderFactory;
 
-/**
- * Helper object to test GraphQL subscriptions.
- */
+/** Helper object to test GraphQL subscriptions. */
 @RequiredArgsConstructor
 @Slf4j
 public class GraphQLTestSubscription {
 
-  private static final WebSocketContainer WEB_SOCKET_CONTAINER = ContainerProvider
-      .getWebSocketContainer();
+  private static final WebSocketContainer WEB_SOCKET_CONTAINER =
+      ContainerProvider.getWebSocketContainer();
   private static final int ACKNOWLEDGEMENT_AND_CONNECTION_TIMEOUT = 60000;
   private static final AtomicInteger ID_COUNTER = new AtomicInteger(1);
   private static final UriBuilderFactory URI_BUILDER_FACTORY = new DefaultUriBuilderFactory();
@@ -59,11 +57,9 @@ public class GraphQLTestSubscription {
   private final Environment environment;
   private final ObjectMapper objectMapper;
   private final String subscriptionPath;
-  @Getter
-  private Session session;
-  private SubscriptionState state = SubscriptionState.builder()
-      .id(ID_COUNTER.incrementAndGet())
-      .build();
+  @Getter private Session session;
+  private SubscriptionState state =
+      SubscriptionState.builder().id(ID_COUNTER.incrementAndGet()).build();
 
   public boolean isInitialized() {
     return state.isInitialized();
@@ -124,7 +120,7 @@ public class GraphQLTestSubscription {
    * Sends the "start" message to the GraphQL server.
    *
    * @param graphQLResource the GraphQL resource, which contains the query for the subscription
-   * start payload. The start message will be sent without variables.
+   *     start payload. The start message will be sent without variables.
    * @return self reference
    */
   public GraphQLTestSubscription start(@NonNull final String graphQLResource) {
@@ -136,12 +132,12 @@ public class GraphQLTestSubscription {
    * Sends the "start" message to the GraphQL Subscription.
    *
    * @param graphQLResource the GraphQL resource, which contains the query for the subscription
-   * start payload.
+   *     start payload.
    * @param variables the variables needed for the query to be evaluated.
    * @return self reference
    */
-  public GraphQLTestSubscription start(@NonNull final String graphQLResource,
-      @Nullable final Object variables) {
+  public GraphQLTestSubscription start(
+      @NonNull final String graphQLResource, @Nullable final Object variables) {
     if (!isInitialized()) {
       init();
     }
@@ -207,7 +203,7 @@ public class GraphQLTestSubscription {
    * stopped after receiving the message (or timeout).
    *
    * @param timeout timeout in milliseconds. Test will fail if no message received from the
-   * subscription until the timeout expires.
+   *     subscription until the timeout expires.
    * @return The received response.
    */
   public GraphQLResponse awaitAndGetNextResponse(final int timeout) {
@@ -218,9 +214,9 @@ public class GraphQLTestSubscription {
    * Awaits and returns the next response received from the subscription.
    *
    * @param timeout timeout in milliseconds. Test will fail if no message received from the
-   * subscription until the timeout expires.
+   *     subscription until the timeout expires.
    * @param stopAfter if true, the subscription will be stopped after the message was received (or
-   * timeout).
+   *     timeout).
    * @return The received response.
    */
   public GraphQLResponse awaitAndGetNextResponse(final int timeout, final boolean stopAfter) {
@@ -247,8 +243,8 @@ public class GraphQLTestSubscription {
    * @param stopAfter if true, the subscription will be stopped after the time elapsed.
    * @return the list of responses received during that time.
    */
-  public List<GraphQLResponse> awaitAndGetAllResponses(final int timeToWait,
-      final boolean stopAfter) {
+  public List<GraphQLResponse> awaitAndGetAllResponses(
+      final int timeToWait, final boolean stopAfter) {
     return awaitAndGetNextResponses(timeToWait, -1, stopAfter);
   }
 
@@ -257,19 +253,17 @@ public class GraphQLTestSubscription {
    * receiving the messages (or timeout).
    *
    * @param timeout timeout in milliseconds. Test will fail if the expected number of responses is
-   * not received.
+   *     not received.
    * @param numExpectedResponses the number of expected responses. If negative, the method will wait
-   * the timeout and return all responses received during that time. In this case, no assertion is
-   * made regarding the number of responses, and the returned list may be empty. If zero, it is
-   * expected that no responses are sent during the timeout period.
+   *     the timeout and return all responses received during that time. In this case, no assertion
+   *     is made regarding the number of responses, and the returned list may be empty. If zero, it
+   *     is expected that no responses are sent during the timeout period.
    * @return The list containing the expected number of responses. The list contains the responses
-   * in the order they were received. If more responses are received than minimally expected, {@link
-   * #getRemainingResponses()}  can be used to retrieved them.
+   *     in the order they were received. If more responses are received than minimally expected,
+   *     {@link #getRemainingResponses()} can be used to retrieved them.
    */
   public List<GraphQLResponse> awaitAndGetNextResponses(
-      final int timeout,
-      final int numExpectedResponses
-  ) {
+      final int timeout, final int numExpectedResponses) {
     return awaitAndGetNextResponses(timeout, numExpectedResponses, true);
   }
 
@@ -277,22 +271,19 @@ public class GraphQLTestSubscription {
    * Awaits and returns the specified number of responses.
    *
    * @param timeout timeout in milliseconds. Test will fail if the expected number of responses is
-   * not received.
+   *     not received.
    * @param numExpectedResponses the number of expected responses. If negative, the method will wait
-   * the timeout and return all responses received during that time. In this case, no assertion is
-   * made regarding the number of responses, and the returned list may be empty. If zero, it is
-   * expected that no responses are sent during the timeout period.
+   *     the timeout and return all responses received during that time. In this case, no assertion
+   *     is made regarding the number of responses, and the returned list may be empty. If zero, it
+   *     is expected that no responses are sent during the timeout period.
    * @param stopAfter if true, the subscription will be stopped after the messages were received (or
-   * timeout).
+   *     timeout).
    * @return The list containing the expected number of responses. The list contains the responses
-   * in the order they were received. If more responses are received than minimally expected, {@link
-   * #getRemainingResponses()}  can be used to retrieved them.
+   *     in the order they were received. If more responses are received than minimally expected,
+   *     {@link #getRemainingResponses()} can be used to retrieved them.
    */
   public List<GraphQLResponse> awaitAndGetNextResponses(
-      final int timeout,
-      final int numExpectedResponses,
-      final boolean stopAfter
-  ) {
+      final int timeout, final int numExpectedResponses, final boolean stopAfter) {
     if (!isStarted()) {
       fail("Start message not sent. Please send start message first.");
     }
@@ -300,9 +291,19 @@ public class GraphQLTestSubscription {
       fail("Subscription already stopped. Forgot to call reset after test case?");
     }
 
-    await()
-        .atMost(timeout, TimeUnit.MILLISECONDS)
-        .until(() -> state.getResponses().size() >= numExpectedResponses);
+    if (numExpectedResponses > 0) {
+      await()
+          .atMost(timeout, TimeUnit.MILLISECONDS)
+          .until(() -> state.getResponses().size() >= numExpectedResponses);
+    } else {
+      try {
+        Thread.sleep(timeout);
+      } catch (InterruptedException e) {
+        fail("Unable to wait the specified amount of time.", e);
+        // Restore interrupted state
+        Thread.currentThread().interrupt();
+      }
+    }
 
     if (stopAfter) {
       stop();
@@ -312,16 +313,16 @@ public class GraphQLTestSubscription {
       int responsesToPoll = responses.size();
       if (numExpectedResponses == 0) {
         assertThat(responses)
-            .as(String.format("Expected no responses in %s MS, but received %s", timeout,
-                responses.size()))
+            .as(
+                String.format(
+                    "Expected no responses in %s MS, but received %s", timeout, responses.size()))
             .isEmpty();
       }
       if (numExpectedResponses > 0) {
         assertThat(responses)
-            .as("Expected at least %s message(s) in %d MS, but %d received.",
-                numExpectedResponses,
-                timeout,
-                responses.size())
+            .as(
+                "Expected at least %s message(s) in %d MS, but %d received.",
+                numExpectedResponses, timeout, responses.size())
             .hasSizeGreaterThanOrEqualTo(numExpectedResponses);
         responsesToPoll = numExpectedResponses;
       }
@@ -340,8 +341,8 @@ public class GraphQLTestSubscription {
    * @param timeToWait time to wait, in milliseconds.
    * @param stopAfter if true, the subscription will be stopped afterwards.
    */
-  public GraphQLTestSubscription waitAndExpectNoResponse(final int timeToWait,
-      final boolean stopAfter) {
+  public GraphQLTestSubscription waitAndExpectNoResponse(
+      final int timeToWait, final boolean stopAfter) {
     awaitAndGetNextResponses(timeToWait, 0, stopAfter);
     return this;
   }
@@ -374,24 +375,35 @@ public class GraphQLTestSubscription {
 
   private void initClient() throws IOException, DeploymentException {
     final String port = environment.getProperty("local.server.port");
-    final URI uri = URI_BUILDER_FACTORY.builder().scheme("ws").host("localhost").port(port)
-        .path(subscriptionPath)
-        .build();
+    final URI uri =
+        URI_BUILDER_FACTORY
+            .builder()
+            .scheme("ws")
+            .host("localhost")
+            .port(port)
+            .path(subscriptionPath)
+            .build();
     log.debug("Connecting to client at {}", uri);
-    final ClientEndpointConfig clientEndpointConfig = ClientEndpointConfig.Builder.create()
-        .configurator(new TestWebSocketClientConfigurator())
-        .build();
-    clientEndpointConfig.getUserProperties().put("org.apache.tomcat.websocket.IO_TIMEOUT_MS",
-        String.valueOf(ACKNOWLEDGEMENT_AND_CONNECTION_TIMEOUT));
-    session = WEB_SOCKET_CONTAINER
-        .connectToServer(new TestWebSocketClient(state), clientEndpointConfig, uri);
+    final ClientEndpointConfig clientEndpointConfig =
+        ClientEndpointConfig.Builder.create()
+            .configurator(new TestWebSocketClientConfigurator())
+            .build();
+    clientEndpointConfig
+        .getUserProperties()
+        .put(
+            "org.apache.tomcat.websocket.IO_TIMEOUT_MS",
+            String.valueOf(ACKNOWLEDGEMENT_AND_CONNECTION_TIMEOUT));
+    session =
+        WEB_SOCKET_CONTAINER.connectToServer(
+            new TestWebSocketClient(state), clientEndpointConfig, uri);
     session.addMessageHandler(new TestMessageHandler(objectMapper, state));
   }
 
   private JsonNode getFinalPayload(final Object variables) {
-    return (JsonNode) Optional.ofNullable(variables)
-        .map(objectMapper::valueToTree)
-        .orElseGet(objectMapper::createObjectNode);
+    return (JsonNode)
+        Optional.ofNullable(variables)
+            .map(objectMapper::valueToTree)
+            .orElseGet(objectMapper::createObjectNode);
   }
 
   private String loadQuery(final String graphGLResource) {
@@ -399,8 +411,10 @@ public class GraphQLTestSubscription {
       final File file = ResourceUtils.getFile("classpath:" + graphGLResource);
       return new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
     } catch (IOException e) {
-      fail(String
-          .format("Test setup failure - could not load GraphQL resource: %s", graphGLResource), e);
+      fail(
+          String.format(
+              "Test setup failure - could not load GraphQL resource: %s", graphGLResource),
+          e);
       return "";
     }
   }
@@ -414,21 +428,21 @@ public class GraphQLTestSubscription {
   }
 
   private void awaitAcknowledgement() {
-    awaitAcknowledgementOrConnection(GraphQLTestSubscription::isAcknowledged,
+    awaitAcknowledgementOrConnection(
+        GraphQLTestSubscription::isAcknowledged,
         "Connection was acknowledged by the GraphQL server.");
   }
 
   private void awaitStop() {
-    awaitAcknowledgementOrConnection(GraphQLTestSubscription::isStopped,
-        "Connection was stopped in time.");
+    awaitAcknowledgementOrConnection(
+        GraphQLTestSubscription::isStopped, "Connection was stopped in time.");
   }
 
-  private void awaitAcknowledgementOrConnection(final Predicate<GraphQLTestSubscription> condition,
-      final String timeoutDescription) {
+  private void awaitAcknowledgementOrConnection(
+      final Predicate<GraphQLTestSubscription> condition, final String timeoutDescription) {
     await(timeoutDescription)
         .atMost(ACKNOWLEDGEMENT_AND_CONNECTION_TIMEOUT, TimeUnit.MILLISECONDS)
         .until(() -> condition.test(this));
-
   }
 
   @RequiredArgsConstructor
@@ -460,9 +474,8 @@ public class GraphQLTestSubscription {
             final JsonNode payload = jsonNode.get(PAYLOAD);
             assertThat(payload).as("Data/error messages must have a payload.").isNotNull();
             final String payloadString = objectMapper.writeValueAsString(payload);
-            final GraphQLResponse graphQLResponse = new GraphQLResponse(
-                ResponseEntity.ok(payloadString),
-                objectMapper);
+            final GraphQLResponse graphQLResponse =
+                new GraphQLResponse(ResponseEntity.ok(payloadString), objectMapper);
             if (state.isStopped() || state.isCompleted()) {
               log.debug(
                   "Response discarded because subscription was stopped or completed in the meanwhile.");
@@ -477,7 +490,8 @@ public class GraphQLTestSubscription {
             break;
         }
       } catch (JsonProcessingException e) {
-        fail("Exception while parsing server response. Response is not a valid GraphQL response.",
+        fail(
+            "Exception while parsing server response. Response is not a valid GraphQL response.",
             e);
       }
     }

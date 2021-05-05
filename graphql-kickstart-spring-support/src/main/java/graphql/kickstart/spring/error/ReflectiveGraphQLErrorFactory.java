@@ -55,5 +55,4 @@ class ReflectiveGraphQLErrorFactory implements GraphQLErrorFactory {
       return method.invoke(object, t);
     }
   }
-
 }

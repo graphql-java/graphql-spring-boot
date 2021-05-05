@@ -42,10 +42,10 @@ commitNextVersion() {
 git config --global user.email "actions@github.com"
 git config --global user.name "GitHub Actions"
 
-echo "Deploying release to Bintray"
+echo "Deploying release to Maven Central"
 removeSnapshots
 
-./gradlew clean assemble && ./gradlew bintrayUpload -x check --info
+./gradlew clean build publish closeAndReleaseRepository -x verifyGoogleJavaFormat
 
 commitRelease
 bumpVersion

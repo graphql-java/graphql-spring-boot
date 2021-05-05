@@ -20,11 +20,9 @@ class GraphQLTestSubscriptionUsageErrorHandlingTest extends GraphQLTestSubscript
   @Test
   @DisplayName("Should raise an assertion error if awaitAndGet times out.")
   void shouldRaiseAssertionErrorIfAwaitAndGetTimesOut() {
-    graphQLTestSubscription
-        .start(SUBSCRIPTION_THAT_TIMES_OUT_RESOURCE);
+    graphQLTestSubscription.start(SUBSCRIPTION_THAT_TIMES_OUT_RESOURCE);
     assertThatExceptionOfType(ConditionTimeoutException.class)
-        .isThrownBy(() -> graphQLTestSubscription
-            .awaitAndGetNextResponse(110));
+        .isThrownBy(() -> graphQLTestSubscription.awaitAndGetNextResponse(110));
   }
 
   @Test
@@ -53,15 +51,14 @@ class GraphQLTestSubscriptionUsageErrorHandlingTest extends GraphQLTestSubscript
   @Test
   @DisplayName("Should raise an assertion error if awaitAndGet methods are called after stop.")
   void shouldRaiseAssertionErrorIfGettingResponseAfterStop() {
-    graphQLTestSubscription
-        .start(TIMER_SUBSCRIPTION_RESOURCE)
-        .stop();
+    graphQLTestSubscription.start(TIMER_SUBSCRIPTION_RESOURCE).stop();
     assertThatExceptionOfType(AssertionError.class)
         .isThrownBy(() -> graphQLTestSubscription.awaitAndGetNextResponse(TIMEOUT));
   }
 
   @Test
-  @DisplayName("Should raise an assertion error if the provided GraphQL resource could not be found.")
+  @DisplayName(
+      "Should raise an assertion error if the provided GraphQL resource could not be found.")
   void shouldRaiseAssertionErrorIfGraphQLResourceCouldNotBeFound() {
     assertThatExceptionOfType(AssertionError.class)
         .isThrownBy(() -> graphQLTestSubscription.start("non-existing-file.graphql"));

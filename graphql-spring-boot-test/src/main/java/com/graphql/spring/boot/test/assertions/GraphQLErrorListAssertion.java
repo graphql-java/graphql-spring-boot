@@ -16,18 +16,20 @@ import org.assertj.core.api.ObjectAssert;
 import org.assertj.core.api.ObjectAssertFactory;
 
 @EqualsAndHashCode(callSuper = true)
-public class GraphQLErrorListAssertion extends FactoryBasedNavigableListAssert<
-    GraphQLErrorListAssertion,
-    List<? extends GraphQLError>,
-    GraphQLError,
-    ObjectAssert<GraphQLError>
-    >
+public class GraphQLErrorListAssertion
+    extends FactoryBasedNavigableListAssert<
+        GraphQLErrorListAssertion,
+        List<? extends GraphQLError>,
+        GraphQLError,
+        ObjectAssert<GraphQLError>>
     implements GraphQLResponseAssertion {
 
   private final GraphQLResponse graphQLResponse;
 
   public GraphQLErrorListAssertion(final GraphQLResponse graphQLResponse) {
-    super(getGraphQLErrors(graphQLResponse), GraphQLErrorListAssertion.class,
+    super(
+        getGraphQLErrors(graphQLResponse),
+        GraphQLErrorListAssertion.class,
         new ObjectAssertFactory<>());
     this.graphQLResponse = graphQLResponse;
   }
@@ -46,11 +48,13 @@ public class GraphQLErrorListAssertion extends FactoryBasedNavigableListAssert<
   public GraphQLResponseAssertion hasNoErrors() {
     final List<? extends GraphQLError> graphQLErrors = getGraphQLErrors(graphQLResponse);
     if (nonNull(graphQLErrors) && !graphQLErrors.isEmpty()) {
-      final String combinedMessage = graphQLErrors.stream()
-          .map(GraphQLError::toString)
-          .collect(Collectors.joining(System.lineSeparator()));
-      fail(String.format("Expected no GraphQL errors, but got %s: %s", graphQLErrors.size(),
-          combinedMessage));
+      final String combinedMessage =
+          graphQLErrors.stream()
+              .map(GraphQLError::toString)
+              .collect(Collectors.joining(System.lineSeparator()));
+      fail(
+          String.format(
+              "Expected no GraphQL errors, but got %s: %s", graphQLErrors.size(), combinedMessage));
     }
     return this;
   }

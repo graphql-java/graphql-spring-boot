@@ -11,9 +11,7 @@ import java.util.List;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
-/**
- * @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a>
- */
+/** @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a> */
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class SimpleListConnection<T> {
 
@@ -22,7 +20,9 @@ public abstract class SimpleListConnection<T> {
 
   public abstract <E extends EdgeObjectType<T>> E createEdgeObject();
 
-  public abstract <C extends ConnectionObjectType<? extends EdgeObjectType<T>, ? extends PageInfoObjectType>> C createConnectionObject();
+  public abstract <
+          C extends ConnectionObjectType<? extends EdgeObjectType<T>, ? extends PageInfoObjectType>>
+      C createConnectionObject();
 
   private List<EdgeObjectType<T>> buildEdges() {
     List<EdgeObjectType<T>> edges = new ArrayList<>();
@@ -36,8 +36,8 @@ public abstract class SimpleListConnection<T> {
     return edges;
   }
 
-  public <C extends ConnectionObjectType<? extends EdgeObjectType<T>, ? extends PageInfoObjectType>> C get(
-      DataFetchingEnvironment environment) {
+  public <C extends ConnectionObjectType<? extends EdgeObjectType<T>, ? extends PageInfoObjectType>>
+      C get(DataFetchingEnvironment environment) {
     List<EdgeObjectType<T>> edges = buildEdges();
 
     int afterOffset = getOffsetFromCursor(environment.getArgument("after"), -1);
@@ -76,7 +76,8 @@ public abstract class SimpleListConnection<T> {
     pageInfo.setHasPreviousPage(!firstEdge.getCursor().equals(firstPresliceCursor));
     pageInfo.setHasNextPage(!lastEdge.getCursor().equals(lastPresliceCursor));
 
-    ConnectionObjectType<EdgeObjectType<T>, PageInfoObjectType> connection = createConnectionObject();
+    ConnectionObjectType<EdgeObjectType<T>, PageInfoObjectType> connection =
+        createConnectionObject();
     connection.setEdges(edges);
     connection.setPageInfo(pageInfo);
 
@@ -84,8 +85,11 @@ public abstract class SimpleListConnection<T> {
     return (C) connection;
   }
 
-  private <E extends ConnectionObjectType<? extends EdgeObjectType<T>, ? extends PageInfoObjectType>> E emptyConnection() {
-    ConnectionObjectType<EdgeObjectType<T>, PageInfoObjectType> connection = createConnectionObject();
+  private <
+          E extends ConnectionObjectType<? extends EdgeObjectType<T>, ? extends PageInfoObjectType>>
+      E emptyConnection() {
+    ConnectionObjectType<EdgeObjectType<T>, PageInfoObjectType> connection =
+        createConnectionObject();
     connection.setPageInfo(new PageInfoObjectType());
     //noinspection unchecked
     return (E) connection;
@@ -95,8 +99,8 @@ public abstract class SimpleListConnection<T> {
     if (cursor == null) {
       return defaultValue;
     }
-    String string = new String(java.util.Base64.getDecoder().decode(cursor),
-        StandardCharsets.UTF_8);
+    String string =
+        new String(java.util.Base64.getDecoder().decode(cursor), StandardCharsets.UTF_8);
     return Integer.parseInt(string.substring(DUMMY_CURSOR_PREFIX.length()));
   }
 
@@ -104,5 +108,4 @@ public abstract class SimpleListConnection<T> {
     byte[] lala = (DUMMY_CURSOR_PREFIX + offset).getBytes(StandardCharsets.UTF_8);
     return Base64.getEncoder().encodeToString(lala);
   }
-
 }

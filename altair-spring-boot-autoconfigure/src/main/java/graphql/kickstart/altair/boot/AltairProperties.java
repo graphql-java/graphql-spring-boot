@@ -27,5 +27,4 @@ public class AltairProperties {
     private boolean enabled = false;
     private String version = "2.4.11";
   }
-
 }

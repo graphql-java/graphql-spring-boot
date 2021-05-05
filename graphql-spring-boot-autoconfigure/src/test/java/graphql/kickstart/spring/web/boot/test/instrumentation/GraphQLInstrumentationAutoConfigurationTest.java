@@ -14,7 +14,6 @@ import graphql.kickstart.spring.web.boot.metrics.TracingNoResolversInstrumentati
 import graphql.kickstart.spring.web.boot.test.AbstractAutoConfigurationTest;
 import graphql.schema.GraphQLFieldDefinition;
 import graphql.schema.GraphQLObjectType;
-import graphql.schema.GraphQLScalarType;
 import graphql.schema.GraphQLSchema;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
@@ -25,14 +24,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
-/**
- * @author Marcel Overdijk
- */
+/** @author Marcel Overdijk */
 class GraphQLInstrumentationAutoConfigurationTest extends AbstractAutoConfigurationTest {
 
   public GraphQLInstrumentationAutoConfigurationTest() {
-    super(AnnotationConfigWebApplicationContext.class,
-        GraphQLInstrumentationAutoConfiguration.class);
+    super(
+        AnnotationConfigWebApplicationContext.class, GraphQLInstrumentationAutoConfiguration.class);
   }
 
   @Test
@@ -67,7 +64,9 @@ class GraphQLInstrumentationAutoConfigurationTest extends AbstractAutoConfigurat
 
   @Test
   void actuatorMetricsEnabledAndTracingEnabled() {
-    load(DefaultConfiguration.class, "graphql.servlet.tracing-enabled=true",
+    load(
+        DefaultConfiguration.class,
+        "graphql.servlet.tracing-enabled=true",
         "graphql.servlet.actuator-metrics=true");
 
     AbstractApplicationContext context = getContext();
@@ -78,7 +77,9 @@ class GraphQLInstrumentationAutoConfigurationTest extends AbstractAutoConfigurat
 
   @Test
   void tracingInstrumentationDisabledAndMetricsEnabled() {
-    load(DefaultConfiguration.class, "graphql.servlet.tracing-enabled=false",
+    load(
+        DefaultConfiguration.class,
+        "graphql.servlet.tracing-enabled=false",
         "graphql.servlet.actuator-metrics=true");
 
     assertThat(this.getContext().getBean(MetricsInstrumentation.class)).isNotNull();
@@ -87,7 +88,9 @@ class GraphQLInstrumentationAutoConfigurationTest extends AbstractAutoConfigurat
 
   @Test
   void tracingMetricsWithTracingDisabled() {
-    load(DefaultConfiguration.class, "graphql.servlet.tracing-enabled=metrics-only",
+    load(
+        DefaultConfiguration.class,
+        "graphql.servlet.tracing-enabled=metrics-only",
         "graphql.servlet.actuator-metrics=true");
 
     assertThat(this.getContext().getBean("metricsInstrumentation")).isNotNull();
@@ -104,7 +107,9 @@ class GraphQLInstrumentationAutoConfigurationTest extends AbstractAutoConfigurat
 
   @Test
   void tracingInstrumentationEnabledAndMetricsDisabled() {
-    load(DefaultConfiguration.class, "graphql.servlet.tracing-enabled=true",
+    load(
+        DefaultConfiguration.class,
+        "graphql.servlet.tracing-enabled=true",
         "graphql.servlet.actuator-metrics=false");
 
     AbstractApplicationContext context = getContext();
@@ -115,7 +120,9 @@ class GraphQLInstrumentationAutoConfigurationTest extends AbstractAutoConfigurat
 
   @Test
   void tracingInstrumentationDisabledAndMetricsDisabled() {
-    load(DefaultConfiguration.class, "graphql.servlet.tracing-enabled=false",
+    load(
+        DefaultConfiguration.class,
+        "graphql.servlet.tracing-enabled=false",
         "graphql.servlet.actuator-metrics=false");
 
     AbstractApplicationContext context = getContext();
@@ -149,8 +156,8 @@ class GraphQLInstrumentationAutoConfigurationTest extends AbstractAutoConfigurat
                       GraphQLFieldDefinition.newFieldDefinition()
                           .name("echo")
                           .type(GraphQLString)
-                          .build()
-                  ).build())
+                          .build())
+                  .build())
           .build();
     }
 
@@ -158,6 +165,5 @@ class GraphQLInstrumentationAutoConfigurationTest extends AbstractAutoConfigurat
     MeterRegistry meterRegistry() {
       return new SimpleMeterRegistry();
     }
-
   }
 }

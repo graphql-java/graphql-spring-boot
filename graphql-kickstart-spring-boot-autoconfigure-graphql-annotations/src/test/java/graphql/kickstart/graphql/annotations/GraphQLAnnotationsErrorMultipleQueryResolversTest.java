@@ -12,7 +12,8 @@ import org.springframework.context.ApplicationContextException;
 class GraphQLAnnotationsErrorMultipleQueryResolversTest {
 
   @Test
-  @DisplayName("Assert that MultipleQueryResolversException is thrown when multiple query resolvers are found.")
+  @DisplayName(
+      "Assert that MultipleQueryResolversException is thrown when multiple query resolvers are found.")
   void testMultipleQueryResolversExceptionIsThrown() {
     // GIVEN
     final SpringApplication app = new SpringApplication(TestApplication.class);

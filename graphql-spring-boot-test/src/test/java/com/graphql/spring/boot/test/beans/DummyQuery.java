@@ -29,10 +29,9 @@ public class DummyQuery implements GraphQLQueryResolver {
   }
 
   public String queryWithHeader(
-      final String headerName,
-      final DataFetchingEnvironment dataFetchingEnvironment
-  ) {
-    return ((GraphQLServletContext) dataFetchingEnvironment.getContext()).getHttpServletRequest()
+      final String headerName, final DataFetchingEnvironment dataFetchingEnvironment) {
+    return ((GraphQLServletContext) dataFetchingEnvironment.getContext())
+        .getHttpServletRequest()
         .getHeader(headerName);
   }
 }

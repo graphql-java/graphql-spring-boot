@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomAnnotationProcessor extends GraphQLAnnotations {
 
-  public CustomAnnotationProcessor() {
-  }
+  public CustomAnnotationProcessor() {}
 
-  public CustomAnnotationProcessor(TypeFunction defaultTypeFunction,
+  public CustomAnnotationProcessor(
+      TypeFunction defaultTypeFunction,
       GraphQLObjectHandler graphQLObjectHandler,
       GraphQLExtensionsHandler graphQLExtensionsHandler) {
     super(defaultTypeFunction, graphQLObjectHandler, graphQLExtensionsHandler);

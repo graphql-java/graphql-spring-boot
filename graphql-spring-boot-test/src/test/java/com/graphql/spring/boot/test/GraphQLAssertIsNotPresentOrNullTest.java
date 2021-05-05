@@ -18,8 +18,8 @@ class GraphQLAssertIsNotPresentOrNullTest extends GraphQLFieldAssertTestBase {
   void shouldPassIfPathNotFound(final @Mock PathNotFoundException pathNotFoundException) {
     // GIVEN
     given(graphQLResponse.getRaw(MOCK_PATH)).willThrow(pathNotFoundException);
-    final GraphQLFieldAssert graphQLFieldAssert = new GraphQLFieldAssert(graphQLResponse,
-        MOCK_PATH);
+    final GraphQLFieldAssert graphQLFieldAssert =
+        new GraphQLFieldAssert(graphQLResponse, MOCK_PATH);
     // WHEN - THEN
     assertThatCode(graphQLFieldAssert::isNotPresentOrNull).doesNotThrowAnyException();
     assertThat(graphQLFieldAssert.isNotPresentOrNull().and()).isSameAs(graphQLResponse);
@@ -30,8 +30,8 @@ class GraphQLAssertIsNotPresentOrNullTest extends GraphQLFieldAssertTestBase {
   void shouldPassIfIsNull() {
     // GIVEN
     given(graphQLResponse.getRaw(MOCK_PATH)).willReturn(null);
-    final GraphQLFieldAssert graphQLFieldAssert = new GraphQLFieldAssert(graphQLResponse,
-        MOCK_PATH);
+    final GraphQLFieldAssert graphQLFieldAssert =
+        new GraphQLFieldAssert(graphQLResponse, MOCK_PATH);
     // WHEN - THEN
     assertThatCode(graphQLFieldAssert::isNotPresentOrNull).doesNotThrowAnyException();
     assertThat(graphQLFieldAssert.isNotPresentOrNull().and()).isSameAs(graphQLResponse);
@@ -42,8 +42,8 @@ class GraphQLAssertIsNotPresentOrNullTest extends GraphQLFieldAssertTestBase {
   void shouldFailIfIsNotNull() {
     // GIVEN
     given(graphQLResponse.getRaw(MOCK_PATH)).willReturn(NON_NULL_VALUE);
-    final GraphQLFieldAssert graphQLFieldAssert = new GraphQLFieldAssert(graphQLResponse,
-        MOCK_PATH);
+    final GraphQLFieldAssert graphQLFieldAssert =
+        new GraphQLFieldAssert(graphQLResponse, MOCK_PATH);
     // WHEN - THEN
     assertThatExceptionOfType(AssertionError.class)
         .isThrownBy(graphQLFieldAssert::isNotPresentOrNull)

@@ -11,6 +11,5 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class PlaygroundPropertiesConfiguration {
 
-    @NestedConfigurationProperty
-    private PlaygroundProperties playground = new PlaygroundProperties();
+  @NestedConfigurationProperty private PlaygroundProperties playground = new PlaygroundProperties();
 }

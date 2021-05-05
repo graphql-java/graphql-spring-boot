@@ -1,0 +1,31 @@
+apply plugin: "java-platform"
+
+dependencies {
+    constraints {
+        api "com.graphql-java:graphql-java-extended-scalars:$LIB_EXTENDED_SCALARS_VER"
+        api "com.graphql-java:graphql-java:$LIB_GRAPHQL_JAVA_VER"
+        api "com.graphql-java-kickstart:graphql-java-servlet:$LIB_GRAPHQL_SERVLET_VER"
+        api "com.graphql-java-kickstart:graphql-java-kickstart:$LIB_GRAPHQL_SERVLET_VER"
+        api "com.graphql-java-kickstart:graphql-java-tools:$LIB_GRAPHQL_JAVA_TOOLS_VER"
+        api "io.github.graphql-java:graphql-java-annotations:$LIB_GRAPHQL_ANNOTATIONS_VER"
+        api project(":graphql-spring-boot-starter")
+        runtime project(":altair-spring-boot-starter")
+        runtime project(":graphiql-spring-boot-starter")
+        runtime project(":voyager-spring-boot-starter")
+        runtime project(":playground-spring-boot-starter")
+        api project(":graphql-spring-boot-starter-test")
+        api project(":graphql-kickstart-spring-boot-starter-webflux")
+        api project(":graphql-kickstart-spring-boot-starter-tools")
+        api project(":graphql-kickstart-spring-boot-starter-graphql-annotations")
+    }
+}
+
+publishing {
+    publications {
+        mainProjectPublication(MavenPublication) {
+            from components.javaPlatform
+        }
+    }
+}
+
+

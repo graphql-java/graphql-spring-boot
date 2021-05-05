@@ -16,8 +16,7 @@ import org.springframework.core.io.Resource;
 
 public class ClasspathResourceSchemaStringProvider implements SchemaStringProvider {
 
-  @Autowired
-  private ApplicationContext applicationContext;
+  @Autowired private ApplicationContext applicationContext;
   private String schemaLocationPattern;
 
   public ClasspathResourceSchemaStringProvider(String schemaLocationPattern) {
@@ -34,22 +33,17 @@ public class ClasspathResourceSchemaStringProvider implements SchemaStringProvid
               + "'.  Please add a graphql schema to the classpath or add a SchemaParser bean to your application context.");
     }
 
-    return Arrays.stream(resources)
-        .map(this::readSchema)
-        .collect(Collectors.toList());
+    return Arrays.stream(resources).map(this::readSchema).collect(Collectors.toList());
   }
 
   private String readSchema(Resource resource) {
-    try (
-        InputStream inputStream = resource.getInputStream();
-        InputStreamReader bufferedInputStream = new InputStreamReader(inputStream,
-            StandardCharsets.UTF_8.name());
-        BufferedReader reader = new BufferedReader(bufferedInputStream)
-    ) {
+    try (InputStream inputStream = resource.getInputStream();
+        InputStreamReader bufferedInputStream =
+            new InputStreamReader(inputStream, StandardCharsets.UTF_8.name());
+        BufferedReader reader = new BufferedReader(bufferedInputStream)) {
       return reader.lines().collect(joining("\n"));
     } catch (IOException e) {
       throw new IllegalStateException("Cannot read graphql schema from resource " + resource, e);
     }
   }
-
 }

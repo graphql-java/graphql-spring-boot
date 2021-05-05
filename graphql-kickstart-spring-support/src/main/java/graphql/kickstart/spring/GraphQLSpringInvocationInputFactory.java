@@ -8,10 +8,9 @@ import org.springframework.web.server.ServerWebExchange;
 
 public interface GraphQLSpringInvocationInputFactory {
 
-  GraphQLSingleInvocationInput create(GraphQLRequest graphQLRequest,
-      ServerWebExchange serverWebExchange);
+  GraphQLSingleInvocationInput create(
+      GraphQLRequest graphQLRequest, ServerWebExchange serverWebExchange);
 
-  GraphQLBatchedInvocationInput create(Collection<GraphQLRequest> graphQLRequests,
-      ServerWebExchange serverWebExchange);
-
+  GraphQLBatchedInvocationInput create(
+      Collection<GraphQLRequest> graphQLRequests, ServerWebExchange serverWebExchange);
 }

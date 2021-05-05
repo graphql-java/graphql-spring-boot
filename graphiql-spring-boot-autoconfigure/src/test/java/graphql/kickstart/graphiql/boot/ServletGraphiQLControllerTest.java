@@ -18,12 +18,12 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest
 class ServletGraphiQLControllerTest {
 
-  @Autowired
-  private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
   @Test
   void shouldBeAbleToAccessGraphiQL() throws Exception {
-    mockMvc.perform(get("/graphiql"))
+    mockMvc
+        .perform(get("/graphiql"))
         .andExpect(status().is2xxSuccessful())
         .andExpect(content().contentType("text/html; charset=UTF-8"));
   }
@@ -31,7 +31,5 @@ class ServletGraphiQLControllerTest {
   @SpringBootConfiguration
   @TestPropertySource(properties = "graphiql.enabled=true")
   @Import(GraphiQLAutoConfiguration.class)
-  public static class ServletTestApplication {
-
-  }
+  public static class ServletTestApplication {}
 }

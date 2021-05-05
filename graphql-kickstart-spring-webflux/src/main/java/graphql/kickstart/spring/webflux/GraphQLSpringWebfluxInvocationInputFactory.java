@@ -15,7 +15,8 @@ public class GraphQLSpringWebfluxInvocationInputFactory
     extends DefaultGraphQLSpringInvocationInputFactory
     implements GraphQLSubscriptionInvocationInputFactory {
 
-  public GraphQLSpringWebfluxInvocationInputFactory(GraphQLSchemaProvider schemaProvider,
+  public GraphQLSpringWebfluxInvocationInputFactory(
+      GraphQLSchemaProvider schemaProvider,
       GraphQLSpringContextBuilder contextBuilder,
       GraphQLSpringRootObjectBuilder rootObjectBuilder) {
     super(schemaProvider, contextBuilder, rootObjectBuilder);
@@ -29,16 +30,14 @@ public class GraphQLSpringWebfluxInvocationInputFactory
   }
 
   @Override
-  public GraphQLSingleInvocationInput create(GraphQLRequest graphQLRequest,
-      SubscriptionSession session) {
+  public GraphQLSingleInvocationInput create(
+      GraphQLRequest graphQLRequest, SubscriptionSession session) {
     return new GraphQLSingleInvocationInput(
         graphQLRequest,
         getSchemaProviderSupplier().get().getSchema(),
         ((GraphQLSpringWebfluxContextBuilder) getContextBuilderSupplier().get())
             .build((WebSocketSession) session.unwrap()),
         ((GraphQLSpringWebfluxRootObjectBuilder) getRootObjectBuilderSupplier().get())
-            .build((WebSocketSession) session.unwrap())
-    );
+            .build((WebSocketSession) session.unwrap()));
   }
-
 }

@@ -38,9 +38,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * @author Andrew Potter
- */
+/** @author Andrew Potter */
 @Slf4j
 @Configuration
 @ConditionalOnClass(SchemaParser.class)
@@ -64,8 +62,7 @@ public class GraphQLJavaToolsAutoConfiguration {
       @Autowired(required = false) List<ProxyHandler> proxyHandlers,
       @Autowired(required = false) CoroutineContextProvider coroutineContextProvider,
       @Autowired(required = false) List<TypeDefinitionFactory> typeDefinitionFactories,
-      @Autowired(required = false) GraphqlFieldVisibility fieldVisibility
-  ) {
+      @Autowired(required = false) GraphqlFieldVisibility fieldVisibility) {
     SchemaParserOptions.Builder optionsBuilder = SchemaParserOptions.newOptions();
 
     if (perFieldObjectMapperProvider != null) {
@@ -102,8 +99,8 @@ public class GraphQLJavaToolsAutoConfiguration {
       @Autowired(required = false) SchemaParserDictionary dictionary,
       @Autowired(required = false) GraphQLScalarType[] scalars,
       @Autowired(required = false) List<SchemaDirective> directives,
-      @Autowired(required = false) List<SchemaDirectiveWiring> directiveWirings
-  ) throws IOException {
+      @Autowired(required = false) List<SchemaDirectiveWiring> directiveWirings)
+      throws IOException {
     SchemaParserBuilder builder = new SchemaParserBuilder();
     if (nonNull(dictionary)) {
       builder.dictionary(dictionary.getDictionary());
@@ -125,18 +122,17 @@ public class GraphQLJavaToolsAutoConfiguration {
       directiveWirings.forEach(builder::directiveWiring);
     }
 
-    return builder
-        .resolvers(resolvers)
-        .build();
+    return builder.resolvers(resolvers).build();
   }
 
   @Bean
   @ConditionalOnMissingBean
-  @ConditionalOnProperty(value = "graphql.tools.use-default-objectmapper", havingValue = "true", matchIfMissing = true)
+  @ConditionalOnProperty(
+      value = "graphql.tools.use-default-objectmapper",
+      havingValue = "true",
+      matchIfMissing = true)
   public PerFieldObjectMapperProvider perFieldObjectMapperProvider(ObjectMapper objectMapper) {
-    objectMapper
-        .registerModule(new Jdk8Module())
-        .registerModule(new KotlinModule());
+    objectMapper.registerModule(new Jdk8Module()).registerModule(new KotlinModule());
     return fieldDefinition -> objectMapper;
   }
 
@@ -150,8 +146,9 @@ public class GraphQLJavaToolsAutoConfiguration {
   @Bean
   @ConditionalOnProperty(value = "graphql.tools.introspection-enabled", havingValue = "false")
   GraphqlFieldVisibility disableIntrospection() {
-    log.warn("GraphQL introspection query disabled! This puts your server in contravention of the "
-        + "GraphQL specification and expectations of most clients, so use this option with caution");
+    log.warn(
+        "GraphQL introspection query disabled! This puts your server in contravention of the "
+            + "GraphQL specification and expectations of most clients, so use this option with caution");
     return new NoIntrospectionGraphqlFieldVisibility();
   }
 }

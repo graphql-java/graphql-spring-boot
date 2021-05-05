@@ -17,15 +17,14 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles({"test", "custom-scalar-test"})
 class GraphQLAnnotationsCustomScalarTest {
 
-  @Autowired
-  private GraphQLTestTemplate graphQLTestTemplate;
+  @Autowired private GraphQLTestTemplate graphQLTestTemplate;
 
   @Test
   @DisplayName("Assert that custom scalars work properly.")
   void testQueryWithCustomScalar() throws IOException {
     // WHEN
-    final GraphQLResponse graphQLResponse
-        = graphQLTestTemplate.postForResource("queries/test-custom-scalar-query.graphql");
+    final GraphQLResponse graphQLResponse =
+        graphQLTestTemplate.postForResource("queries/test-custom-scalar-query.graphql");
     // THEN
     assertThat(graphQLResponse.get("$.data.randomUUID", UUID.class)).isNotNull();
   }

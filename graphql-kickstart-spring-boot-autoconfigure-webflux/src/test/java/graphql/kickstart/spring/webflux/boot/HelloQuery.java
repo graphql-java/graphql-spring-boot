@@ -10,5 +10,4 @@ class HelloQuery implements GraphQLQueryResolver {
   public Mono<String> hello() {
     return Mono.just("Hello world");
   }
-
 }

@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.graphql.spring.boot.test.GraphQLResponse;
 import com.graphql.spring.boot.test.GraphQLTestTemplate;
-import java.io.IOException;
 import graphql.schema.GraphQLSchema;
+import java.io.IOException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,18 +17,16 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles({"test", "mutation-test"})
 class GraphQLAnnotationsMutationTest {
 
-  @Autowired
-  private GraphQLTestTemplate graphQLTestTemplate;
+  @Autowired private GraphQLTestTemplate graphQLTestTemplate;
 
-  @Autowired
-  private GraphQLSchema graphQLSchema;
+  @Autowired private GraphQLSchema graphQLSchema;
 
   @Test
   @DisplayName("Assert that mutation resolver is properly registered.")
   void testMutationResolver() throws IOException {
     // WHEN
-    final GraphQLResponse actual = graphQLTestTemplate
-        .postForResource("mutations/test-mutation.graphql");
+    final GraphQLResponse actual =
+        graphQLTestTemplate.postForResource("mutations/test-mutation.graphql");
     // THEN
     assertThat(actual.get("$.data.performSomeOperation.testField")).isEqualTo("Test value");
   }

@@ -11,5 +11,4 @@ class ThrowableComparator implements Comparator<Class<? extends Throwable>> {
     }
     return t1.isAssignableFrom(t2) ? 1 : -1;
   }
-
 }

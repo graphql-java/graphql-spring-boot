@@ -18,7 +18,6 @@ class SubscriptionState {
   private boolean started;
   private boolean stopped;
   private boolean completed;
-  @Builder.Default
-  private Queue<GraphQLResponse> responses = new ConcurrentLinkedQueue<>();
+  @Builder.Default private Queue<GraphQLResponse> responses = new ConcurrentLinkedQueue<>();
   private int id;
 }

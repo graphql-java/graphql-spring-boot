@@ -5,9 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import graphql.kickstart.spring.web.boot.GraphQLServletProperties;
 import org.junit.jupiter.api.Test;
 
-/**
- * @author Andrew Potter
- */
+/** @author Andrew Potter */
 class GraphQLServletPropertiesTest {
 
   @Test
@@ -31,8 +29,9 @@ class GraphQLServletPropertiesTest {
     servletProperties.setMapping(mapping);
 
     assertThat(servletProperties.getCorsMapping())
-        .as(String.format("Expected mapping '%s' to return cors mapping '%s'", mapping,
-            "/graphql/**"))
+        .as(
+            String.format(
+                "Expected mapping '%s' to return cors mapping '%s'", mapping, "/graphql/**"))
         .isEqualTo("/graphql/**");
   }
 
@@ -41,8 +40,9 @@ class GraphQLServletPropertiesTest {
     servletProperties.setMapping(mapping);
 
     assertThat(servletProperties.getServletMapping())
-        .as(String
-            .format("Expected mapping '%s' to return servlet mapping '%s'", mapping, "/graphql/*"))
+        .as(
+            String.format(
+                "Expected mapping '%s' to return servlet mapping '%s'", mapping, "/graphql/*"))
         .isEqualTo("/graphql/*");
   }
 }

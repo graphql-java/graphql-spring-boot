@@ -6,6 +6,5 @@ import lombok.Value;
 @Value
 public class TestModel {
 
-  @GraphQLField
-  String someField;
+  @GraphQLField String someField;
 }

@@ -12,12 +12,8 @@ class OnSchemaOrSchemaProviderBean extends AnyNestedCondition {
   }
 
   @ConditionalOnBean(GraphQLSchema.class)
-  static class OnSchema {
-
-  }
+  static class OnSchema {}
 
   @ConditionalOnBean(GraphQLSchemaProvider.class)
-  static class OnSchemaProvider {
-
-  }
+  static class OnSchemaProvider {}
 }

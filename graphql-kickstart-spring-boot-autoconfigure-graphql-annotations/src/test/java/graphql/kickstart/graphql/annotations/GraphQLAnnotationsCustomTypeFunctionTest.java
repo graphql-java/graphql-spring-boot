@@ -16,15 +16,14 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles({"test", "custom-type-function-test"})
 class GraphQLAnnotationsCustomTypeFunctionTest {
 
-  @Autowired
-  private GraphQLTestTemplate graphQLTestTemplate;
+  @Autowired private GraphQLTestTemplate graphQLTestTemplate;
 
   @Test
   @DisplayName("Assert that custom type functions work properly.")
   void testCustomTypeFunction() throws IOException {
     // WHEN
-    final GraphQLResponse actual
-        = graphQLTestTemplate.postForResource("queries/test-custom-type-function.graphql");
+    final GraphQLResponse actual =
+        graphQLTestTemplate.postForResource("queries/test-custom-type-function.graphql");
     // THEN
     assertThat(actual.get("$.data.foo")).isEqualTo("foo");
   }

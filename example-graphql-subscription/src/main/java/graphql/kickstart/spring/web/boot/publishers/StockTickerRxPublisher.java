@@ -39,15 +39,15 @@ public class StockTickerRxPublisher {
   private final Flowable<StockPriceUpdate> publisher;
 
   public StockTickerRxPublisher() {
-    Observable<StockPriceUpdate> stockPriceUpdateObservable = Observable.create(emitter -> {
+    Observable<StockPriceUpdate> stockPriceUpdateObservable =
+        Observable.create(
+            emitter -> {
+              ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
+              executorService.scheduleAtFixedRate(newStockTick(emitter), 0, 2, TimeUnit.SECONDS);
+            });
 
-      ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
-      executorService.scheduleAtFixedRate(newStockTick(emitter), 0, 2, TimeUnit.SECONDS);
-
-    });
-
-    ConnectableObservable<StockPriceUpdate> connectableObservable = stockPriceUpdateObservable
-        .share().publish();
+    ConnectableObservable<StockPriceUpdate> connectableObservable =
+        stockPriceUpdateObservable.share().publish();
     connectableObservable.connect();
 
     publisher = connectableObservable.toFlowable(BackpressureStrategy.BUFFER);
@@ -76,8 +76,8 @@ public class StockTickerRxPublisher {
     };
   }
 
-  private void emitStocks(ObservableEmitter<StockPriceUpdate> emitter,
-      List<StockPriceUpdate> stockPriceUpdates) {
+  private void emitStocks(
+      ObservableEmitter<StockPriceUpdate> emitter, List<StockPriceUpdate> stockPriceUpdates) {
     for (StockPriceUpdate stockPriceUpdate : stockPriceUpdates) {
       try {
         emitter.onNext(stockPriceUpdate);
@@ -93,8 +93,8 @@ public class StockTickerRxPublisher {
 
   public Flowable<StockPriceUpdate> getPublisher(List<String> stockCodes) {
     if (stockCodes != null) {
-      return publisher
-          .filter(stockPriceUpdate -> stockCodes.contains(stockPriceUpdate.getStockCode()));
+      return publisher.filter(
+          stockPriceUpdate -> stockCodes.contains(stockPriceUpdate.getStockCode()));
     }
     return publisher;
   }
@@ -123,5 +123,4 @@ public class StockTickerRxPublisher {
     CURRENT_STOCK_PRICES.put(stockCode, newPrice);
     return new StockPriceUpdate(stockCode, LocalDateTime.now(), newPrice, incrementDollars);
   }
-
 }

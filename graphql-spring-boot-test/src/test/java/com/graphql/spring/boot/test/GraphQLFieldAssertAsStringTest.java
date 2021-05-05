@@ -19,8 +19,8 @@ class GraphQLFieldAssertAsStringTest extends GraphQLFieldAssertTestBase {
     // GIVEN
     final String value = "some value";
     given(graphQLResponse.get(MOCK_PATH, String.class)).willReturn(value);
-    final GraphQLFieldAssert graphQLFieldAssert = new GraphQLFieldAssert(graphQLResponse,
-        MOCK_PATH);
+    final GraphQLFieldAssert graphQLFieldAssert =
+        new GraphQLFieldAssert(graphQLResponse, MOCK_PATH);
     // WHEN
     final GraphQLStringAssert actual = graphQLFieldAssert.asString();
     // THEN
@@ -35,8 +35,8 @@ class GraphQLFieldAssertAsStringTest extends GraphQLFieldAssertTestBase {
   void shouldReturnStringAssertIfFieldIsNull() {
     // GIVEN
     given(graphQLResponse.get(MOCK_PATH, String.class)).willReturn(null);
-    final GraphQLFieldAssert graphQLFieldAssert = new GraphQLFieldAssert(graphQLResponse,
-        MOCK_PATH);
+    final GraphQLFieldAssert graphQLFieldAssert =
+        new GraphQLFieldAssert(graphQLResponse, MOCK_PATH);
     // WHEN
     final GraphQLStringAssert actual = graphQLFieldAssert.asString();
     // THEN
@@ -50,8 +50,8 @@ class GraphQLFieldAssertAsStringTest extends GraphQLFieldAssertTestBase {
   void shouldFailIfPathNotFound(final @Mock PathNotFoundException pathNotFoundException) {
     // GIVEN
     given(graphQLResponse.get(MOCK_PATH, String.class)).willThrow(pathNotFoundException);
-    final GraphQLFieldAssert graphQLFieldAssert = new GraphQLFieldAssert(graphQLResponse,
-        MOCK_PATH);
+    final GraphQLFieldAssert graphQLFieldAssert =
+        new GraphQLFieldAssert(graphQLResponse, MOCK_PATH);
     // WHEN - THEN
     assertThatExceptionOfType(AssertionError.class)
         .isThrownBy(graphQLFieldAssert::asString)
@@ -65,13 +65,13 @@ class GraphQLFieldAssertAsStringTest extends GraphQLFieldAssertTestBase {
       final @Mock IllegalArgumentException illegalArgumentException) {
     // GIVEN
     given(graphQLResponse.get(MOCK_PATH, String.class)).willThrow(illegalArgumentException);
-    final GraphQLFieldAssert graphQLFieldAssert = new GraphQLFieldAssert(graphQLResponse,
-        MOCK_PATH);
+    final GraphQLFieldAssert graphQLFieldAssert =
+        new GraphQLFieldAssert(graphQLResponse, MOCK_PATH);
     // WHEN - THEN
     assertThatExceptionOfType(AssertionError.class)
         .isThrownBy(graphQLFieldAssert::asString)
-        .withMessage("Expected that content of field %s can be converted to %s.", MOCK_PATH,
-            String.class)
+        .withMessage(
+            "Expected that content of field %s can be converted to %s.", MOCK_PATH, String.class)
         .withCause(illegalArgumentException);
   }
 }

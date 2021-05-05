@@ -7,14 +7,17 @@ import io.micrometer.core.instrument.MeterRegistry;
 public class WebsocketMetrics {
 
   public WebsocketMetrics(MeterRegistry meterRegistry, GraphQLWebsocketServlet websocketServlet) {
-    Gauge.builder("graphql.websocket.sessions", websocketServlet,
-        GraphQLWebsocketServlet::getSessionCount)
+    Gauge.builder(
+            "graphql.websocket.sessions",
+            websocketServlet,
+            GraphQLWebsocketServlet::getSessionCount)
         .description("Active websocket sessions available for subscriptions")
         .register(meterRegistry);
-    Gauge.builder("graphql.websocket.subscriptions", websocketServlet,
-        GraphQLWebsocketServlet::getSubscriptionCount)
+    Gauge.builder(
+            "graphql.websocket.subscriptions",
+            websocketServlet,
+            GraphQLWebsocketServlet::getSubscriptionCount)
         .description("Active websocket subscriptions")
         .register(meterRegistry);
   }
-
 }

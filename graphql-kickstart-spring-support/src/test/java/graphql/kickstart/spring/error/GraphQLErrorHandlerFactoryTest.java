@@ -19,17 +19,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ExtendWith(MockitoExtension.class)
 class GraphQLErrorHandlerFactoryTest {
 
-  @Mock
-  private ConfigurableApplicationContext applicationContext;
-  @Mock
-  private ConfigurableListableBeanFactory beanFactory;
+  @Mock private ConfigurableApplicationContext applicationContext;
+  @Mock private ConfigurableListableBeanFactory beanFactory;
 
   private GraphQLErrorHandlerFactory errorHandlerFactory;
 
   @BeforeEach
   public void setup() {
     Mockito.when(applicationContext.getBeanFactory()).thenReturn(beanFactory);
-    Mockito.when(beanFactory.getBeanDefinitionNames()).thenReturn(new String[]{"Test"});
+    Mockito.when(beanFactory.getBeanDefinitionNames()).thenReturn(new String[] {"Test"});
     Mockito.when(applicationContext.containsBean("Test")).thenReturn(true);
     Mockito.doReturn(TestClass.class).when(applicationContext).getType("Test");
 
@@ -41,7 +39,8 @@ class GraphQLErrorHandlerFactoryTest {
     GraphQLErrorHandler handler = errorHandlerFactory.create(applicationContext, true);
     assertThat(handler).isInstanceOf(GraphQLErrorFromExceptionHandler.class);
     GraphQLErrorFromExceptionHandler errorHandler = (GraphQLErrorFromExceptionHandler) handler;
-    assertThat(errorHandler.getFactories()).as("handler.factories should not be empty")
+    assertThat(errorHandler.getFactories())
+        .as("handler.factories should not be empty")
         .isNotEmpty();
   }
 
@@ -51,7 +50,5 @@ class GraphQLErrorHandlerFactoryTest {
     List<GraphQLError> handle(IllegalArgumentException e) {
       return singletonList(new ThrowableGraphQLError(e, "Illegal argument"));
     }
-
   }
-
 }

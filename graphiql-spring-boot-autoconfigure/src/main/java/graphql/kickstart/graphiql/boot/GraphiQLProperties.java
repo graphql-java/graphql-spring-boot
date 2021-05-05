@@ -34,9 +34,7 @@ class GraphiQLProperties {
 
     private GraphiQLVariables variables = new GraphiQLVariables();
 
-    /**
-     * See https://github.com/graphql/graphiql/tree/main/packages/graphiql#props
-     */
+    /** See https://github.com/graphql/graphiql/tree/main/packages/graphiql#props */
     @Data
     static class GraphiQLVariables {
 

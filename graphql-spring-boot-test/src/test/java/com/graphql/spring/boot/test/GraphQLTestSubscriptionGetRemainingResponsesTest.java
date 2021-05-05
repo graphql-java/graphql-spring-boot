@@ -9,14 +9,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 @DisplayName("Testing getRemainingResponses")
-class GraphQLTestSubscriptionGetRemainingResponsesTest extends
-    GraphQLTestSubscriptionTestBase {
+class GraphQLTestSubscriptionGetRemainingResponsesTest extends GraphQLTestSubscriptionTestBase {
 
   @Test
   @DisplayName("Should properly return remaining responses after the Subscription was stopped.")
   void shouldGetRemainingResponses() {
     // WHEN
-    graphQLTestSubscription.start(TIMER_SUBSCRIPTION_RESOURCE)
+    graphQLTestSubscription
+        .start(TIMER_SUBSCRIPTION_RESOURCE)
         .awaitAndGetNextResponse(TIMEOUT, false);
     await().atMost(TIMEOUT, MILLISECONDS);
     graphQLTestSubscription.stop();

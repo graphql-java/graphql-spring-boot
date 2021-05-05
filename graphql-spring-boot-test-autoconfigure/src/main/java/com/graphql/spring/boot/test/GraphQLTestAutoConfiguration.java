@@ -13,7 +13,10 @@ import org.springframework.core.io.ResourceLoader;
 
 @Configuration
 @ConditionalOnWebApplication
-@ConditionalOnProperty(value = "graphql.servlet.enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(
+    value = "graphql.servlet.enabled",
+    havingValue = "true",
+    matchIfMissing = true)
 public class GraphQLTestAutoConfiguration {
 
   @Bean
@@ -22,8 +25,7 @@ public class GraphQLTestAutoConfiguration {
       final ResourceLoader resourceLoader,
       final TestRestTemplate restTemplate,
       @Value("${graphql.servlet.mapping:/graphql}") final String graphqlMapping,
-      final ObjectMapper objectMapper
-  ) {
+      final ObjectMapper objectMapper) {
     return new GraphQLTestTemplate(resourceLoader, restTemplate, graphqlMapping, objectMapper);
   }
 
@@ -32,9 +34,8 @@ public class GraphQLTestAutoConfiguration {
   public GraphQLTestSubscription graphQLTestSubscription(
       final Environment environment,
       final ObjectMapper objectMapper,
-      @Value("${graphql.servlet.subscriptions.websocket.path:subscriptions}") final String subscriptionPath
-  ) {
+      @Value("${graphql.servlet.subscriptions.websocket.path:subscriptions}")
+          final String subscriptionPath) {
     return new GraphQLTestSubscription(environment, objectMapper, subscriptionPath);
   }
-
 }

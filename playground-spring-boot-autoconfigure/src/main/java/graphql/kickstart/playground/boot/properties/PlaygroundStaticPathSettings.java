@@ -1,12 +1,10 @@
 package graphql.kickstart.playground.boot.properties;
 
-import lombok.Data;
-
 import javax.validation.constraints.NotBlank;
+import lombok.Data;
 
 @Data
 public class PlaygroundStaticPathSettings {
 
-    @NotBlank
-    private String base = "/vendor/playground";
+  @NotBlank private String base = "/vendor/playground";
 }

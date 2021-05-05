@@ -6,5 +6,4 @@ import org.springframework.web.server.ServerWebExchange;
 public interface GraphQLSpringContext extends GraphQLContext {
 
   ServerWebExchange getServerWebExchange();
-
 }

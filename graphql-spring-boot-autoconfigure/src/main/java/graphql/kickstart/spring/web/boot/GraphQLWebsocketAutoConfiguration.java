@@ -34,10 +34,15 @@ import org.springframework.web.socket.server.standard.ServerEndpointRegistration
 @ConditionalOnClass(DispatcherServlet.class)
 @Conditional(OnSchemaOrSchemaProviderBean.class)
 @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-@ConditionalOnProperty(value = "graphql.servlet.websocket.enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(
+    value = "graphql.servlet.websocket.enabled",
+    havingValue = "true",
+    matchIfMissing = true)
 @AutoConfigureAfter({GraphQLJavaToolsAutoConfiguration.class, GraphQLWebAutoConfiguration.class})
-@EnableConfigurationProperties({GraphQLSubscriptionApolloProperties.class,
-    GraphQLSubscriptionWebsocketProperties.class})
+@EnableConfigurationProperties({
+  GraphQLSubscriptionApolloProperties.class,
+  GraphQLSubscriptionWebsocketProperties.class
+})
 public class GraphQLWebsocketAutoConfiguration {
 
   private final GraphQLSubscriptionApolloProperties apolloProperties;
@@ -55,15 +60,15 @@ public class GraphQLWebsocketAutoConfiguration {
       listeners.addAll(connectionListeners);
     }
     keepAliveListener().ifPresent(listeners::add);
-    return new GraphQLWebsocketServlet(graphQLInvoker, invocationInputFactory, graphQLObjectMapper,
-        listeners);
+    return new GraphQLWebsocketServlet(
+        graphQLInvoker, invocationInputFactory, graphQLObjectMapper, listeners);
   }
 
   private Optional<SubscriptionConnectionListener> keepAliveListener() {
     if (apolloProperties.isKeepAliveEnabled()) {
-      return Optional.of(new KeepAliveSubscriptionConnectionListener(
-          Duration.ofSeconds(apolloProperties.getKeepAliveIntervalSeconds()))
-      );
+      return Optional.of(
+          new KeepAliveSubscriptionConnectionListener(
+              Duration.ofSeconds(apolloProperties.getKeepAliveIntervalSeconds())));
     }
     return Optional.empty();
   }
@@ -80,5 +85,4 @@ public class GraphQLWebsocketAutoConfiguration {
   public ServerEndpointExporter serverEndpointExporter() {
     return new ServerEndpointExporter();
   }
-
 }

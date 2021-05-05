@@ -11,15 +11,14 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @SpringBootTest(classes = PlaygroundTestConfig.class)
 @AutoConfigureMockMvc
 @TestPropertySource("classpath:application-playground-custom-static-path.properties")
-class PlaygroundCustomStaticPathTest extends PlaygroundResourcesTestBase {
-
-  private static final String CUSTOM_CSS_URL = "/custom-static-path/static/css/index.css";
-  private static final String CUSTOM_SCRIPT_URL = "/custom-static-path/static/js/middleware.js";
-  private static final String CUSTOM_FAVICON_URL = "/custom-static-path/favicon.png";
-  private static final String CUSTOM_LOGO_URL = "/custom-static-path/logo.png";
+public class PlaygroundCustomStaticPathTest extends PlaygroundResourcesTestBase {
 
   @Test
-  void shouldLoadStaticResourcesFromCustomPath() throws Exception {
-    testPlaygroundResources(CUSTOM_CSS_URL, CUSTOM_SCRIPT_URL, CUSTOM_FAVICON_URL, CUSTOM_LOGO_URL);
+  public void shouldLoadStaticResourcesFromCustomPath() throws Exception {
+    testPlaygroundResources(
+        PlaygroundTestHelper.CUSTOM_LOCAL_CSS_URL,
+        PlaygroundTestHelper.CUSTOM_LOCAL_SCRIPT_URL,
+        PlaygroundTestHelper.CUSTOM_LOCAL_FAVICON_URL,
+        PlaygroundTestHelper.CUSTOM_LOCAL_LOGO_URL);
   }
 }

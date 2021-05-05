@@ -24,30 +24,31 @@ public class CustomScalarConfig {
     return newScalar()
         .name("UUID")
         .description("Standard UUID")
-        .coercing(new Coercing<UUID, String>() {
-          @Override
-          public String serialize(Object dataFetcherResult) throws CoercingSerializeException {
-            return String.valueOf(dataFetcherResult);
-          }
+        .coercing(
+            new Coercing<UUID, String>() {
+              @Override
+              public String serialize(Object dataFetcherResult) throws CoercingSerializeException {
+                return String.valueOf(dataFetcherResult);
+              }
 
-          @Override
-          public UUID parseValue(Object input) throws CoercingParseValueException {
-            try {
-              return UUID.fromString(String.valueOf(input));
-            } catch (IllegalArgumentException e) {
-              throw new CoercingParseValueException(e);
-            }
-          }
+              @Override
+              public UUID parseValue(Object input) throws CoercingParseValueException {
+                try {
+                  return UUID.fromString(String.valueOf(input));
+                } catch (IllegalArgumentException e) {
+                  throw new CoercingParseValueException(e);
+                }
+              }
 
-          @Override
-          public UUID parseLiteral(Object input) throws CoercingParseLiteralException {
-            try {
-              return UUID.fromString(((StringValue) input).getValue());
-            } catch (IllegalArgumentException e) {
-              throw new CoercingParseLiteralException(e);
-            }
-          }
-        })
+              @Override
+              public UUID parseLiteral(Object input) throws CoercingParseLiteralException {
+                try {
+                  return UUID.fromString(((StringValue) input).getValue());
+                } catch (IllegalArgumentException e) {
+                  throw new CoercingParseLiteralException(e);
+                }
+              }
+            })
         .build();
   }
 }

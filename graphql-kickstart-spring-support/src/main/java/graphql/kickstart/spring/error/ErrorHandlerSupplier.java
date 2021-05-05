@@ -23,5 +23,4 @@ public class ErrorHandlerSupplier implements Supplier<GraphQLErrorHandler> {
   public void setErrorHandler(GraphQLErrorHandler errorHandler) {
     this.errorHandler = errorHandler;
   }
-
 }

@@ -23,19 +23,13 @@ public class MonoAutoConfiguration {
   @Bean
   GenericWrapper monoWrapper(@Autowired(required = false) List<GenericWrapper> genericWrappers) {
     if (notWrapsMono(genericWrappers)) {
-      return GenericWrapper.withTransformer(
-          Mono.class,
-          0,
-          Mono::toFuture,
-          t -> t
-      );
+      return GenericWrapper.withTransformer(Mono.class, 0, Mono::toFuture, t -> t);
     }
     return null;
   }
 
   private boolean notWrapsMono(List<GenericWrapper> genericWrappers) {
-    return genericWrappers == null ||
-        genericWrappers.stream().noneMatch(it -> it.getType().isAssignableFrom(Mono.class));
+    return genericWrappers == null
+        || genericWrappers.stream().noneMatch(it -> it.getType().isAssignableFrom(Mono.class));
   }
-
 }

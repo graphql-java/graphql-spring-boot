@@ -15,14 +15,14 @@ import org.springframework.test.context.ActiveProfiles;
 
 @DisplayName("Testing query resolver registration.")
 @ActiveProfiles({"test", "query-test"})
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = TestApplication.class)
+@SpringBootTest(
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+    classes = TestApplication.class)
 class GraphQLAnnotationsQueryTest {
 
-  @Autowired
-  private GraphQLTestTemplate graphQLTestTemplate;
+  @Autowired private GraphQLTestTemplate graphQLTestTemplate;
 
-  @Autowired
-  private ObjectMapper objectMapper;
+  @Autowired private ObjectMapper objectMapper;
 
   @Test
   @DisplayName("Assert that query resolver is properly detected.")
@@ -31,8 +31,8 @@ class GraphQLAnnotationsQueryTest {
     final ObjectNode params = objectMapper.createObjectNode();
     params.put("who", "John");
     // WHEN
-    final GraphQLResponse graphQLResponse = graphQLTestTemplate
-        .perform("queries/hello.graphql", params);
+    final GraphQLResponse graphQLResponse =
+        graphQLTestTemplate.perform("queries/hello.graphql", params);
     // THEN
     assertThat(graphQLResponse.get("$.data.hello")).isEqualTo("Hello, John!");
     assertThat(graphQLResponse.get("$.data.helloWorld")).isEqualTo("Hello, World!");

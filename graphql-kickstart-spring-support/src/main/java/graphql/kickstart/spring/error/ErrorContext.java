@@ -12,7 +12,8 @@ public class ErrorContext {
   private final Map<String, Object> extensions;
   private final ErrorClassification errorType;
 
-  public ErrorContext(List<SourceLocation> locations,
+  public ErrorContext(
+      List<SourceLocation> locations,
       List<Object> path,
       Map<String, Object> extensions,
       ErrorClassification errorType) {

@@ -26,11 +26,15 @@ import org.springframework.test.web.servlet.ResultActions;
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
 @ImportAutoConfiguration({JacksonAutoConfiguration.class, GraphQLWebAutoConfiguration.class})
-@SpringBootTest(properties = {"debug=true", "graphql.servlet.mapping=/graphql", "graphql.servlet.cors.allowed-origins=https://trusted.com"})
+@SpringBootTest(
+    properties = {
+      "debug=true",
+      "graphql.servlet.mapping=/graphql",
+      "graphql.servlet.cors.allowed-origins=https://trusted.com"
+    })
 class CorsTest {
 
-  @Autowired
-  private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
   @Test
   void evilDomain_shouldNotBeAllowed() throws Exception {
@@ -45,8 +49,7 @@ class CorsTest {
         options("/graphql")
             .contentType(MediaType.APPLICATION_JSON)
             .header("Access-Control-Request-Method", "POST")
-            .header("Origin", origin)
-    );
+            .header("Origin", origin));
   }
 
   @Test
@@ -64,12 +67,16 @@ class CorsTest {
     @Bean
     public GraphQLSchema graphQLSchema() {
       return GraphQLSchema.newSchema()
-          .query(GraphQLObjectType.newObject().name("Query").field(
-              GraphQLFieldDefinition.newFieldDefinition()
-                  .name("echo")
-                  .type(GraphQLString)
-                  .build()).build()).build();
+          .query(
+              GraphQLObjectType.newObject()
+                  .name("Query")
+                  .field(
+                      GraphQLFieldDefinition.newFieldDefinition()
+                          .name("echo")
+                          .type(GraphQLString)
+                          .build())
+                  .build())
+          .build();
     }
   }
-
 }

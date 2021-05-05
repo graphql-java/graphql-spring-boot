@@ -26,8 +26,8 @@ class GraphQLToolsDirectiveTest extends AbstractAutoConfigurationTest {
 
   @Test
   void directiveIsLoaded() {
-    System.setProperty("graphql.tools.schemaLocationPattern",
-        "graphql/schema-directive-test.graphql");
+    System.setProperty(
+        "graphql.tools.schemaLocationPattern", "graphql/schema-directive-test.graphql");
     load(BaseConfiguration.class);
     assertThat(this.getContext().getBean(GraphQLSchema.class)).isNotNull();
   }
@@ -37,13 +37,15 @@ class GraphQLToolsDirectiveTest extends AbstractAutoConfigurationTest {
 
     @Bean
     public SchemaDirective uppercaseDirective() {
-      return new SchemaDirective("uppercase", new SchemaDirectiveWiring() {
-        @Override
-        public GraphQLObjectType onObject(
-            SchemaDirectiveWiringEnvironment<GraphQLObjectType> environment) {
-          return null;
-        }
-      });
+      return new SchemaDirective(
+          "uppercase",
+          new SchemaDirectiveWiring() {
+            @Override
+            public GraphQLObjectType onObject(
+                SchemaDirectiveWiringEnvironment<GraphQLObjectType> environment) {
+              return null;
+            }
+          });
     }
 
     @Component

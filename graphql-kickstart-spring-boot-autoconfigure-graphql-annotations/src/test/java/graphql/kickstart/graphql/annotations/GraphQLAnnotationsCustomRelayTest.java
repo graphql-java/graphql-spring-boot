@@ -20,14 +20,11 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles({"test", "custom-relay-test"})
 class GraphQLAnnotationsCustomRelayTest {
 
-  @SpyBean
-  private CustomRelay customRelay;
+  @SpyBean private CustomRelay customRelay;
 
-  @Autowired
-  private GraphQLSchema schema;
+  @Autowired private GraphQLSchema schema;
 
-  @Autowired
-  private GraphQLTestTemplate graphQLTestTemplate;
+  @Autowired private GraphQLTestTemplate graphQLTestTemplate;
 
   @Test
   @DisplayName("Assert that custom relay is used.")

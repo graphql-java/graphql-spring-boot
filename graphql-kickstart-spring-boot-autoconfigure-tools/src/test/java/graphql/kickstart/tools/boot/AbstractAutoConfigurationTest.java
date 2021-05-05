@@ -13,9 +13,7 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
-/**
- * @author Andrew Potter
- */
+/** @author Andrew Potter */
 public abstract class AbstractAutoConfigurationTest {
 
   private final Class<? extends AbstractApplicationContext> contextClass;
@@ -27,8 +25,8 @@ public abstract class AbstractAutoConfigurationTest {
     this(AnnotationConfigApplicationContext.class, autoConfiguration);
   }
 
-  protected AbstractAutoConfigurationTest(Class<? extends AbstractApplicationContext> contextClass,
-      Class<?> autoConfiguration) {
+  protected AbstractAutoConfigurationTest(
+      Class<? extends AbstractApplicationContext> contextClass, Class<?> autoConfiguration) {
     assert AnnotationConfigRegistry.class.isAssignableFrom(contextClass);
     this.contextClass = contextClass;
     this.autoConfiguration = autoConfiguration;

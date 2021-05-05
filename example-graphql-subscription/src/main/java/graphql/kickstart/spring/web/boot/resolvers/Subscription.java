@@ -18,5 +18,4 @@ class Subscription implements GraphQLSubscriptionResolver {
   Publisher<StockPriceUpdate> stockQuotes(List<String> stockCodes) {
     return stockTickerPublisher.getPublisher(stockCodes);
   }
-
 }

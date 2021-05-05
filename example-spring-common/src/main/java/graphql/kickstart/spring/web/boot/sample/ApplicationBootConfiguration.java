@@ -22,9 +22,7 @@ package graphql.kickstart.spring.web.boot.sample;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-/**
- * @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a>
- */
+/** @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a> */
 @SpringBootApplication
 public class ApplicationBootConfiguration {
 

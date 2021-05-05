@@ -21,12 +21,11 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
-    id "com.jfrog.bintray" version "$LIB_BINTRAY_PLUGIN_VER" apply false
-    id 'net.researchgate.release' version "$LIB_RELEASE_PLUGIN_VER"
     id "org.springframework.boot" version "$LIB_SPRING_BOOT_VER" apply false
-    id "com.jfrog.artifactory" version "4.15.1" apply false
-    id "org.sonarqube" version "3.0"
+    id "org.sonarqube" version "$PLUGIN_SONARQUBE_VER"
     id "jacoco"
+    id 'io.codearte.nexus-staging' version "$PLUGIN_NEXUS_STAGING_VER"
+    id 'com.github.sherter.google-java-format' version "$PLUGIN_GOOGLE_JAVA_FORMAT_VER" apply false
 }
 
 sonarqube {
@@ -37,83 +36,89 @@ sonarqube {
     }
 }
 
+def bomProjectName = "graphql-spring-boot-dependencies"
+
 subprojects {
     apply plugin: 'idea'
-    apply plugin: 'jacoco'
-    apply plugin: 'org.sonarqube'
-    apply plugin: 'java'
-    apply plugin: 'java-library'
+    if (it.name != bomProjectName) {
+        apply plugin: 'jacoco'
+        apply plugin: 'org.sonarqube'
+        apply plugin: 'java'
+        apply plugin: 'java-library'
+        apply plugin: "io.spring.dependency-management"
+    }
     apply plugin: 'maven-publish'
-    apply plugin: "com.jfrog.bintray"
-    apply plugin: "io.spring.dependency-management"
-    apply plugin: 'com.jfrog.artifactory'
+    apply plugin: 'signing'
+    apply plugin: 'com.github.sherter.google-java-format'
 
     group "$PROJECT_GROUP"
 
     repositories {
         mavenLocal()
         mavenCentral()
-        jcenter()
-        maven { url "https://dl.bintray.com/graphql-java-kickstart/releases" }
         maven { url "https://repo.spring.io/libs-milestone" }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
         maven { url "https://oss.jfrog.org/artifactory/oss-snapshot-local" }
     }
 
-    dependencyManagement {
-        imports {
-            mavenBom "org.springframework.boot:spring-boot-starter-parent:$LIB_SPRING_BOOT_VER"
+    if (it.name != bomProjectName) {
+        dependencyManagement {
+            imports {
+                mavenBom "org.springframework.boot:spring-boot-starter-parent:$LIB_SPRING_BOOT_VER"
+            }
         }
-    }
 
-    dependencies {
-        compileOnly "org.projectlombok:lombok"
-        annotationProcessor "org.projectlombok:lombok"
+        dependencies {
+            compileOnly "org.projectlombok:lombok"
+            annotationProcessor "org.projectlombok:lombok"
 
-        testCompileOnly "org.projectlombok:lombok"
-        testAnnotationProcessor "org.projectlombok:lombok"
-    }
-
-    test {
-        useJUnitPlatform()
-        testLogging {
-            events TestLogEvent.FAILED,
-                    TestLogEvent.PASSED,
-                    TestLogEvent.SKIPPED,
-                    TestLogEvent.STANDARD_ERROR,
-                    TestLogEvent.STANDARD_OUT
-            exceptionFormat TestExceptionFormat.FULL
-            showCauses true
-            showExceptions true
-            showStackTraces true
+            testCompileOnly "org.projectlombok:lombok"
+            testAnnotationProcessor "org.projectlombok:lombok"
         }
-    }
 
-    jacoco {
-        toolVersion = "0.8.7-SNAPSHOT"
-    }
-
-    jacocoTestReport {
-        reports {
-            xml.enabled = true
-            html.enabled = false
-            csv.enabled = false
+        test {
+            useJUnitPlatform()
+            testLogging {
+                events TestLogEvent.FAILED,
+                        TestLogEvent.PASSED,
+                        TestLogEvent.SKIPPED,
+                        TestLogEvent.STANDARD_ERROR,
+                        TestLogEvent.STANDARD_OUT
+                exceptionFormat TestExceptionFormat.FULL
+                showCauses true
+                showExceptions true
+                showStackTraces true
+            }
         }
-    }
 
-    idea {
-        module {
-            downloadJavadoc = true
-            downloadSources = true
+        jacoco {
+            toolVersion = "$PLUGIN_JACOCO_VER"
         }
-    }
 
-    compileJava {
-        sourceCompatibility = SOURCE_COMPATIBILITY
-        targetCompatibility = TARGET_COMPATIBILITY
-    }
+        jacocoTestReport {
+            reports {
+                xml.enabled = true
+                html.enabled = false
+                csv.enabled = false
+            }
+        }
 
-    compileJava.dependsOn(processResources)
+        idea {
+            module {
+                downloadJavadoc = true
+                downloadSources = true
+            }
+        }
+
+        compileJava {
+            sourceCompatibility = SOURCE_COMPATIBILITY
+            targetCompatibility = TARGET_COMPATIBILITY
+        }
+
+        compileJava.dependsOn(processResources)
+
+        compileJava.mustRunAfter verifyGoogleJavaFormat
+    }
 
     if (!it.name.startsWith('example')) {
 
@@ -122,19 +127,33 @@ subprojects {
             enabled = false
         }
 
-        jar {
-            from "LICENSE.md"
+        if (it.name != bomProjectName) {
+            jar {
+                from "LICENSE.md"
+            }
+
+            java {
+                withSourcesJar()
+                withJavadocJar()
+            }
         }
 
-        java {
-            withSourcesJar()
-            withJavadocJar()
+        if (!version.toString().endsWith('-SNAPSHOT')) {
+            ext["signing.keyId"] = System.env.SIGNING_KEY_ID
+            ext["signing.password"] = System.env.SIGNING_PASSWORD
+            ext["signing.secretKeyRingFile"] = System.env.SIGNING_SECRET_KEY_RING_FILE
+
+            signing {
+                sign publishing.publications
+            }
         }
 
         publishing {
             publications {
-                mainProjectPublication(MavenPublication) {
-                    from components.java
+                mavenJava(MavenPublication) {
+                    if (project.name != bomProjectName) {
+                        from components.java
+                    }
 
                     // to avoid "Publication only contains dependencies and/or constraints without a version" error
                     // see https://docs.gradle.org/6.2.1/userguide/publishing_maven.html#publishing_maven:resolved_dependencies
@@ -148,7 +167,6 @@ subprojects {
                     }
 
                     pom {
-                        resolveStrategy = DELEGATE_FIRST
                         name = PROJECT_NAME
                         description = PROJECT_DESC
                         url = PROJECT_GIT_REPO_URL
@@ -173,83 +191,27 @@ subprojects {
                     }
                 }
             }
-        }
-
-        bintray {
-            user = System.env.BINTRAY_USER ?: project.findProperty('BINTRAY_USER') ?: ''
-            key = System.env.BINTRAY_PASS ?: project.findProperty('BINTRAY_PASS') ?: ''
-            publications = ['mainProjectPublication']
-            publish = true
-            pkg {
-                repo = 'releases'
-                name = PROJECT_NAME
-                desc = PROJECT_DESC
-                licenses = [PROJECT_LICENSE]
-                vcsUrl = PROJECT_GIT_REPO_URL
-                userOrg = 'graphql-java-kickstart'
-                version {
-                    name = project.version
-                    gpg {
-                        sign = true
+            repositories {
+                maven {
+                    name 'ossrh'
+                    if (version.toString().endsWith("-SNAPSHOT")) {
+                        url "https://oss.sonatype.org/content/repositories/snapshots/"
+                    } else {
+                        url "https://oss.sonatype.org/service/local/staging/deploy/maven2"
                     }
-                    mavenCentralSync {
-                        user = System.env.OSS_USER_TOKEN_KEY ?: project.findProperty('OSS_USER_TOKEN_KEY') ?: ''
+                    credentials {
+                        username = System.env.OSS_USER_TOKEN_KEY ?: project.findProperty('OSS_USER_TOKEN_KEY') ?: ''
                         password = System.env.OSS_USER_TOKEN_PASS ?: project.findProperty('OSS_USER_TOKEN_PASS') ?: ''
                     }
                 }
             }
         }
-
-        artifactory {
-            contextUrl = 'https://oss.jfrog.org'
-            publish {
-                repository {
-                    if (project.version.endsWith("-SNAPSHOT")) {
-                        repoKey = 'oss-snapshot-local'
-                    } else {
-                        repoKey = 'oss-release-local'
-                    }
-                    username = System.env.BINTRAY_USER ?: project.findProperty('BINTRAY_USER') ?: ''
-                    password = System.env.BINTRAY_PASS ?: project.findProperty('BINTRAY_PASS') ?: ''
-                }
-                defaults {
-                    publications('mainProjectPublication')
-                    publishArtifacts = true
-                    publishPom = true
-                }
-            }
-            resolve {
-                repoKey = 'oss-snapshot-local'
-            }
-            clientConfig.info.setBuildNumber(System.getProperty('build.number'))
-        }
     }
 }
 
-release {
-    tagTemplate = 'v${version}'
-    failOnPublishNeeded = false
-    ignoredSnapshotDependencies = [
-            'com.graphql-java-kickstart:altair-spring-boot-autoconfigure',
-            'com.graphql-java-kickstart:altair-spring-boot-starter',
-            'com.graphql-java-kickstart:graphiql-spring-boot-autoconfigure',
-            'com.graphql-java-kickstart:graphiql-spring-boot-starter',
-            'com.graphql-java-kickstart:graphql-spring-boot-autoconfigure',
-            'com.graphql-java-kickstart:graphql-spring-boot-starter',
-            'com.graphql-java-kickstart:graphql-spring-boot-starter-test',
-            'com.graphql-java-kickstart:graphql-spring-boot-test',
-            'com.graphql-java-kickstart:graphql-spring-boot-test-autoconfigure',
-            'com.graphql-java-kickstart:voyager-spring-boot-autoconfigure',
-            'com.graphql-java-kickstart:voyager-spring-boot-starter',
-            'com.graphql-java-kickstart:playground-spring-boot-autoconfigure',
-            'com.graphql-java-kickstart:playground-spring-boot-starter'
-    ]
-}
-
-task build {
-    dependsOn subprojects.findResults { it.tasks.findByName('assemble') }
-    dependsOn subprojects.findResults { it.tasks.findByName('check') }
-    dependsOn subprojects.findResults { it.tasks.findByName('bintray') }
+nexusStaging {
+    username = System.env.OSS_USER_TOKEN_KEY ?: project.findProperty('OSS_USER_TOKEN_KEY') ?: ''
+    password = System.env.OSS_USER_TOKEN_PASS ?: project.findProperty('OSS_USER_TOKEN_PASS') ?: ''
 }
 
 wrapper {

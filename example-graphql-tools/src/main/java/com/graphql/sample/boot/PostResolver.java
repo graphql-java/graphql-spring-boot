@@ -22,5 +22,4 @@ class PostResolver implements GraphQLResolver<Post> {
   public List<Comment> getComments(Post post) {
     return Optional.ofNullable(comments.get(post.getId())).orElseGet(Collections::emptyList);
   }
-
 }

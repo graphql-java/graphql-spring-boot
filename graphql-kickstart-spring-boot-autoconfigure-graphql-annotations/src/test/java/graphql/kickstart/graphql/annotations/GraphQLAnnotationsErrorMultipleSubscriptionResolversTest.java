@@ -12,7 +12,8 @@ import org.springframework.context.ApplicationContextException;
 class GraphQLAnnotationsErrorMultipleSubscriptionResolversTest {
 
   @Test
-  @DisplayName("Assert that MultipleSubscriptionResolversException is thrown when multiple subscription resolvers are found.")
+  @DisplayName(
+      "Assert that MultipleSubscriptionResolversException is thrown when multiple subscription resolvers are found.")
   void testMultipleSubscriptionResolversExceptionIsThrown() {
     // GIVEN
     final SpringApplication app = new SpringApplication(TestApplication.class);

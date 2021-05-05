@@ -16,15 +16,14 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles({"test", "prettify-disabled-test"})
 class GraphQLAnnotationsPrettifyDisabledTest {
 
-  @Autowired
-  private GraphQLTestTemplate graphQLTestTemplate;
+  @Autowired private GraphQLTestTemplate graphQLTestTemplate;
 
   @Test
   @DisplayName("If disabled, fields should not be prettified.")
   void testDefaultPrettifySettings() throws IOException {
     // WHEN
-    final GraphQLResponse graphQLResponse
-        = graphQLTestTemplate.postForResource("queries/test-not-prettified-query.graphql");
+    final GraphQLResponse graphQLResponse =
+        graphQLTestTemplate.postForResource("queries/test-not-prettified-query.graphql");
     // THEN
     assertThat(graphQLResponse.get("$.data.getSomeValue")).isEqualTo("some value");
   }

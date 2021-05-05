@@ -21,17 +21,21 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
-/**
- * @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a>
- */
+/** @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a> */
 class GraphQLWebAutoConfigurationTest extends AbstractAutoConfigurationTest {
 
-  private static final GraphQLSchema SCHEMA = GraphQLSchema.newSchema()
-      .query(GraphQLObjectType.newObject().name("Query").field(
-          GraphQLFieldDefinition.newFieldDefinition()
-              .name("echo")
-              .type(GraphQLString)
-              .build()).build()).build();
+  private static final GraphQLSchema SCHEMA =
+      GraphQLSchema.newSchema()
+          .query(
+              GraphQLObjectType.newObject()
+                  .name("Query")
+                  .field(
+                      GraphQLFieldDefinition.newFieldDefinition()
+                          .name("echo")
+                          .type(GraphQLString)
+                          .build())
+                  .build())
+          .build();
 
   public GraphQLWebAutoConfigurationTest() {
     super(AnnotationConfigWebApplicationContext.class, GraphQLWebAutoConfiguration.class);
@@ -100,7 +104,6 @@ class GraphQLWebAutoConfigurationTest extends AbstractAutoConfigurationTest {
     GraphQLSchema schema() {
       return SCHEMA;
     }
-
   }
 
   @Configuration
@@ -176,5 +179,4 @@ class GraphQLWebAutoConfigurationTest extends AbstractAutoConfigurationTest {
       return new DefaultGraphQLSchemaServletProvider(SCHEMA);
     }
   }
-
 }

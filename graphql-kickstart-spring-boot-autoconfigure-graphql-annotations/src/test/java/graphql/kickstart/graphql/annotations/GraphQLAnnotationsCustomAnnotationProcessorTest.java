@@ -15,8 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles({"test", "custom-annotation-processor-test"})
 class GraphQLAnnotationsCustomAnnotationProcessorTest {
 
-  @SpyBean
-  private CustomAnnotationProcessor customAnnotationProcessor;
+  @SpyBean private CustomAnnotationProcessor customAnnotationProcessor;
 
   @Test
   @DisplayName("Assert that the custom annotation processor is used.")

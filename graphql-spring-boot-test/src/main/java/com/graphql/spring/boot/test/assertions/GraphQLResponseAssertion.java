@@ -10,7 +10,7 @@ public interface GraphQLResponseAssertion {
 
   /**
    * @return the instance of {@link GraphQLResponse} for which this assertion was created. Allows
-   * chaining fluent assertions.
+   *     chaining fluent assertions.
    */
   GraphQLResponse and();
 }

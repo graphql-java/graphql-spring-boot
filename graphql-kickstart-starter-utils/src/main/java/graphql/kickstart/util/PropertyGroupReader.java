@@ -32,17 +32,19 @@ public class PropertyGroupReader {
   }
 
   private void loadProps() {
-    streamOfPropertySources().forEach(propertySource ->
-        Arrays.stream(propertySource.getPropertyNames())
-            .filter(this::isWanted)
-            .forEach(key -> add(propertySource, key)));
+    streamOfPropertySources()
+        .forEach(
+            propertySource ->
+                Arrays.stream(propertySource.getPropertyNames())
+                    .filter(this::isWanted)
+                    .forEach(key -> add(propertySource, key)));
   }
 
   @SuppressWarnings("unchecked")
   private Stream<EnumerablePropertySource<Object>> streamOfPropertySources() {
     if (environment instanceof ConfigurableEnvironment) {
-      Iterator<PropertySource<?>> iterator = ((ConfigurableEnvironment) environment)
-          .getPropertySources().iterator();
+      Iterator<PropertySource<?>> iterator =
+          ((ConfigurableEnvironment) environment).getPropertySources().iterator();
       Iterable<PropertySource<?>> iterable = () -> iterator;
       return StreamSupport.stream(iterable.spliterator(), false)
           .filter(EnumerablePropertySource.class::isInstance)
@@ -62,6 +64,4 @@ public class PropertyGroupReader {
   private void add(EnumerablePropertySource<Object> propertySource, String key) {
     props.put(withoutPrefix(key), propertySource.getProperty(key));
   }
-
 }
-

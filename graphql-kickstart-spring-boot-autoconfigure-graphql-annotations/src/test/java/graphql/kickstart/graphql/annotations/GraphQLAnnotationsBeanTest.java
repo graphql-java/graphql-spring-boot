@@ -14,8 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles({"test", "query-test"})
 class GraphQLAnnotationsBeanTest {
 
-  @Autowired
-  private ApplicationContext applicationContext;
+  @Autowired private ApplicationContext applicationContext;
 
   @Test
   @DisplayName("Should expose the GraphQL Annotations bean.")

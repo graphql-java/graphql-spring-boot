@@ -21,16 +21,14 @@ import org.springframework.test.web.servlet.MockMvc;
 @SpringBootTest(classes = PlaygroundTestConfig.class)
 @AutoConfigureMockMvc
 @TestPropertySource("classpath:application-playground-mapping-test.properties")
-class PlaygroundCustomMappingTest {
+public class PlaygroundCustomMappingTest {
 
-  private static final String CONFIGURED_MAPPING = "/test-mapping";
-
-  @Autowired
-  private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
   @Test
-  void shouldUseTheConfiguredRequestMapping() throws Exception {
-    mockMvc.perform(get(CONFIGURED_MAPPING))
+  public void shouldUseTheConfiguredRequestMapping() throws Exception {
+    mockMvc
+        .perform(get(PlaygroundTestHelper.CUSTOM_MAPPING))
         .andExpect(status().isOk())
         .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
         .andExpect(content().encoding(StandardCharsets.UTF_8.name()))

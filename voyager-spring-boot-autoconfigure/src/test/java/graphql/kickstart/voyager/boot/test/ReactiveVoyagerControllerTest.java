@@ -14,13 +14,12 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
-/**
- * @author Max Günther
- */
+/** @author Max Günther */
 class ReactiveVoyagerControllerTest extends AbstractAutoConfigurationTest {
 
   public ReactiveVoyagerControllerTest() {
-    super(AnnotationConfigReactiveWebApplicationContext.class,
+    super(
+        AnnotationConfigReactiveWebApplicationContext.class,
         ReactiveVoyagerAutoConfiguration.class);
   }
 

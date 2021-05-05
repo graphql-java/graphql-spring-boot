@@ -38,6 +38,8 @@ include ":voyager-spring-boot-starter"
 include ":playground-spring-boot-autoconfigure"
 include ":playground-spring-boot-starter"
 
+include ':graphql-spring-boot-dependencies'
+
 include ':graphql-kickstart-spring-boot-autoconfigure-graphql-annotations'
 include ':graphql-kickstart-spring-boot-starter-graphql-annotations'
 include ':graphql-kickstart-spring-boot-autoconfigure-tools'

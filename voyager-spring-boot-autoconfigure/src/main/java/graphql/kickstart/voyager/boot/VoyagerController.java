@@ -10,18 +10,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-/**
- * @author Max David Günther
- */
+/** @author Max David Günther */
 @Controller
 public class VoyagerController {
 
-  @Autowired
-  private VoyagerIndexHtmlTemplate indexTemplate;
+  @Autowired private VoyagerIndexHtmlTemplate indexTemplate;
 
   @GetMapping(value = "${voyager.mapping:/voyager}")
-  public ResponseEntity<String> voyager(HttpServletRequest request,
-      @PathVariable Map<String, String> params) throws IOException {
+  public ResponseEntity<String> voyager(
+      HttpServletRequest request, @PathVariable Map<String, String> params) throws IOException {
     String contextPath = request.getContextPath();
     String indexHtmlContent = indexTemplate.fillIndexTemplate(contextPath, params);
     return ResponseEntity.ok()

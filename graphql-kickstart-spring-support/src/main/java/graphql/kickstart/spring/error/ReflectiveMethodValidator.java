@@ -12,9 +12,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 class ReflectiveMethodValidator {
 
   static boolean isGraphQLExceptionHandler(Method method) {
-    return method.isAnnotationPresent(ExceptionHandler.class) && (
-        isGraphQLErrorReturnType(method) || hasGraphQLErrorCollectionReturnType(method)
-    );
+    return method.isAnnotationPresent(ExceptionHandler.class)
+        && (isGraphQLErrorReturnType(method) || hasGraphQLErrorCollectionReturnType(method));
   }
 
   private static boolean isGraphQLErrorReturnType(Method method) {
@@ -25,11 +24,10 @@ class ReflectiveMethodValidator {
     if (Collection.class.isAssignableFrom(method.getReturnType())) {
       ParameterizedType collectionType = (ParameterizedType) method.getGenericReturnType();
       if (collectionType.getActualTypeArguments().length == 1) {
-        return GraphQLError.class
-            .isAssignableFrom((Class<?>) collectionType.getActualTypeArguments()[0]);
+        return GraphQLError.class.isAssignableFrom(
+            (Class<?>) collectionType.getActualTypeArguments()[0]);
       }
     }
     return false;
   }
-
 }

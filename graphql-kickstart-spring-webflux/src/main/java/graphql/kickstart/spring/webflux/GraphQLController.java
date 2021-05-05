@@ -19,7 +19,9 @@ public class GraphQLController extends AbstractGraphQLController {
   private final GraphQLInvoker graphQLInvoker;
   private final GraphQLSpringInvocationInputFactory invocationInputFactory;
 
-  public GraphQLController(GraphQLObjectMapper objectMapper, GraphQLInvoker graphQLInvoker,
+  public GraphQLController(
+      GraphQLObjectMapper objectMapper,
+      GraphQLInvoker graphQLInvoker,
       GraphQLSpringInvocationInputFactory invocationInputFactory) {
     super(objectMapper);
     this.objectMapper = objectMapper;
@@ -32,11 +34,11 @@ public class GraphQLController extends AbstractGraphQLController {
       String operationName,
       Map<String, Object> variables,
       ServerWebExchange serverWebExchange) {
-    GraphQLSingleInvocationInput invocationInput = invocationInputFactory
-        .create(new GraphQLRequest(query, variables, operationName), serverWebExchange);
-    Mono<ExecutionResult> executionResult = Mono
-        .fromCompletionStage(graphQLInvoker.executeAsync(invocationInput));
+    GraphQLSingleInvocationInput invocationInput =
+        invocationInputFactory.create(
+            new GraphQLRequest(query, variables, operationName), serverWebExchange);
+    Mono<ExecutionResult> executionResult =
+        Mono.fromCompletionStage(graphQLInvoker.executeAsync(invocationInput));
     return executionResult.map(objectMapper::createResultFromExecutionResult);
   }
-
 }

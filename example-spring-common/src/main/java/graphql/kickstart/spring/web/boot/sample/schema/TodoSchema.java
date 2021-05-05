@@ -39,15 +39,13 @@ import javax.servlet.http.Part;
 @GraphQLSchema
 public class TodoSchema {
 
-  @GraphQLSchemaQuery
-  private RootObjectType root;
+  @GraphQLSchemaQuery private RootObjectType root;
 
   private UserObjectType theOnlyUser = new UserObjectType();
   private List<TodoObjectType> todos = new ArrayList<>();
 
   private TodoSimpleListConnection simpleConnectionTodo;
   private int nextTodoId = 0;
-
 
   public TodoSchema() {
     addTodo("Do Something");
@@ -79,20 +77,24 @@ public class TodoSchema {
   }
 
   public List<String> removeCompletedTodos() {
-    List<String> toDelete = todos.stream()
-        .filter(TodoObjectType::isComplete)
-        .map(todoObjectType -> todoObjectType.getId(todoObjectType))
-        .collect(Collectors.toList());
+    List<String> toDelete =
+        todos.stream()
+            .filter(TodoObjectType::isComplete)
+            .map(todoObjectType -> todoObjectType.getId(todoObjectType))
+            .collect(Collectors.toList());
     todos.removeIf(todo -> toDelete.contains(todo.getId(todo)));
     return toDelete;
   }
 
   public List<String> markAllTodos(boolean complete) {
     List<String> changed = new ArrayList<>();
-    todos.stream().filter(todo -> complete != todo.isComplete()).forEach(todo -> {
-      changed.add(todo.getId(todo));
-      todo.setComplete(complete);
-    });
+    todos.stream()
+        .filter(todo -> complete != todo.isComplete())
+        .forEach(
+            todo -> {
+              changed.add(todo.getId(todo));
+              todo.setComplete(complete);
+            });
 
     return changed;
   }
@@ -110,7 +112,8 @@ public class TodoSchema {
   }
 
   public List<TodoObjectType> getTodos(List<String> ids) {
-    return todos.stream().filter(todo -> ids.contains(todo.getId(todo)))
+    return todos.stream()
+        .filter(todo -> ids.contains(todo.getId(todo)))
         .collect(Collectors.toList());
   }
 
@@ -118,16 +121,13 @@ public class TodoSchema {
     return theOnlyUser;
   }
 
-
   public TodoSimpleListConnection getSimpleConnectionTodo() {
     return simpleConnectionTodo;
   }
 
   @GraphQLMutation
   @GraphQLDescription("Mutation to add new todo item")
-  public
-  @GraphQLOut("todoEdge")
-  TodoObjectType.TodoEdgeObjectType addTodoMutation(
+  public @GraphQLOut("todoEdge") TodoObjectType.TodoEdgeObjectType addTodoMutation(
       @GraphQLIn("addTodoInput") AddTodoIn addTodoInput) {
 
     TodoObjectType.TodoEdgeObjectType todoEdgeObjectType = new TodoObjectType.TodoEdgeObjectType();
@@ -143,11 +143,11 @@ public class TodoSchema {
   // --- mutations
 
   @GraphQLMutation
-  public
-  @GraphQLOut("filename")
-  String uploadFile(GraphQLServletContext graphQLContext) {
-    return graphQLContext.getParts().values().stream().flatMap(Collection::stream)
-        .map(Part::getName).collect(Collectors.joining(", "));
+  public @GraphQLOut("filename") String uploadFile(GraphQLServletContext graphQLContext) {
+    return graphQLContext.getParts().values().stream()
+        .flatMap(Collection::stream)
+        .map(Part::getName)
+        .collect(Collectors.joining(", "));
   }
 
   @GraphQLMutation
@@ -167,5 +167,4 @@ public class TodoSchema {
       this.text = text;
     }
   }
-
 }
