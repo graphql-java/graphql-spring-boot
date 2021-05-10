@@ -61,7 +61,7 @@ jobs:
       matrix:
         os: [ ubuntu-latest, macos-latest, windows-latest ]
         java: [ 8, 11, 16 ]
-    needs: [ validation, commitlint, verify-google-java-format ]
+    needs: [ validation, verify-google-java-format ]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
