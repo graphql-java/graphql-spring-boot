@@ -1,0 +1,9 @@
+{
+  "errors": [
+    {
+      "message": "Bad request - invalid request body.",
+      "locations": []
+    }
+  ],
+  "data": null
+}

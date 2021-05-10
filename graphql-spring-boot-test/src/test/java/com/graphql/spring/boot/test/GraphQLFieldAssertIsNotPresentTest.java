@@ -25,8 +25,8 @@ class GraphQLFieldAssertIsNotPresentTest extends GraphQLFieldAssertTestBase {
   void shouldFailIfValueIsPresent(final String value) {
     // GIVEN
     given(graphQLResponse.getRaw(MOCK_PATH)).willReturn(value);
-    final GraphQLFieldAssert graphQLFieldAssert = new GraphQLFieldAssert(graphQLResponse,
-        MOCK_PATH);
+    final GraphQLFieldAssert graphQLFieldAssert =
+        new GraphQLFieldAssert(graphQLResponse, MOCK_PATH);
     // WHEN - THEN
     assertThatExceptionOfType(AssertionError.class)
         .isThrownBy(graphQLFieldAssert::isNotPresent)
@@ -38,8 +38,8 @@ class GraphQLFieldAssertIsNotPresentTest extends GraphQLFieldAssertTestBase {
   void shouldPassIfNotPresent() {
     // GIVEN
     given(graphQLResponse.getRaw(MOCK_PATH)).willThrow(PathNotFoundException.class);
-    final GraphQLFieldAssert graphQLFieldAssert = new GraphQLFieldAssert(graphQLResponse,
-        MOCK_PATH);
+    final GraphQLFieldAssert graphQLFieldAssert =
+        new GraphQLFieldAssert(graphQLResponse, MOCK_PATH);
     // WHEN - THEN
     assertThatCode(graphQLFieldAssert::isNotPresent).doesNotThrowAnyException();
     assertThat(graphQLFieldAssert.isNotPresent().and()).isSameAs(graphQLResponse);

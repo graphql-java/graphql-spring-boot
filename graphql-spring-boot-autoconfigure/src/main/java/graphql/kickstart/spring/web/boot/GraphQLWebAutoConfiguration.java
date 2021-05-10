@@ -86,10 +86,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 
-
-/**
- * @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a>
- */
+/** @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a> */
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
@@ -97,7 +94,10 @@ import org.springframework.web.servlet.DispatcherServlet;
 @ConditionalOnClass(DispatcherServlet.class)
 @Conditional(OnSchemaOrSchemaProviderBean.class)
 @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-@ConditionalOnProperty(value = "graphql.servlet.enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(
+    value = "graphql.servlet.enabled",
+    havingValue = "true",
+    matchIfMissing = true)
 @AutoConfigureAfter({GraphQLJavaToolsAutoConfiguration.class, JacksonAutoConfiguration.class})
 @EnableConfigurationProperties({GraphQLServletProperties.class})
 public class GraphQLWebAutoConfiguration {
@@ -113,8 +113,8 @@ public class GraphQLWebAutoConfiguration {
   public GraphQLErrorStartupListener graphQLErrorStartupListener(
       @Autowired(required = false) GraphQLErrorHandler errorHandler) {
     errorHandlerSupplier.setErrorHandler(errorHandler);
-    return new GraphQLErrorStartupListener(errorHandlerSupplier,
-        graphQLServletProperties.isExceptionHandlersEnabled());
+    return new GraphQLErrorStartupListener(
+        errorHandlerSupplier, graphQLServletProperties.isExceptionHandlersEnabled());
   }
 
   @Bean
@@ -126,7 +126,10 @@ public class GraphQLWebAutoConfiguration {
 
   @Bean
   @ConditionalOnClass(CorsFilter.class)
-  @ConditionalOnProperty(value = "graphql.servlet.corsEnabled", havingValue = "true", matchIfMissing = true)
+  @ConditionalOnProperty(
+      value = "graphql.servlet.corsEnabled",
+      havingValue = "true",
+      matchIfMissing = true)
   public CorsFilter corsConfigurer(CorsConfiguration corsConfiguration) {
     Map<String, CorsConfiguration> corsConfigurations = new LinkedHashMap<>(1);
     if (corsConfiguration.getAllowedMethods() == null) {
@@ -151,32 +154,30 @@ public class GraphQLWebAutoConfiguration {
   @Bean
   @ConditionalOnMissingBean
   public ExecutionStrategyProvider executionStrategyProvider(
-      @Autowired(required = false) Map<String, ExecutionStrategy> executionStrategies
-  ) {
+      @Autowired(required = false) Map<String, ExecutionStrategy> executionStrategies) {
     if (executionStrategies == null || executionStrategies.isEmpty()) {
-      return new DefaultExecutionStrategyProvider(new AsyncExecutionStrategy(), null,
-          new SubscriptionExecutionStrategy());
+      return new DefaultExecutionStrategyProvider(
+          new AsyncExecutionStrategy(), null, new SubscriptionExecutionStrategy());
     } else if (executionStrategies.entrySet().size() == 1) {
       return new DefaultExecutionStrategyProvider(
           executionStrategies.entrySet().stream()
               .findFirst()
               .map(Entry::getValue)
-              .orElseThrow(IllegalStateException::new)
-      );
+              .orElseThrow(IllegalStateException::new));
     } else {
 
       if (!executionStrategies.containsKey(QUERY_EXECUTION_STRATEGY)) {
         throwIncorrectExecutionStrategyNameException();
       }
 
-      if (executionStrategies.size() == 2 && !(
-          executionStrategies.containsKey(MUTATION_EXECUTION_STRATEGY)
+      if (executionStrategies.size() == 2
+          && !(executionStrategies.containsKey(MUTATION_EXECUTION_STRATEGY)
               || executionStrategies.containsKey(SUBSCRIPTION_EXECUTION_STRATEGY))) {
         throwIncorrectExecutionStrategyNameException();
       }
 
-      if (executionStrategies.size() >= 3 && !(
-          executionStrategies.containsKey(MUTATION_EXECUTION_STRATEGY)
+      if (executionStrategies.size() >= 3
+          && !(executionStrategies.containsKey(MUTATION_EXECUTION_STRATEGY)
               && executionStrategies.containsKey(SUBSCRIPTION_EXECUTION_STRATEGY))) {
         throwIncorrectExecutionStrategyNameException();
       }
@@ -184,15 +185,16 @@ public class GraphQLWebAutoConfiguration {
       return new DefaultExecutionStrategyProvider(
           executionStrategies.get(QUERY_EXECUTION_STRATEGY),
           executionStrategies.get(MUTATION_EXECUTION_STRATEGY),
-          executionStrategies.get(SUBSCRIPTION_EXECUTION_STRATEGY)
-      );
+          executionStrategies.get(SUBSCRIPTION_EXECUTION_STRATEGY));
     }
   }
 
   private void throwIncorrectExecutionStrategyNameException() {
-    throw new IllegalStateException(String
-        .format("When defining more than one execution strategy, they must be named %s, %s, or %s",
-            QUERY_EXECUTION_STRATEGY, MUTATION_EXECUTION_STRATEGY,
+    throw new IllegalStateException(
+        String.format(
+            "When defining more than one execution strategy, they must be named %s, %s, or %s",
+            QUERY_EXECUTION_STRATEGY,
+            MUTATION_EXECUTION_STRATEGY,
             SUBSCRIPTION_EXECUTION_STRATEGY));
   }
 
@@ -202,8 +204,8 @@ public class GraphQLWebAutoConfiguration {
       GraphQLSchemaServletProvider schemaProvider,
       @Autowired(required = false) GraphQLServletContextBuilder contextBuilder,
       @Autowired(required = false) GraphQLServletRootObjectBuilder graphQLRootObjectBuilder) {
-    GraphQLInvocationInputFactory.Builder builder = GraphQLInvocationInputFactory
-        .newBuilder(schemaProvider);
+    GraphQLInvocationInputFactory.Builder builder =
+        GraphQLInvocationInputFactory.newBuilder(schemaProvider);
 
     if (graphQLRootObjectBuilder != null) {
       builder.withGraphQLRootObjectBuilder(graphQLRootObjectBuilder);
@@ -230,7 +232,8 @@ public class GraphQLWebAutoConfiguration {
       if (instrumentations.size() == 1) {
         graphQLBuilder.instrumentation(() -> instrumentations.get(0));
       } else {
-        // Metrics instrumentation should be the last to run (we need that from TracingInstrumentation)
+        // Metrics instrumentation should be the last to run (we need that from
+        // TracingInstrumentation)
         instrumentations.sort((a, b) -> a instanceof MetricsInstrumentation ? 1 : 0);
         graphQLBuilder.instrumentation(() -> new ChainedInstrumentation(instrumentations));
       }
@@ -250,14 +253,15 @@ public class GraphQLWebAutoConfiguration {
   @Bean
   @ConditionalOnMissingBean
   public BatchedDataLoaderGraphQLBuilder batchedDataLoaderGraphQLBuilder(
-      @Autowired(required = false) Supplier<DataLoaderDispatcherInstrumentationOptions> optionsSupplier
-  ) {
+      @Autowired(required = false)
+          Supplier<DataLoaderDispatcherInstrumentationOptions> optionsSupplier) {
     return new BatchedDataLoaderGraphQLBuilder(optionsSupplier);
   }
 
   @Bean
   @ConditionalOnMissingBean
-  public GraphQLInvoker graphQLInvoker(GraphQLBuilder graphQLBuilder,
+  public GraphQLInvoker graphQLInvoker(
+      GraphQLBuilder graphQLBuilder,
       BatchedDataLoaderGraphQLBuilder batchedDataLoaderGraphQLBuilder) {
     return new GraphQLInvoker(graphQLBuilder, batchedDataLoaderGraphQLBuilder);
   }
@@ -282,7 +286,9 @@ public class GraphQLWebAutoConfiguration {
 
   @Bean
   @ConditionalOnMissingBean
-  @ConditionalOnProperty(value = "graphql.servlet.use-default-objectmapper", havingValue = "true",
+  @ConditionalOnProperty(
+      value = "graphql.servlet.use-default-objectmapper",
+      havingValue = "true",
       matchIfMissing = true)
   public ObjectMapperProvider objectMapperProvider(ObjectMapper objectMapper) {
     InjectableValues.Std injectableValues = new InjectableValues.Std();
@@ -332,5 +338,4 @@ public class GraphQLWebAutoConfiguration {
     registration.setAsyncSupported(graphQLServletProperties.isAsyncModeEnabled());
     return registration;
   }
-
 }

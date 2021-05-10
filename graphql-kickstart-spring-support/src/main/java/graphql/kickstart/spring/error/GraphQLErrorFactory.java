@@ -14,5 +14,4 @@ interface GraphQLErrorFactory {
   Optional<Class<? extends Throwable>> mostConcrete(Throwable t);
 
   Collection<GraphQLError> create(Throwable t, ErrorContext errorContext);
-
 }

@@ -10,10 +10,13 @@ class GraphQLTestSubscriptionErrorTest extends GraphQLTestSubscriptionTestBase {
   @DisplayName("Should handle error messages.")
   void shouldHandleErrorMessages() {
     // WHEN - THEN
-    graphQLTestSubscription.start(SUBSCRIPTION_THAT_THROWS_EXCEPTION)
+    graphQLTestSubscription
+        .start(SUBSCRIPTION_THAT_THROWS_EXCEPTION)
         .awaitAndGetNextResponse(TIMEOUT)
-        .assertThatDataField().isNotPresent()
+        .assertThatDataField()
+        .isNotPresent()
         .and()
-        .assertThatListOfErrors().isNotEmpty();
+        .assertThatListOfErrors()
+        .isNotEmpty();
   }
 }

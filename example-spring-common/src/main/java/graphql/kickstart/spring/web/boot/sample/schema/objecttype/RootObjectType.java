@@ -30,9 +30,7 @@ import com.oembedler.moon.graphql.engine.stereotype.GraphQLObject;
 import graphql.kickstart.spring.web.boot.sample.schema.TodoSchema;
 import org.springframework.beans.factory.annotation.Autowired;
 
-/**
- * @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a>
- */
+/** @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a> */
 @GraphQLObject("Root")
 public class RootObjectType {
 
@@ -41,9 +39,7 @@ public class RootObjectType {
   @GraphQLDescription("Root query version number")
   public static final String VERSION = "0.9.0.2";
 
-  @Autowired
-  @GraphQLIgnore
-  private TodoSchema todoSchema;
+  @Autowired @GraphQLIgnore private TodoSchema todoSchema;
 
   @GraphQLField
   public UserObjectType viewer() {

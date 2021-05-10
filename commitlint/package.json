@@ -1,0 +1,16 @@
+{
+  "name": "commitlint-integration",
+  "version": "1.0.0",
+  "description": "Commitlint integration",
+  "main": "index.js",
+  "scripts": {
+    "add-commitlint-git-hook": "cd .. && husky install commitlint/.husky && husky add commitlint/.husky/commit-msg \"cd commitlint && npx commitlint --edit $1\""
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@commitlint/cli": "12.1.1",
+    "@commitlint/config-conventional": "12.1.1",
+    "husky": "6.0.0"
+  }
+}

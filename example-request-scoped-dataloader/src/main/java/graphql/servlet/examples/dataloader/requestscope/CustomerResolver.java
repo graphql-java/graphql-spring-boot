@@ -19,5 +19,4 @@ public class CustomerResolver implements GraphQLResolver<Customer> {
     }
     throw new IllegalStateException("No customer data loader found");
   }
-
 }

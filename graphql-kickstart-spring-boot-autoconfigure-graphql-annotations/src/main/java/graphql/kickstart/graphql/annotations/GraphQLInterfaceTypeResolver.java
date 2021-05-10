@@ -11,10 +11,9 @@ import org.springframework.context.ApplicationContextAware;
  * Type resolver for GraphQL interfaces.
  *
  * @see <a href="https://github.com/Enigmatis/graphql-java-annotations/issues/100">Issue with
- * workaround.</a>
- *
- * Apply this interface to GraphQL interfaces using the {@link graphql.annotations.annotationTypes.GraphQLTypeResolver}
- * annotation.
+ *     workaround.</a>
+ *     <p>Apply this interface to GraphQL interfaces using the {@link
+ *     graphql.annotations.annotationTypes.GraphQLTypeResolver} annotation.
  */
 public class GraphQLInterfaceTypeResolver implements TypeResolver, ApplicationContextAware {
 

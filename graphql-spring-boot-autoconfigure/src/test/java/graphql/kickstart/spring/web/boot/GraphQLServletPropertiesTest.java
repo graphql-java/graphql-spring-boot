@@ -7,16 +7,17 @@ import graphql.kickstart.execution.context.ContextSetting;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @EnableConfigurationProperties(GraphQLServletProperties.class)
-@SpringBootTest(properties = {"graphql.servlet.mapping=/test",
-    "graphql.servlet.contextSetting=PER_REQUEST_WITH_INSTRUMENTATION"})
+@SpringBootTest(
+    properties = {
+      "graphql.servlet.mapping=/test",
+      "graphql.servlet.contextSetting=PER_REQUEST_WITH_INSTRUMENTATION"
+    })
 class GraphQLServletPropertiesTest {
 
   @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")

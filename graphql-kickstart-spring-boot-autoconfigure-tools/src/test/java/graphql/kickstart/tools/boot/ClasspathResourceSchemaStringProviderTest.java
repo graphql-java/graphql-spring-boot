@@ -29,8 +29,8 @@ class ClasspathResourceSchemaStringProviderTest extends AbstractAutoConfiguratio
   @Test
   void schemaStrings() throws IOException {
     load(BaseConfiguration.class);
-    ClasspathResourceSchemaStringProvider schemaStringProvider = getContext()
-        .getBean(ClasspathResourceSchemaStringProvider.class);
+    ClasspathResourceSchemaStringProvider schemaStringProvider =
+        getContext().getBean(ClasspathResourceSchemaStringProvider.class);
 
     List<String> schemaStrings = schemaStringProvider.schemaStrings();
     assertThat(schemaStrings).hasSize(1);
@@ -46,6 +46,5 @@ class ClasspathResourceSchemaStringProviderTest extends AbstractAutoConfiguratio
         return id;
       }
     }
-
   }
 }

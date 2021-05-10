@@ -15,16 +15,17 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles({"test", "subscription-test"})
 class GraphQLAnnotationsSubscriptionTest {
 
-  @Autowired
-  private GraphQLTestSubscription graphQLTestSubscription;
+  @Autowired private GraphQLTestSubscription graphQLTestSubscription;
 
   @Test
   @DisplayName("Assert that subscription resolver is properly registered.")
   void testSubscription() {
     // GIVEN
-    final GraphQLResponse graphQLResponse = graphQLTestSubscription.init()
-        .start("subscriptions/test-subscription.graphql")
-        .awaitAndGetNextResponse(10000);
+    final GraphQLResponse graphQLResponse =
+        graphQLTestSubscription
+            .init()
+            .start("subscriptions/test-subscription.graphql")
+            .awaitAndGetNextResponse(10000);
     // THEN
     assertThat(graphQLResponse.get("$.data.testSubscription")).isEqualTo("some value");
   }

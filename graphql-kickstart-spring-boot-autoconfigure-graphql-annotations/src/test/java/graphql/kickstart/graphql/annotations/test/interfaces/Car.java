@@ -17,9 +17,7 @@ import lombok.experimental.SuperBuilder;
 // because otherwise GraphQL-Java Annotations would not find this class.
 public class Car extends AbstractVehicle implements Vehicle {
 
-  @GraphQLField
-  @GraphQLNonNull
-  private int numberOfSeats;
+  @GraphQLField @GraphQLNonNull private int numberOfSeats;
 
   public Car(String registrationNumber, int numberOfSeats) {
     super(registrationNumber);

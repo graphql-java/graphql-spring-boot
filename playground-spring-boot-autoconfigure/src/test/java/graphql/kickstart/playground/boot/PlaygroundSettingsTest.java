@@ -22,11 +22,9 @@ import org.springframework.test.web.servlet.MockMvc;
 @TestPropertySource("classpath:application-playground-settings-test.properties")
 class PlaygroundSettingsTest {
 
-  @Autowired
-  private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
-  @Autowired
-  private ObjectMapper objectMapper;
+  @Autowired private ObjectMapper objectMapper;
 
   @Test
   void shouldProperlyLoadSettings() throws Exception {
@@ -68,7 +66,8 @@ class PlaygroundSettingsTest {
     expectedNode.set("headers", headers);
     expectedNode.set("tabs", tabs);
 
-    mockMvc.perform(get(PlaygroundTestHelper.DEFAULT_PLAYGROUND_ENDPOINT))
+    mockMvc
+        .perform(get(PlaygroundTestHelper.DEFAULT_PLAYGROUND_ENDPOINT))
         .andExpect(status().isOk())
         .andExpect(model().attribute("properties", expectedNode));
   }

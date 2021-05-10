@@ -8,12 +8,9 @@ import org.assertj.core.api.ObjectAssert;
 import org.assertj.core.api.ObjectAssertFactory;
 
 @EqualsAndHashCode(callSuper = true)
-public class GraphQLListAssert<T> extends FactoryBasedNavigableListAssert<
-    GraphQLListAssert<T>,
-    List<? extends T>,
-    T,
-    ObjectAssert<T>
-    >
+public class GraphQLListAssert<T>
+    extends FactoryBasedNavigableListAssert<
+        GraphQLListAssert<T>, List<? extends T>, T, ObjectAssert<T>>
     implements GraphQLResponseAssertion {
 
   private final GraphQLResponse graphQlResponse;

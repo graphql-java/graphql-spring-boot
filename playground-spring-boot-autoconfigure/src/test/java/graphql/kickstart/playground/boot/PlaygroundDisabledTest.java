@@ -15,15 +15,15 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = PlaygroundTestConfig.class, properties = "graphql.playground.enabled=false")
+@SpringBootTest(
+    classes = PlaygroundTestConfig.class,
+    properties = "graphql.playground.enabled=false")
 @AutoConfigureMockMvc
 class PlaygroundDisabledTest {
 
-  @Autowired
-  private ApplicationContext applicationContext;
+  @Autowired private ApplicationContext applicationContext;
 
-  @Autowired
-  private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
   @Test
   void playgroundShouldNotLoadIfDisabled() {
@@ -33,7 +33,8 @@ class PlaygroundDisabledTest {
 
   @Test
   void playgroundEndpointShouldNotExist() throws Exception {
-    mockMvc.perform(get(PlaygroundTestHelper.DEFAULT_PLAYGROUND_ENDPOINT))
+    mockMvc
+        .perform(get(PlaygroundTestHelper.DEFAULT_PLAYGROUND_ENDPOINT))
         .andExpect(status().isNotFound());
   }
 }

@@ -22,9 +22,7 @@ import graphql.kickstart.execution.context.ContextSetting;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-/**
- * @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a>
- */
+/** @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a> */
 @Data
 @ConfigurationProperties(prefix = "graphql.servlet")
 public class GraphQLServletProperties {
@@ -58,7 +56,7 @@ public class GraphQLServletProperties {
 
   /**
    * @return the servlet mapping, coercing into an appropriate wildcard for CORS, which uses ant
-   * matchers (ending in /**)
+   *     matchers (ending in /**)
    */
   public String getCorsMapping() {
     final String originalMapping = getMapping();
@@ -78,5 +76,4 @@ public class GraphQLServletProperties {
   private boolean mappingIsAntWildcard() {
     return getMapping().endsWith("/**");
   }
-
 }

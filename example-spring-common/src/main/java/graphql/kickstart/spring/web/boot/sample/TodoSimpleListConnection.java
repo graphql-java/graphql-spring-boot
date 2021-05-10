@@ -5,9 +5,7 @@ import graphql.kickstart.spring.web.boot.sample.schema.objecttype.TodoObjectType
 import graphql.kickstart.spring.web.boot.sample.schema.objecttype.TodoObjectType.TodoEdgeObjectType;
 import java.util.List;
 
-/**
- * @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a>
- */
+/** @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a> */
 @SuppressWarnings("unchecked")
 public class TodoSimpleListConnection extends SimpleListConnection<TodoObjectType> {
 
@@ -24,5 +22,4 @@ public class TodoSimpleListConnection extends SimpleListConnection<TodoObjectTyp
   public TodoConnectionObjectType createConnectionObject() {
     return new TodoObjectType.TodoConnectionObjectType();
   }
-
 }

@@ -40,16 +40,15 @@ public class ApplicationBootConfiguration {
   GraphQLSchema schema() {
     DataFetcher<String> test = env -> "response";
     return GraphQLSchema.newSchema()
-        .query(GraphQLObjectType.newObject()
-            .name("query")
-            .field(field -> field
-                .name("test")
-                .type(Scalars.GraphQLString)
-            )
-            .build())
-        .codeRegistry(GraphQLCodeRegistry.newCodeRegistry()
-            .dataFetcher(FieldCoordinates.coordinates("query", "test"), test)
-            .build())
+        .query(
+            GraphQLObjectType.newObject()
+                .name("query")
+                .field(field -> field.name("test").type(Scalars.GraphQLString))
+                .build())
+        .codeRegistry(
+            GraphQLCodeRegistry.newCodeRegistry()
+                .dataFetcher(FieldCoordinates.coordinates("query", "test"), test)
+                .build())
         .build();
   }
 }

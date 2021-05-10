@@ -8,5 +8,4 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 class GraphQLSubscriptionWebsocketProperties {
 
   private String path = "/subscriptions";
-
 }

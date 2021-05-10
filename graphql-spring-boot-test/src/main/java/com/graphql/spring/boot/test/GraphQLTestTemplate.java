@@ -26,24 +26,20 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StreamUtils;
 
-/**
- * Helper class to test GraphQL queries and mutations.
- */
+/** Helper class to test GraphQL queries and mutations. */
 public class GraphQLTestTemplate {
 
   private final ResourceLoader resourceLoader;
   private final TestRestTemplate restTemplate;
   private final String graphqlMapping;
   private final ObjectMapper objectMapper;
-  @Getter
-  private final HttpHeaders headers = new HttpHeaders();
+  @Getter private final HttpHeaders headers = new HttpHeaders();
 
   public GraphQLTestTemplate(
       final ResourceLoader resourceLoader,
       final TestRestTemplate restTemplate,
       @Value("${graphql.servlet.mapping:/graphql}") final String graphqlMapping,
-      final ObjectMapper objectMapper
-  ) {
+      final ObjectMapper objectMapper) {
     this.resourceLoader = resourceLoader;
     this.restTemplate = restTemplate;
     this.graphqlMapping = graphqlMapping;
@@ -119,8 +115,7 @@ public class GraphQLTestTemplate {
   public GraphQLTestTemplate withBasicAuth(
       @NonNull final String username,
       @NonNull final String password,
-      @Nullable final Charset charset
-  ) {
+      @Nullable final Charset charset) {
     headers.setBasicAuth(username, password, charset);
     return this;
   }
@@ -132,8 +127,8 @@ public class GraphQLTestTemplate {
    * @param password the password
    * @return self
    */
-  public GraphQLTestTemplate withBasicAuth(@NonNull final String username,
-      @NonNull final String password) {
+  public GraphQLTestTemplate withBasicAuth(
+      @NonNull final String username, @NonNull final String password) {
     headers.setBasicAuth(username, password, null);
     return this;
   }
@@ -217,12 +212,13 @@ public class GraphQLTestTemplate {
    * @param graphqlResource path to the classpath resource containing the GraphQL query
    * @param variables the input variables for the GraphQL query
    * @param fragmentResources an ordered list of classpath resources containing GraphQL fragment
-   * definitions.
+   *     definitions.
    * @return {@link GraphQLResponse} containing the result of query execution
    * @throws IOException if the resource cannot be loaded from the classpath
    */
-  public GraphQLResponse perform(String graphqlResource, ObjectNode variables,
-      List<String> fragmentResources) throws IOException {
+  public GraphQLResponse perform(
+      String graphqlResource, ObjectNode variables, List<String> fragmentResources)
+      throws IOException {
     return perform(graphqlResource, null, variables, fragmentResources);
   }
 
@@ -233,12 +229,16 @@ public class GraphQLTestTemplate {
    * @param graphqlResource path to the classpath resource containing the GraphQL query
    * @param variables the input variables for the GraphQL query
    * @param fragmentResources an ordered list of classpath resources containing GraphQL fragment
-   * definitions.
+   *     definitions.
    * @return {@link GraphQLResponse} containing the result of query execution
    * @throws IOException if the resource cannot be loaded from the classpath
    */
-  public GraphQLResponse perform(String graphqlResource, String operationName, ObjectNode variables,
-      List<String> fragmentResources) throws IOException {
+  public GraphQLResponse perform(
+      String graphqlResource,
+      String operationName,
+      ObjectNode variables,
+      List<String> fragmentResources)
+      throws IOException {
     StringBuilder sb = new StringBuilder();
     for (String fragmentResource : fragmentResources) {
       sb.append(loadQuery(fragmentResource));
@@ -262,11 +262,11 @@ public class GraphQLTestTemplate {
 
   /**
    * Loads a GraphQL query or mutation from the given classpath resource, appending any graphql
-   * fragment resources provided  and sends it to the GraphQL server.
+   * fragment resources provided and sends it to the GraphQL server.
    *
    * @param graphqlResource path to the classpath resource containing the GraphQL query
    * @param fragmentResources an ordered list of classpath resources containing GraphQL fragment
-   * definitions.
+   *     definitions.
    * @return {@link GraphQLResponse} containing the result of query execution
    * @throws IOException if the resource cannot be loaded from the classpath
    */
@@ -290,9 +290,8 @@ public class GraphQLTestTemplate {
   }
 
   private GraphQLResponse postRequest(HttpEntity<Object> request) {
-    ResponseEntity<String> response = restTemplate
-        .exchange(graphqlMapping, HttpMethod.POST, request, String.class);
+    ResponseEntity<String> response =
+        restTemplate.exchange(graphqlMapping, HttpMethod.POST, request, String.class);
     return new GraphQLResponse(response, objectMapper);
   }
-
 }

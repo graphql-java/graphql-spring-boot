@@ -14,9 +14,7 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
-/**
- * @author Andrew Potter
- */
+/** @author Andrew Potter */
 class AltairControllerTest extends AbstractAutoConfigurationTest {
 
   public AltairControllerTest() {

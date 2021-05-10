@@ -1,0 +1,26 @@
+{
+  "extends": [
+    "config:base"
+  ],
+  "includeForks": true,
+  "packageRules": [
+    {
+      "matchPackagePatterns": [
+        "^com.graphql-java"
+      ],
+      "allowedVersions": "/^[0-9]+\\.[0-9]+\\.[0-9]+?$/"
+    },
+    {
+      "matchPackageNames": [
+        "io.github.graphql-java:graphql-java-annotations"
+      ],
+      "allowedVersions": "/^[0-9]+\\.[0-9]+\\.[0-9]+?$/"
+    },
+    {
+      "matchPackageNames": [
+        "org.reflections:reflections"
+      ],
+      "allowedVersions": "<=0.9.11"
+    }
+  ]
+}

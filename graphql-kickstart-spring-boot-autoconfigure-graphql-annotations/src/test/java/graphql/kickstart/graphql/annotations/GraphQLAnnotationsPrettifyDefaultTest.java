@@ -16,15 +16,14 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles({"test", "prettify-default-test"})
 class GraphQLAnnotationsPrettifyDefaultTest {
 
-  @Autowired
-  private GraphQLTestTemplate graphQLTestTemplate;
+  @Autowired private GraphQLTestTemplate graphQLTestTemplate;
 
   @Test
   @DisplayName("By default, it should always prettify fields.")
   void testDefaultPrettifySettings() throws IOException {
     // WHEN
-    final GraphQLResponse graphQLResponse
-        = graphQLTestTemplate.postForResource("queries/test-prettified-query.graphql");
+    final GraphQLResponse graphQLResponse =
+        graphQLTestTemplate.postForResource("queries/test-prettified-query.graphql");
     // THEN
     assertThat(graphQLResponse.get("$.data.someValue")).isEqualTo("some value");
   }

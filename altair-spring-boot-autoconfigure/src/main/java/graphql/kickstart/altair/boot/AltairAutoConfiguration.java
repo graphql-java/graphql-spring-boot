@@ -8,9 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.DispatcherServlet;
 
-/**
- * @author Moncef AOUDIA
- */
+/** @author Moncef AOUDIA */
 @Configuration
 @ConditionalOnWebApplication
 @EnableConfigurationProperties(AltairProperties.class)
@@ -22,5 +20,4 @@ public class AltairAutoConfiguration {
   AltairController altairController() {
     return new AltairController();
   }
-
 }

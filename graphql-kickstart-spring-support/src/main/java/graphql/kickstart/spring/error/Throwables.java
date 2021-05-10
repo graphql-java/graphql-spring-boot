@@ -17,5 +17,4 @@ class Throwables {
         .filter(t -> t.isAssignableFrom(throwable.getClass()))
         .min(new ThrowableComparator());
   }
-
 }

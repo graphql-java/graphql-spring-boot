@@ -58,9 +58,11 @@ class GraphQLTestSubscriptionResetTest extends GraphQLTestSubscriptionTestBase {
   }
 
   private void startAndAssertThatNewSubscriptionWorks() {
-    final Integer actual = graphQLTestSubscription.start(TIMER_SUBSCRIPTION_RESOURCE)
-        .awaitAndGetNextResponse(TIMEOUT)
-        .get("$.data.timer", Integer.class);
+    final Integer actual =
+        graphQLTestSubscription
+            .start(TIMER_SUBSCRIPTION_RESOURCE)
+            .awaitAndGetNextResponse(TIMEOUT)
+            .get("$.data.timer", Integer.class);
     assertThat(actual).isZero();
   }
 
@@ -70,9 +72,12 @@ class GraphQLTestSubscriptionResetTest extends GraphQLTestSubscriptionTestBase {
     assertThat(graphQLTestSubscription.isStarted()).isFalse();
     assertThat(graphQLTestSubscription.isStopped()).isFalse();
     assertThat(graphQLTestSubscription.isCompleted()).isFalse();
-    assertThat(((SubscriptionState) ReflectionTestUtils
-        .getField(graphQLTestSubscription, GraphQLTestSubscription.class,
-            "state")).getResponses()).isEmpty();
+    assertThat(
+            ((SubscriptionState)
+                    ReflectionTestUtils.getField(
+                        graphQLTestSubscription, GraphQLTestSubscription.class, "state"))
+                .getResponses())
+        .isEmpty();
     assertThat(graphQLTestSubscription.getSession()).isNull();
   }
 
@@ -81,7 +86,9 @@ class GraphQLTestSubscriptionResetTest extends GraphQLTestSubscriptionTestBase {
   }
 
   private int getSubscriptionId() {
-    return ((SubscriptionState) ReflectionTestUtils
-        .getField(graphQLTestSubscription, GraphQLTestSubscription.class, "state")).getId();
+    return ((SubscriptionState)
+            ReflectionTestUtils.getField(
+                graphQLTestSubscription, GraphQLTestSubscription.class, "state"))
+        .getId();
   }
 }

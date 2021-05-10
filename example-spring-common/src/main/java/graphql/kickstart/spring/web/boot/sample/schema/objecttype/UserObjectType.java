@@ -27,15 +27,11 @@ import graphql.kickstart.spring.web.boot.sample.schema.TodoSchema;
 import graphql.schema.DataFetchingEnvironment;
 import org.springframework.beans.factory.annotation.Autowired;
 
-/**
- * @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a>
- */
+/** @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a> */
 @GraphQLObject("User")
 public class UserObjectType extends BaseObjectType {
 
-  @Autowired
-  @GraphQLIgnore
-  private TodoSchema todoSchema;
+  @Autowired @GraphQLIgnore private TodoSchema todoSchema;
 
   private String name = "someId";
 
@@ -48,12 +44,12 @@ public class UserObjectType extends BaseObjectType {
   }
 
   @GraphQLField
-  public TodoObjectType.TodoConnectionObjectType todos(@GraphQLIn("before") String before,
+  public TodoObjectType.TodoConnectionObjectType todos(
+      @GraphQLIn("before") String before,
       @GraphQLIn("after") String after,
       @GraphQLIn(value = "first", defaultSpel = "1") Integer first,
       @GraphQLIn(value = "last", defaultProvider = "1") Integer last,
       DataFetchingEnvironment environment) {
     return todoSchema.getSimpleConnectionTodo().get(environment);
   }
-
 }

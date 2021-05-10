@@ -13,5 +13,4 @@ class MySubscriptionResolver implements GraphQLSubscriptionResolver {
   Publisher<Integer> hello(DataFetchingEnvironment env) {
     return Flux.range(0, 100).delayElements(Duration.ofSeconds(1));
   }
-
 }

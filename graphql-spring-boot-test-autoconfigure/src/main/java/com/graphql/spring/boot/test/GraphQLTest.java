@@ -48,30 +48,32 @@ import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
 /**
- * Annotation that can be specified on a test class in combination with
- * <code>@RunWith(SpringRunner.class)</code> for running tests that focus <strong>only</strong> on
- * GraphQL components.
- * <p>
- * Provides the following features over the regular <strong>Spring TestContext Framework</strong>:
+ * Annotation that can be specified on a test class for running tests that focus
+ * <strong>only</strong> on GraphQL components.
+ *
+ * <p>Provides the following features over the regular <strong>Spring TestContext
+ * Framework</strong>:
+ *
  * <ul>
- * <li>By default a fully running web server will be started listening on a
- * {@link org.springframework.boot.test.context.SpringBootTest.WebEnvironment#RANDOM_PORT random} port.</li>
- * <li>Disables full auto-configuration and instead apply only configuration relevant to
- * GraphQL tests (i.e. beans required to create the GraphQL servlet but not {@code @Component},
- * {@code @Service} or {@code @Repository} beans). See {@link #includeFilters()} for a complete list of classes
- * that are included.</li>
- * <li>Sets the active profile to <strong>test</strong>.</li>
- * <li>Registers a {@link com.graphql.spring.boot.test.GraphQLTestTemplate GraphQLTestTemplate} bean for use
- * in GraphQL tests that are using a fully running web server.</li>
- * <li>Typically {@code GraphQLTest} is used in combination with
- * {@link org.springframework.boot.test.mock.mockito.MockBean @MockBean} or
- * {@link org.springframework.context.annotation.Import @Import} to create any collaborators required by your
- * {@code GraphQLResolver} beans.</li>
+ *   <li>By default a fully running web server will be started listening on a {@link
+ *       org.springframework.boot.test.context.SpringBootTest.WebEnvironment#RANDOM_PORT random}
+ *       port.
+ *   <li>Disables full auto-configuration and instead apply only configuration relevant to GraphQL
+ *       tests (i.e. beans required to create the GraphQL servlet but not {@code @Component},
+ *       {@code @Service} or {@code @Repository} beans). See {@link #includeFilters()} for a
+ *       complete list of classes that are included.
+ *   <li>Sets the active profile to <strong>test</strong>.
+ *   <li>Registers a {@link com.graphql.spring.boot.test.GraphQLTestTemplate GraphQLTestTemplate}
+ *       bean for use in GraphQL tests that are using a fully running web server.
+ *   <li>Typically {@code GraphQLTest} is used in combination with {@link
+ *       org.springframework.boot.test.mock.mockito.MockBean @MockBean} or {@link
+ *       org.springframework.context.annotation.Import @Import} to create any collaborators required
+ *       by your {@code GraphQLResolver} beans.
  * </ul>
- * <p>
- * If you are looking to load your full application configuration and use
- * {@link com.graphql.spring.boot.test.GraphQLTestTemplate GraphQLTestTemplate} you should consider
- * {@link SpringBootTest @SpringBootTest} rather than this annotation.
+ *
+ * <p>If you are looking to load your full application configuration and use {@link
+ * com.graphql.spring.boot.test.GraphQLTestTemplate GraphQLTestTemplate} you should consider {@link
+ * SpringBootTest @SpringBootTest} rather than this annotation.
  *
  * @author Michiel Oliemans
  * @since 5.0.2
@@ -87,42 +89,34 @@ public @interface GraphQLTest {
 
   String[] value() default {};
 
-  @AliasFor(
-      annotation = ActiveProfiles.class
-  )
+  @AliasFor(annotation = ActiveProfiles.class)
   String[] profiles() default {"test"};
 
-  @AliasFor(
-      annotation = SpringBootTest.class
-  )
+  @AliasFor(annotation = SpringBootTest.class)
   SpringBootTest.WebEnvironment webEnvironment() default SpringBootTest.WebEnvironment.RANDOM_PORT;
 
-  @AliasFor(
-      annotation = ImportAutoConfiguration.class
-  )
+  @AliasFor(annotation = ImportAutoConfiguration.class)
   Class<?>[] classes() default {
-      GraphQLInstrumentationAutoConfiguration.class,
-      ServletWebServerFactoryAutoConfiguration.class,
-      GraphQLJavaToolsAutoConfiguration.class,
-      GraphQLWebAutoConfiguration.class,
-      GraphQLTestAutoConfiguration.class,
-      PropertySourcesPlaceholderConfigurer.class,
-      WebSocketServletAutoConfiguration.class,
-      MetricsAutoConfiguration.class,
-      SimpleMetricsExportAutoConfiguration.class,
-      JacksonAutoConfiguration.class
+    GraphQLInstrumentationAutoConfiguration.class,
+    ServletWebServerFactoryAutoConfiguration.class,
+    GraphQLJavaToolsAutoConfiguration.class,
+    GraphQLWebAutoConfiguration.class,
+    GraphQLTestAutoConfiguration.class,
+    PropertySourcesPlaceholderConfigurer.class,
+    WebSocketServletAutoConfiguration.class,
+    MetricsAutoConfiguration.class,
+    SimpleMetricsExportAutoConfiguration.class,
+    JacksonAutoConfiguration.class
   };
 
-  @AliasFor(
-      annotation = ComponentScan.class
-  )
+  @AliasFor(annotation = ComponentScan.class)
   boolean useDefaultFilters() default false;
 
-  @AliasFor(
-      annotation = ComponentScan.class
-  )
+  @AliasFor(annotation = ComponentScan.class)
   ComponentScan.Filter[] includeFilters() default {
-      @ComponentScan.Filter(type = ASSIGNABLE_TYPE, classes = {
+    @ComponentScan.Filter(
+        type = ASSIGNABLE_TYPE,
+        classes = {
           SchemaParser.class,
           GraphQLResolver.class,
           SchemaParserDictionary.class,
@@ -148,7 +142,6 @@ public @interface GraphQLTest {
           GraphQLWebsocketServlet.class,
           ServerEndpointExporter.class,
           MultipartConfigElement.class
-      })
+        })
   };
-
 }

@@ -29,6 +29,7 @@ class GraphQLErrorHandlerTest extends AbstractAutoConfigurationTest {
   @BeforeEach
   public void setUp() {
     System.setProperty("graphql.tools.schemaLocationPattern", "graphql/error-handler-test.graphql");
+    System.setProperty("graphql.servlet.exception-handlers-enabled", "true");
     load(BaseConfiguration.class);
 
     GraphQLSchema schema = getContext().getBean(GraphQLSchema.class);
@@ -43,15 +44,16 @@ class GraphQLErrorHandlerTest extends AbstractAutoConfigurationTest {
     TestUtils.assertGraphQLError(
         gql,
         "query { illegalArgumentException }",
-        new ThrowableGraphQLError(new IllegalArgumentException("Some argument"),
-            "Custom illegal argument"),
-        objectMapper
-    );
+        new ThrowableGraphQLError(
+            new IllegalArgumentException("Some argument"), "Custom illegal argument"),
+        objectMapper);
   }
 
   @Test
   void illegalStateExceptionShouldBeHandledByCatchAll() {
-    TestUtils.assertGraphQLError(gql, "query { illegalStateException }",
+    TestUtils.assertGraphQLError(
+        gql,
+        "query { illegalStateException }",
         new ThrowableGraphQLError(new IllegalStateException("Illegal state"), "Catch all handler"),
         objectMapper);
   }
@@ -86,13 +88,13 @@ class GraphQLErrorHandlerTest extends AbstractAutoConfigurationTest {
 
       @Bean
       GraphQLSchema schema() {
-        SchemaParser schemaParser = SchemaParser.newParser()
-            .file("graphql/error-handler-test.graphql")
-            .resolvers(queryResolver())
-            .build();
+        SchemaParser schemaParser =
+            SchemaParser.newParser()
+                .file("graphql/error-handler-test.graphql")
+                .resolvers(queryResolver())
+                .build();
         return schemaParser.makeExecutableSchema();
       }
     }
-
   }
 }

@@ -1,8 +1,11 @@
 # GraphQL and Graph*i*QL Spring Framework Boot Starters
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.graphql-java-kickstart/graphql-spring-boot-starter.svg)](https://maven-badges.herokuapp.com/maven-central/com.graphql-java-kickstart/graphql-spring-boot-starter)
-[![GitHub CI Workflow](https://github.com/graphql-java-kickstart/graphql-spring-boot/workflows/ci/badge.svg)](https://github.com/graphql-java-kickstart/graphql-spring-boot/actions?query=workflow%3ACI+branch%3Amaster)
+[![GitHub CI Workflow](https://github.com/graphql-java-kickstart/graphql-spring-boot/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/graphql-java-kickstart/graphql-spring-boot/actions/workflows/ci.yml?query=workflow%3ACI+branch%3Amaster)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=graphql-java-kickstart_graphql-spring-boot&metric=alert_status)](https://sonarcloud.io/dashboard?id=graphql-java-kickstart_graphql-spring-boot)
+[![GitHub contributors](https://img.shields.io/github/contributors/graphql-java-kickstart/graphql-spring-boot)](https://github.com/graphql-java-kickstart/graphql-spring-boot/graphs/contributors)
+[![Discuss on GitHub](https://img.shields.io/badge/GitHub-discuss-orange)](https://github.com/graphql-java-kickstart/graphql-spring-boot/discussions)
+
 
 #### We are looking for contributors!
 
@@ -16,7 +19,7 @@ and join the team!
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**
 
-  - [WARNING: NoClassDefFoundError when using GraphQL Java Tools > 5.4.x](#warning-noclassdeffounderror-when-using-graphql-java-tools--54x)
+  - [Quick start](#quick-start)
     - [Using Gradle](#using-gradle)
     - [Using Maven](#using-maven)
 - [Documentation](#documentation)
@@ -25,12 +28,16 @@ and join the team!
 - [Enable GraphQL Servlet](#enable-graphql-servlet)
 - [Enable Graph*i*QL](#enable-graphiql)
 - [Enable Altair](#enable-altair)
-- [Enable GraphQL Playground](#enable-graphql-playground)
+- [Enable GraphQL Playground](#enable-graphql-voyager)
   - [Basic settings](#basic-settings)
   - [CDN](#cdn)
   - [Custom static resources](#custom-static-resources)
   - [Customizing GraphQL Playground](#customizing-graphql-playground)
   - [Tabs](#tabs)
+- [Enable GraphQL Voyager](#enable-graphql-playground)
+  - [Basic settings](#graphql-voyager-basic-settings)
+  - [CDN](#graphql-voyager-cdn)
+  - [Customizing GraphQL Voyager](#customizing-graphql-voyager)
 - [Supported GraphQL-Java Libraries](#supported-graphql-java-libraries)
   - [GraphQL Java Tools](#graphql-java-tools)
   - [GraphQL Annotations](#graphql-annotations)
@@ -42,21 +49,15 @@ and join the team!
   - [Extended scalars](#extended-scalars)
 - [Tracing and Metrics](#tracing-and-metrics)
   - [Usage](#usage)
+- [FAQs](#faqs)
+  - [WARNING: NoClassDefFoundError when using GraphQL Java Tools > 5.4.x](#warning-noclassdeffounderror-when-using-graphql-java-tools--54x)
+
 - [Contributions](#contributions)
 - [Licenses](#licenses)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-## WARNING: NoClassDefFoundError when using GraphQL Java Tools > 5.4.x
-
-If you're using `graphql-java-tools` in combination with Spring Boot 2.1.x or below then you need to
-set the
-`kotlin.version` in your Spring Boot project explicitly to version >= 1.3.70, because Spring Boot
-Starter parent of that Spring Boot version overrides it with a 1.2.* version of Kotlin.
-`graphql-java-tools` requires 1.3.* however because of its coroutine support. If you don't override
-this version you will run into a `NoClassDefFoundError`.
-
-Spring Boot team has indicated the Kotlin version will be upgraded to 1.3 in Spring Boot 2.2.
+## Quick start
 
 ### Using Gradle
 
@@ -76,7 +77,7 @@ Set the Kotlin version in your `<properties>` section
 </properties>
 ```
 
-# Documentation
+## Documentation
 
 See our new [Documentation](https://www.graphql-java-kickstart.com/spring-boot/).
 
@@ -84,16 +85,16 @@ Repository contains:
 
 * `graphql-spring-boot-starter` to turn your boot application into GraphQL server (
   see [graphql-java-servlet](https://github.com/graphql-java-kickstart/graphql-java-servlet))
-* `altair-spring-boot-starter`to embed `Altair` tool for schema introspection and query debugging (
+* `altair-spring-boot-starter` to embed `Altair` tool for schema introspection and query debugging (
   see [altair](https://github.com/imolorhe/altair))
-* `graphiql-spring-boot-starter`to embed `GraphiQL` tool for schema introspection and query
+* `graphiql-spring-boot-starter` to embed `GraphiQL` tool for schema introspection and query
   debugging (see [graphiql](https://github.com/graphql/graphiql))
-* `playground-spring-boot-starter`to embed `GraphQL Playground` tool for schema introspection and
+* `playground-spring-boot-starter` to embed `GraphQL Playground` tool for schema introspection and
   query debugging (see [GraphQL Playground](https://github.com/prisma/graphql-playground))
-* `voyager-spring-boot-starter`to embed `Voyager` tool for visually explore GraphQL APIs as an
+* `voyager-spring-boot-starter` to embed `Voyager` tool for visually explore GraphQL APIs as an
   interactive graph (see [voyger](https://github.com/APIs-guru/graphql-voyager))
 
-# Requirements and Downloads
+## Requirements and Downloads
 
 Requirements:
 
@@ -104,7 +105,6 @@ Gradle:
 
 ```gradle
 repositories {
-    jcenter()
     mavenCentral()
 }
 
@@ -116,6 +116,9 @@ dependencies {
 
   // to embed GraphiQL tool
   runtimeOnly 'com.graphql-java-kickstart:graphiql-spring-boot-starter:11.0.0'
+
+  // to embed GraphQL Playground tool
+  runtimeOnly 'com.graphql-java-kickstart:playground-spring-boot-starter:11.0.0'
 
   // to embed Voyager tool
   runtimeOnly 'com.graphql-java-kickstart:voyager-spring-boot-starter:11.0.0'
@@ -150,6 +153,14 @@ Maven:
     <scope>runtime</scope>
 </dependency>
 
+<!-- to embed GraphQL Playground tool -->
+<dependency>
+    <groupId>com.graphql-java-kickstart</groupId>
+    <artifactId>playground-spring-boot-starter</artifactId>
+    <version>11.0.0</version>
+    <scope>runtime</scope>
+</dependency>
+
 <!-- to embed Voyager tool -->
 <dependency>
     <groupId>com.graphql-java-kickstart</groupId>
@@ -168,34 +179,15 @@ Maven:
 
 ```
 
-New releases will be available faster in the JCenter repository than in Maven Central. Add the
-following to use for Maven
-
-```xml
-<repositories>
-    <repository>
-      <id>jcenter</id>
-      <url>https://jcenter.bintray.com/</url>
-    </repository>
-</repositories>
-```
-
-For Gradle:
-
-```groovy
-repositories {
-    jcenter()
-}
-```
 
 ### Snapshots
 
 ```xml
 <repositories>
     <repository>
-      <id>jfrog-snapshots</id>
-      <name>oss-jfrog-artifactory-snapshots</name>
-      <url>https://oss.jfrog.org/artifactory/oss-snapshot-local</url>
+      <id>osshr-snapshots</id>
+      <name>osshr-sonatype-snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
     </repository>
 </repositories>
 ```
@@ -204,7 +196,7 @@ For gradle:
 
 ```groovy
 repositories {
-    maven { url "https://oss.jfrog.org/artifactory/oss-snapshot-local" }
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 }
 ```
 
@@ -266,13 +258,12 @@ graphiql:
     subscriptions:
       timeout: 30
       reconnect: false
-    static:
-      basePath: /
+    basePath: /
     enabled: true
     pageTitle: GraphiQL
     cdn:
         enabled: false
-        version: 0.13.0
+        version: latest
     props:
         resources:
             query: query.graphql
@@ -446,6 +437,62 @@ You can configure the query, variables, headers and even supply sample responses
 , `variables` and `responses` are expected to be resources of the appropriate format (GraphQL
 for `query`, JSON for `variables` and `responses`).
 
+
+# Enable GraphQL Voyager
+
+**GraphQL Voyager** becomes accessible at root `/voyager` (or as configured
+in `voyager.mapping`)
+if `voyager-spring-boot-starter` is added as a dependency to a boot application.
+
+Available Spring Boot configuration parameters (either `application.yml`
+or `application.properties`):
+
+```yaml
+voyager:
+  enabled: true
+  basePath: /
+  mapping: /voyager
+  endpoint: /graphql
+  cdn:
+    enabled: false
+    version: latest
+  pageTitle: Voyager
+  displayOptions:
+    skipRelay: true
+    skipDeprecated: true
+    rootType: Query
+    sortByAlphabet: false
+    showLeafFields: true
+    hideRoot: false
+  hideDocs: false
+  hideSettings: false
+```
+
+## GraphQL Voyager Basic settings
+
+`mapping` and `endpoint` will default to `/voyager` and `/graphql`, respectively. Note that these values may not be empty.
+
+`enabled` defaults to `true`, and therefor **GraphQL Voyager** will be available by default if the dependency
+is added to a Spring Boot Web Application project.
+
+`pageTitle` defaults to `Voyager`.
+
+All other properties default to the same as documented on the official [GraphQL Voyager readme](https://github.com/APIs-guru/graphql-voyager#properties)
+
+## GraphQL Voyager CDN
+
+The currently bundled version is `1.0.0-rc31`, which is - as of writing this - the latest release
+of **GraphQL Voyager**. The CDN option uses `jsDelivr` CDN, if enabled. By default, it will
+load the latest available release. Available CDN versions can be found on the project's
+[jsDelivr page](https://www.jsdelivr.com/package/npm/graphql-voyager). The CDN option is
+disabled by default.
+
+## Customizing GraphQL Voyager
+
+Further **GraphQL Voyager** `displayOptions`, `hideDocs` and `hideSettings` customizations can be configured, as documented in the official
+[GraphQL Voyager readme](https://github.com/APIs-guru/graphql-voyager#properties). 
+
+
 # Supported GraphQL-Java Libraries
 
 The following libraries have auto-configuration classes for creating a `GraphQLSchema`.
@@ -604,6 +651,22 @@ The following metrics are available for exposure:
 * `graphql.timer.query`
 * `graphql.websocket.sessions` - number of active websocket sessions for subscriptions
 * `graphql.websocket.subscriptions` - number of active subscriptions
+
+
+## FAQs
+### WARNING: NoClassDefFoundError when using GraphQL Java Tools > 5.4.x
+
+If you're using `graphql-java-tools` in combination with Spring Boot 2.1.x or below then you need to
+set the
+`kotlin.version` in your Spring Boot project explicitly to version >= 1.3.70, because Spring Boot
+Starter parent of that Spring Boot version overrides it with a 1.2.* version of Kotlin.
+`graphql-java-tools` requires 1.3.* however because of its coroutine support. If you don't override
+this version you will run into a `NoClassDefFoundError`.
+
+Spring Boot team has indicated the Kotlin version will be upgraded to 1.3 in Spring Boot 2.2.
+
+
+
 
 # Contributions
 

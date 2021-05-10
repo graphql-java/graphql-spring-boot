@@ -5,8 +5,8 @@ import java.util.Objects;
 import org.dataloader.DataLoaderRegistry;
 import org.springframework.web.reactive.socket.WebSocketSession;
 
-public class DefaultGraphQLSpringWebSocketSessionContext extends DefaultGraphQLContext implements
-    GraphQLSpringWebSocketSessionContext {
+public class DefaultGraphQLSpringWebSocketSessionContext extends DefaultGraphQLContext
+    implements GraphQLSpringWebSocketSessionContext {
 
   private final WebSocketSession webSocketSession;
 
@@ -14,16 +14,15 @@ public class DefaultGraphQLSpringWebSocketSessionContext extends DefaultGraphQLC
     this(new DataLoaderRegistry(), webSocketSession);
   }
 
-  public DefaultGraphQLSpringWebSocketSessionContext(DataLoaderRegistry dataLoaderRegistry,
-      WebSocketSession webSocketSession) {
+  public DefaultGraphQLSpringWebSocketSessionContext(
+      DataLoaderRegistry dataLoaderRegistry, WebSocketSession webSocketSession) {
     super(dataLoaderRegistry, null);
-    this.webSocketSession = Objects
-        .requireNonNull(webSocketSession, "WebSocketSession is required");
+    this.webSocketSession =
+        Objects.requireNonNull(webSocketSession, "WebSocketSession is required");
   }
 
   @Override
   public WebSocketSession getWebSocketSession() {
     return webSocketSession;
   }
-
 }

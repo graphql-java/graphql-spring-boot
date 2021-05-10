@@ -7,9 +7,9 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PlaygroundEditorSettings {
 
-    private PlaygroundEditorCursorShape cursorShape;
-    private String fontFamily;
-    private Integer fontSize;
-    private PlaygroundEditorTheme theme;
-    private Boolean reuseHeaders;
+  private PlaygroundEditorCursorShape cursorShape;
+  private String fontFamily;
+  private Integer fontSize;
+  private PlaygroundEditorTheme theme;
+  private Boolean reuseHeaders;
 }

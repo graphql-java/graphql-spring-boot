@@ -20,8 +20,8 @@ class GraphQLFieldAssertAsBigDecimalTest extends GraphQLFieldAssertTestBase {
     // GIVEN
     final BigDecimal value = new BigDecimal("1.23");
     given(graphQLResponse.get(MOCK_PATH, BigDecimal.class)).willReturn(value);
-    final GraphQLFieldAssert graphQLFieldAssert = new GraphQLFieldAssert(graphQLResponse,
-        MOCK_PATH);
+    final GraphQLFieldAssert graphQLFieldAssert =
+        new GraphQLFieldAssert(graphQLResponse, MOCK_PATH);
     // WHEN
     final GraphQLBigDecimalAssert actual = graphQLFieldAssert.asBigDecimal();
     // THEN
@@ -36,8 +36,8 @@ class GraphQLFieldAssertAsBigDecimalTest extends GraphQLFieldAssertTestBase {
   void shouldReturnBigDecimalAssertIfFieldIsNull() {
     // GIVEN
     given(graphQLResponse.get(MOCK_PATH, BigDecimal.class)).willReturn(null);
-    final GraphQLFieldAssert graphQLFieldAssert = new GraphQLFieldAssert(graphQLResponse,
-        MOCK_PATH);
+    final GraphQLFieldAssert graphQLFieldAssert =
+        new GraphQLFieldAssert(graphQLResponse, MOCK_PATH);
     // WHEN
     final GraphQLBigDecimalAssert actual = graphQLFieldAssert.asBigDecimal();
     // THEN
@@ -51,8 +51,8 @@ class GraphQLFieldAssertAsBigDecimalTest extends GraphQLFieldAssertTestBase {
   void shouldFailIfPathNotFound(final @Mock PathNotFoundException pathNotFoundException) {
     // GIVEN
     given(graphQLResponse.get(MOCK_PATH, BigDecimal.class)).willThrow(pathNotFoundException);
-    final GraphQLFieldAssert graphQLFieldAssert = new GraphQLFieldAssert(graphQLResponse,
-        MOCK_PATH);
+    final GraphQLFieldAssert graphQLFieldAssert =
+        new GraphQLFieldAssert(graphQLResponse, MOCK_PATH);
     // WHEN - THEN
     assertThatExceptionOfType(AssertionError.class)
         .isThrownBy(graphQLFieldAssert::asBigDecimal)
@@ -66,13 +66,14 @@ class GraphQLFieldAssertAsBigDecimalTest extends GraphQLFieldAssertTestBase {
       final @Mock IllegalArgumentException illegalArgumentException) {
     // GIVEN
     given(graphQLResponse.get(MOCK_PATH, BigDecimal.class)).willThrow(illegalArgumentException);
-    final GraphQLFieldAssert graphQLFieldAssert = new GraphQLFieldAssert(graphQLResponse,
-        MOCK_PATH);
+    final GraphQLFieldAssert graphQLFieldAssert =
+        new GraphQLFieldAssert(graphQLResponse, MOCK_PATH);
     // WHEN - THEN
     assertThatExceptionOfType(AssertionError.class)
         .isThrownBy(graphQLFieldAssert::asBigDecimal)
-        .withMessage("Expected that content of field %s can be converted to %s.", MOCK_PATH,
-            BigDecimal.class)
+        .withMessage(
+            "Expected that content of field %s can be converted to %s.",
+            MOCK_PATH, BigDecimal.class)
         .withCause(illegalArgumentException);
   }
 }

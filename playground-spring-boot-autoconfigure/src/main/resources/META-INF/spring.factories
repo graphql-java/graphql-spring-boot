@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=graphql.kickstart.playground.boot.PlaygroundAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=graphql.kickstart.playground.boot.PlaygroundAutoConfiguration,graphql.kickstart.playground.boot.PlaygroundWebFluxAutoConfiguration

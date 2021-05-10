@@ -15,13 +15,12 @@ public class SubscriptionListener implements ApolloSubscriptionConnectionListene
 
   private final ObjectMapper objectMapper;
 
-  @Getter
-  private String expectedConnectionInitParamValue;
+  @Getter private String expectedConnectionInitParamValue;
 
   @Override
   public void onConnect(final SubscriptionSession session, final OperationMessage message) {
-    final InitPayload initPayload = objectMapper
-        .convertValue(message.getPayload(), InitPayload.class);
+    final InitPayload initPayload =
+        objectMapper.convertValue(message.getPayload(), InitPayload.class);
     expectedConnectionInitParamValue = initPayload.getInitParamValue();
   }
 

@@ -14,9 +14,7 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-/**
- * Maps Java classes to the corresponding scalar definitions.
- */
+/** Maps Java classes to the corresponding scalar definitions. */
 @RequiredArgsConstructor
 @Slf4j
 public class GraphQLScalarTypeFunction implements TypeFunction {
@@ -33,8 +31,7 @@ public class GraphQLScalarTypeFunction implements TypeFunction {
       final boolean input,
       final Class<?> aClass,
       final AnnotatedType annotatedType,
-      final ProcessingElementsContainer container
-  ) {
+      final ProcessingElementsContainer container) {
     final GraphQLScalarType graphQLScalarType = getMatchingScalarDefinition(aClass).orElse(null);
     if (nonNull(graphQLScalarType)) {
       log.info("Registering scalar type {} for Java class {}", graphQLScalarType.getName(), aClass);
@@ -43,13 +40,17 @@ public class GraphQLScalarTypeFunction implements TypeFunction {
   }
 
   private Optional<GraphQLScalarType> getMatchingScalarDefinition(final Class<?> aClass) {
-    return customScalarTypes.stream().filter(scalarType -> {
-      final Type[] genericInterfaces = scalarType.getCoercing().getClass().getGenericInterfaces();
-      return genericInterfaces.length > 0
-          && genericInterfaces[0] instanceof ParameterizedType
-          && ((ParameterizedType) genericInterfaces[0]).getActualTypeArguments().length > 0
-          && ((ParameterizedType) genericInterfaces[0]).getActualTypeArguments()[0].equals(aClass);
-    }).findFirst();
+    return customScalarTypes.stream()
+        .filter(
+            scalarType -> {
+              final Type[] genericInterfaces =
+                  scalarType.getCoercing().getClass().getGenericInterfaces();
+              return genericInterfaces.length > 0
+                  && genericInterfaces[0] instanceof ParameterizedType
+                  && ((ParameterizedType) genericInterfaces[0]).getActualTypeArguments().length > 0
+                  && ((ParameterizedType) genericInterfaces[0])
+                      .getActualTypeArguments()[0].equals(aClass);
+            })
+        .findFirst();
   }
-
 }

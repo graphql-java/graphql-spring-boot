@@ -10,5 +10,4 @@ class GraphQLSubscriptionApolloProperties {
   private boolean keepAliveEnabled = true;
 
   private int keepAliveIntervalSeconds = 15;
-
 }

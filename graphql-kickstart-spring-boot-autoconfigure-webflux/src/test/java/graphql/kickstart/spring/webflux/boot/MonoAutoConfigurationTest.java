@@ -20,20 +20,20 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class MonoAutoConfigurationTest {
 
-  @Autowired
-  private WebTestClient webTestClient;
+  @Autowired private WebTestClient webTestClient;
 
   @Test
   void monoWrapper() throws JSONException {
-    val result = webTestClient.post()
-        .uri("/graphql")
-        .contentType(MediaType.APPLICATION_JSON)
-        .bodyValue("{ \"query\": \"query { hello } \"}")
-        .exchange()
-        .returnResult(String.class);
+    val result =
+        webTestClient
+            .post()
+            .uri("/graphql")
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue("{ \"query\": \"query { hello } \"}")
+            .exchange()
+            .returnResult(String.class);
     val response = result.getResponseBody().blockFirst();
     val json = new JSONObject(response);
     assertThat(json.getJSONObject("data").get("hello")).isEqualTo("Hello world");
   }
-
 }

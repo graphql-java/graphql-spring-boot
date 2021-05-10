@@ -9,16 +9,18 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.util.ReflectionTestUtils;
 
 @ActiveProfiles({"test", "custom-servlet-mapping"})
-@DisplayName("Testing auto-configuration of the GraphQLTestTemplate bean / custom servlet endpoint.")
-class GraphQLTestTemplateAutoConfigurationCustomConfigTest extends
-    GraphQLTestAutoConfigurationTestBase {
+@DisplayName(
+    "Testing auto-configuration of the GraphQLTestTemplate bean / custom servlet endpoint.")
+class GraphQLTestTemplateAutoConfigurationCustomConfigTest
+    extends GraphQLTestAutoConfigurationTestBase {
 
   @Test
   @DisplayName("GraphQLTestTemplate bean should work properly.")
   void shouldProvideGraphQLTestTemplateBean() throws IOException {
     assertThatTestTemplateAutoConfigurationWorksCorrectly();
-    assertThat(ReflectionTestUtils.getField(applicationContext.getBean(GraphQLTestTemplate.class),
-        "graphqlMapping"))
+    assertThat(
+            ReflectionTestUtils.getField(
+                applicationContext.getBean(GraphQLTestTemplate.class), "graphqlMapping"))
         .as("Should use the configured servlet path.")
         .isEqualTo("/myCustomGraphQLEndpoint");
   }

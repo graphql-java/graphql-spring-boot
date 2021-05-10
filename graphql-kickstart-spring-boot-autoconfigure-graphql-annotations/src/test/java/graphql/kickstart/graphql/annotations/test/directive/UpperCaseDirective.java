@@ -13,6 +13,4 @@ import java.lang.annotation.RetentionPolicy;
 @GraphQLDirectiveDefinition(wiring = UpperCaseDirectiveWiring.class)
 @DirectiveLocations({Introspection.DirectiveLocation.FIELD_DEFINITION})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface UpperCaseDirective {
-
-}
+public @interface UpperCaseDirective {}

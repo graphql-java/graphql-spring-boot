@@ -9,9 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a>
- */
+/** @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a> */
 class GraphQLJavaToolsAutoConfigurationTest extends AbstractAutoConfigurationTest {
 
   public GraphQLJavaToolsAutoConfigurationTest() {
@@ -47,15 +45,16 @@ class GraphQLJavaToolsAutoConfigurationTest extends AbstractAutoConfigurationTes
     @Bean
     public SchemaStringProvider schemaStringProvider() {
       ListSchemaStringProvider schemaStringProvider = new ListSchemaStringProvider();
-      schemaStringProvider.add("type Query {"
-          + "  theInterface:Interface!"
-          + "} "
-          + "interface Interface {"
-          + "  method:String!"
-          + "}"
-          + "type Implementation implements Interface {"
-          + "  method:String!"
-          + "}");
+      schemaStringProvider.add(
+          "type Query {"
+              + "  theInterface:Interface!"
+              + "} "
+              + "interface Interface {"
+              + "  method:String!"
+              + "}"
+              + "type Implementation implements Interface {"
+              + "  method:String!"
+              + "}");
       return schemaStringProvider;
     }
 
@@ -92,6 +91,4 @@ class GraphQLJavaToolsAutoConfigurationTest extends AbstractAutoConfigurationTes
       }
     }
   }
-
-
 }

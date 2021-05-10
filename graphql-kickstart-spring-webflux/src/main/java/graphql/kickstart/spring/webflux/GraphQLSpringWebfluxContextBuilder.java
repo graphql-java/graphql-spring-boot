@@ -6,5 +6,4 @@ import org.springframework.web.reactive.socket.WebSocketSession;
 public interface GraphQLSpringWebfluxContextBuilder extends GraphQLSpringContextBuilder {
 
   GraphQLSpringWebSocketSessionContext build(WebSocketSession webSocketSession);
-
 }

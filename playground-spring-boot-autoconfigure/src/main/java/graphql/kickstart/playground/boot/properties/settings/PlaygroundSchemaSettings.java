@@ -9,9 +9,9 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PlaygroundSchemaSettings {
 
-    private Boolean disableComments;
+  private Boolean disableComments;
 
-    @NestedConfigurationProperty
-    @JsonUnwrapped(prefix = "polling.")
-    private PlaygroundSchemaPollingSettings polling;
+  @NestedConfigurationProperty
+  @JsonUnwrapped(prefix = "polling.")
+  private PlaygroundSchemaPollingSettings polling;
 }

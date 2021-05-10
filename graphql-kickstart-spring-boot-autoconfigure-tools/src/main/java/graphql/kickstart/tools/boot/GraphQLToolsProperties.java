@@ -13,6 +13,6 @@ class GraphQLToolsProperties {
    * the GraphQL specification and expectations of most clients, so use this option with caution
    */
   private boolean introspectionEnabled = true;
-  private boolean useDefaultObjectmapper = true;
 
+  private boolean useDefaultObjectmapper = true;
 }

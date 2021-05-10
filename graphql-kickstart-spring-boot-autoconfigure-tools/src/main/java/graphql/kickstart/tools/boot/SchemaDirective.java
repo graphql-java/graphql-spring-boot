@@ -19,5 +19,4 @@ public class SchemaDirective {
   public SchemaDirectiveWiring getDirective() {
     return directive;
   }
-
 }

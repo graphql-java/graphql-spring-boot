@@ -57,10 +57,14 @@ public class GraphQLAnnotationsAutoConfiguration {
   public GraphQLAnnotations graphQLAnnotations() {
     GraphQLAnnotations graphQLAnnotations = new GraphQLAnnotations();
     if (nonNull(graphQLAnnotationsProperties.getInputPrefix())) {
-      graphQLAnnotations.getContainer().setInputPrefix(graphQLAnnotationsProperties.getInputPrefix());
+      graphQLAnnotations
+          .getContainer()
+          .setInputPrefix(graphQLAnnotationsProperties.getInputPrefix());
     }
     if (nonNull(graphQLAnnotationsProperties.getInputSuffix())) {
-      graphQLAnnotations.getContainer().setInputSuffix(graphQLAnnotationsProperties.getInputSuffix());
+      graphQLAnnotations
+          .getContainer()
+          .setInputSuffix(graphQLAnnotationsProperties.getInputSuffix());
     }
     return graphQLAnnotations;
   }
@@ -69,27 +73,37 @@ public class GraphQLAnnotationsAutoConfiguration {
   public GraphQLSchema graphQLSchema(final GraphQLAnnotations graphQLAnnotations) {
     log.info(
         "Using GraphQL Annotations library to build the schema. Schema definition files will be ignored.");
-    log.info("GraphQL classes are searched in the following package (including subpackages): {}",
+    log.info(
+        "GraphQL classes are searched in the following package (including subpackages): {}",
         graphQLAnnotationsProperties.getBasePackage());
     final AnnotationsSchemaCreator.Builder builder = newAnnotationsSchema();
-    final Reflections reflections = new Reflections(graphQLAnnotationsProperties.getBasePackage(),
-        new MethodAnnotationsScanner(), new SubTypesScanner(), new TypeAnnotationsScanner());
+    final Reflections reflections =
+        new Reflections(
+            graphQLAnnotationsProperties.getBasePackage(),
+            new MethodAnnotationsScanner(),
+            new SubTypesScanner(),
+            new TypeAnnotationsScanner());
     builder.setAlwaysPrettify(graphQLAnnotationsProperties.isAlwaysPrettify());
     setQueryResolverClass(builder, reflections);
     setMutationResolverClass(builder, reflections);
     setSubscriptionResolverClass(builder, reflections);
-    getTypesAnnotatedWith(reflections, GraphQLDirectiveDefinition.class).forEach(directive -> {
-      log.info("Registering directive {}", directive);
-      builder.directive(directive);
-    });
-    getTypesAnnotatedWith(reflections, GraphQLTypeExtension.class).forEach(typeExtension -> {
-      log.info("Registering type extension {}", typeExtension);
-      builder.typeExtension(typeExtension);
-    });
-    typeFunctions.forEach(typeFunction -> {
-      log.info("Registering type function {}", typeFunction.getClass());
-      builder.typeFunction(typeFunction);
-    });
+    getTypesAnnotatedWith(reflections, GraphQLDirectiveDefinition.class)
+        .forEach(
+            directive -> {
+              log.info("Registering directive {}", directive);
+              builder.directive(directive);
+            });
+    getTypesAnnotatedWith(reflections, GraphQLTypeExtension.class)
+        .forEach(
+            typeExtension -> {
+              log.info("Registering type extension {}", typeExtension);
+              builder.typeExtension(typeExtension);
+            });
+    typeFunctions.forEach(
+        typeFunction -> {
+          log.info("Registering type function {}", typeFunction.getClass());
+          builder.typeFunction(typeFunction);
+        });
     if (!customScalarTypes.isEmpty()) {
       builder.typeFunction(new GraphQLScalarTypeFunction(customScalarTypes));
     }
@@ -99,60 +113,64 @@ public class GraphQLAnnotationsAutoConfiguration {
       log.info("Using custom annotation process of type {}", graphQLAnnotations.getClass());
     }
     builder.setAnnotationsProcessor(graphQLAnnotations);
-    relay.ifPresent(r -> {
-      log.info("Registering relay {}", r.getClass());
-      builder.setRelay(r);
-    });
+    relay.ifPresent(
+        r -> {
+          log.info("Registering relay {}", r.getClass());
+          builder.setRelay(r);
+        });
     registerGraphQLInterfaceImplementations(reflections, builder);
     return builder.build();
   }
 
   private void setSubscriptionResolverClass(
-      final AnnotationsSchemaCreator.Builder builder,
-      final Reflections reflections
-  ) {
-    final Set<Class<?>> subscriptionResolvers
-        = getTypesAnnotatedWith(reflections, GraphQLSubscriptionResolver.class);
+      final AnnotationsSchemaCreator.Builder builder, final Reflections reflections) {
+    final Set<Class<?>> subscriptionResolvers =
+        getTypesAnnotatedWith(reflections, GraphQLSubscriptionResolver.class);
     if (subscriptionResolvers.size() > 1) {
       throw new MultipleSubscriptionResolversException();
     }
-    subscriptionResolvers.stream().findFirst().ifPresent(subscriptionClass -> {
-      log.info("Registering subscription resolver class: {}", subscriptionClass);
-      builder.subscription(subscriptionClass);
-    });
+    subscriptionResolvers.stream()
+        .findFirst()
+        .ifPresent(
+            subscriptionClass -> {
+              log.info("Registering subscription resolver class: {}", subscriptionClass);
+              builder.subscription(subscriptionClass);
+            });
   }
 
   private void setMutationResolverClass(
-      final AnnotationsSchemaCreator.Builder builder,
-      final Reflections reflections
-  ) {
-    final Set<Class<?>> mutationResolvers
-        = getTypesAnnotatedWith(reflections, GraphQLMutationResolver.class);
+      final AnnotationsSchemaCreator.Builder builder, final Reflections reflections) {
+    final Set<Class<?>> mutationResolvers =
+        getTypesAnnotatedWith(reflections, GraphQLMutationResolver.class);
     if (mutationResolvers.size() > 1) {
       throw new MultipleMutationResolversException();
     }
-    mutationResolvers.stream().findFirst().ifPresent(mutationClass -> {
-      log.info("Registering mutation resolver class: {}", mutationClass);
-      builder.mutation(mutationClass);
-    });
+    mutationResolvers.stream()
+        .findFirst()
+        .ifPresent(
+            mutationClass -> {
+              log.info("Registering mutation resolver class: {}", mutationClass);
+              builder.mutation(mutationClass);
+            });
   }
 
   private void setQueryResolverClass(
-      final AnnotationsSchemaCreator.Builder builder,
-      final Reflections reflections
-  ) {
-    final Set<Class<?>> queryResolvers
-        = getTypesAnnotatedWith(reflections, GraphQLQueryResolver.class);
+      final AnnotationsSchemaCreator.Builder builder, final Reflections reflections) {
+    final Set<Class<?>> queryResolvers =
+        getTypesAnnotatedWith(reflections, GraphQLQueryResolver.class);
     if (queryResolvers.isEmpty()) {
       throw new MissingQueryResolverException();
     }
     if (queryResolvers.size() > 1) {
       throw new MultipleQueryResolversException();
     }
-    queryResolvers.stream().findFirst().ifPresent(queryClass -> {
-      log.info("Registering query resolver class: {}", queryClass);
-      builder.query(queryClass);
-    });
+    queryResolvers.stream()
+        .findFirst()
+        .ifPresent(
+            queryClass -> {
+              log.info("Registering query resolver class: {}", queryClass);
+              builder.query(queryClass);
+            });
   }
 
   /**
@@ -162,12 +180,10 @@ public class GraphQLAnnotationsAutoConfiguration {
    * @param reflections the {@link Reflections} instance
    * @param annotation the annotation class
    * @return The set of classes annotated with the specified annotation, or an empty set if no
-   * annotated classes found.
+   *     annotated classes found.
    */
   private Set<Class<?>> getTypesAnnotatedWith(
-      final Reflections reflections,
-      final Class<? extends Annotation> annotation
-  ) {
+      final Reflections reflections, final Class<? extends Annotation> annotation) {
     try {
       return reflections.getTypesAnnotatedWith(annotation);
     } catch (ReflectionsException e) {
@@ -179,30 +195,32 @@ public class GraphQLAnnotationsAutoConfiguration {
    * This is required, because normally implementations of interfaces are not explicitly returned by
    * any resolver method, and therefor not added to the schema automatically.
    *
-   * All interfaces are considered GraphQL interfaces if they are declared in the configured package
-   * and have at least one {@link GraphQLField}-annotated methods.
+   * <p>All interfaces are considered GraphQL interfaces if they are declared in the configured
+   * package and have at least one {@link GraphQLField}-annotated methods.
    *
    * @param reflections the reflections instance.
    * @param builder the schema builder instance.
    */
   private void registerGraphQLInterfaceImplementations(
-      final Reflections reflections,
-      final AnnotationsSchemaCreator.Builder builder
-  ) {
+      final Reflections reflections, final AnnotationsSchemaCreator.Builder builder) {
     Predicate<Class<?>> implementationQualifiesForInclusion =
-        type -> !(graphQLAnnotationsProperties.isIgnoreAbstractInterfaceImplementations()
+        type ->
+            !(graphQLAnnotationsProperties.isIgnoreAbstractInterfaceImplementations()
                 && Modifier.isAbstract(type.getModifiers()));
     reflections.getMethodsAnnotatedWith(GraphQLField.class).stream()
         .map(Method::getDeclaringClass)
         .filter(Class::isInterface)
-        .forEach(graphQLInterface ->
-            reflections.getSubTypesOf(graphQLInterface).stream()
-                .filter(implementationQualifiesForInclusion)
-                .forEach(implementation -> {
-                  log.info("Registering {} as an implementation of GraphQL interface {}",
-                      implementation,
-                      graphQLInterface);
-                  builder.additionalType(implementation);
-                }));
+        .forEach(
+            graphQLInterface ->
+                reflections.getSubTypesOf(graphQLInterface).stream()
+                    .filter(implementationQualifiesForInclusion)
+                    .forEach(
+                        implementation -> {
+                          log.info(
+                              "Registering {} as an implementation of GraphQL interface {}",
+                              implementation,
+                              graphQLInterface);
+                          builder.additionalType(implementation);
+                        }));
   }
 }

@@ -21,32 +21,38 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * @author Marcel Overdijk
- */
+/** @author Marcel Overdijk */
 @Configuration
 @RequiredArgsConstructor
 @ConditionalOnClass(MetricsAutoConfiguration.class)
-@AutoConfigureAfter({MetricsAutoConfiguration.class, SimpleMetricsExportAutoConfiguration.class,
-    GraphQLWebsocketAutoConfiguration.class})
+@AutoConfigureAfter({
+  MetricsAutoConfiguration.class,
+  SimpleMetricsExportAutoConfiguration.class,
+  GraphQLWebsocketAutoConfiguration.class
+})
 @EnableConfigurationProperties(GraphQLServletProperties.class)
-@ConditionalOnProperty(value = "graphql.servlet.enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(
+    value = "graphql.servlet.enabled",
+    havingValue = "true",
+    matchIfMissing = true)
 public class GraphQLInstrumentationAutoConfiguration {
 
   private final GraphQLServletProperties graphqlServletProperties;
 
   @Bean
   @ConditionalOnMissingBean({TracingInstrumentation.class, MetricsInstrumentation.class})
-  @ConditionalOnExpression("'${graphql.servlet.tracing-enabled:false}' == 'metrics-only' "
-      + "|| '${graphql.servlet.tracing-enabled:false}' == 'true'")
+  @ConditionalOnExpression(
+      "'${graphql.servlet.tracing-enabled:false}' == 'metrics-only' "
+          + "|| '${graphql.servlet.tracing-enabled:false}' == 'true'")
   public TracingInstrumentation tracingInstrumentation() {
     return new TracingInstrumentation();
   }
 
   @Bean
   @ConditionalOnMissingBean
-  @ConditionalOnExpression("${graphql.servlet.actuator-metrics:false} "
-      + "&& '${graphql.servlet.tracing-enabled:false}' == 'false'")
+  @ConditionalOnExpression(
+      "${graphql.servlet.actuator-metrics:false} "
+          + "&& '${graphql.servlet.tracing-enabled:false}' == 'false'")
   public TracingNoResolversInstrumentation tracingNoResolversInstrumentation() {
     return new TracingNoResolversInstrumentation();
   }
@@ -70,7 +76,8 @@ public class GraphQLInstrumentationAutoConfiguration {
   @ConditionalOnBean({MeterRegistry.class, TracingInstrumentation.class})
   @ConditionalOnMissingBean
   public MetricsInstrumentation metricsInstrumentation(MeterRegistry meterRegistry) {
-    return new MetricsInstrumentation(meterRegistry,
+    return new MetricsInstrumentation(
+        meterRegistry,
         Boolean.TRUE.toString().equalsIgnoreCase(graphqlServletProperties.getTracingEnabled()));
   }
 
@@ -78,9 +85,8 @@ public class GraphQLInstrumentationAutoConfiguration {
   @ConditionalOnProperty(value = "graphql.servlet.actuator-metrics", havingValue = "true")
   @ConditionalOnBean({MeterRegistry.class, GraphQLWebsocketServlet.class})
   @ConditionalOnMissingBean
-  public WebsocketMetrics websocketMetrics(MeterRegistry meterRegistry,
-      GraphQLWebsocketServlet websocketServlet) {
+  public WebsocketMetrics websocketMetrics(
+      MeterRegistry meterRegistry, GraphQLWebsocketServlet websocketServlet) {
     return new WebsocketMetrics(meterRegistry, websocketServlet);
   }
-
 }

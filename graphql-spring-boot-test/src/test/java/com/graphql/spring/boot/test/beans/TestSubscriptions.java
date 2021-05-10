@@ -13,8 +13,7 @@ public class TestSubscriptions implements GraphQLSubscriptionResolver {
   private final SubscriptionListener subscriptionListener;
 
   public Flowable<Long> timer() {
-    return Flowable
-        .intervalRange(0, 10, 0, 1, TimeUnit.MILLISECONDS);
+    return Flowable.intervalRange(0, 10, 0, 1, TimeUnit.MILLISECONDS);
   }
 
   public Flowable<String> subscriptionWithParameter(final String param) {

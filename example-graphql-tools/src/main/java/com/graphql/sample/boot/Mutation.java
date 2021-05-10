@@ -12,5 +12,4 @@ public class Mutation implements GraphQLMutationResolver {
     post.setText(text);
     return post;
   }
-
 }

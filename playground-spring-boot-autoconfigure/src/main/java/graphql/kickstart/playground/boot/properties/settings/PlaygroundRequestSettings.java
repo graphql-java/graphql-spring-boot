@@ -7,5 +7,5 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PlaygroundRequestSettings {
 
-    private PlaygroundRequestIncludeCredentials credentials;
+  private PlaygroundRequestIncludeCredentials credentials;
 }

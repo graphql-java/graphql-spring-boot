@@ -1,15 +1,12 @@
 package graphql.kickstart.altair.boot.test;
 
-import lombok.NonNull;
 import org.junit.jupiter.api.AfterEach;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigRegistry;
 import org.springframework.context.support.AbstractApplicationContext;
 
-/**
- * @author Moncef AOUDIA
- */
+/** @author Moncef AOUDIA */
 public abstract class AbstractAutoConfigurationTest {
 
   private final Class<? extends AbstractApplicationContext> contextClass;
@@ -21,8 +18,8 @@ public abstract class AbstractAutoConfigurationTest {
     this(AnnotationConfigApplicationContext.class, autoConfiguration);
   }
 
-  protected AbstractAutoConfigurationTest(Class<? extends AbstractApplicationContext> contextClass,
-      Class<?> autoConfiguration) {
+  protected AbstractAutoConfigurationTest(
+      Class<? extends AbstractApplicationContext> contextClass, Class<?> autoConfiguration) {
     assert AnnotationConfigRegistry.class.isAssignableFrom(contextClass);
     this.contextClass = contextClass;
     this.autoConfiguration = autoConfiguration;

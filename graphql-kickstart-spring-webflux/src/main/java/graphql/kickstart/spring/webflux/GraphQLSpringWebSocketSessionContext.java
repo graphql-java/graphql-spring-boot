@@ -6,5 +6,4 @@ import org.springframework.web.reactive.socket.WebSocketSession;
 public interface GraphQLSpringWebSocketSessionContext extends GraphQLContext {
 
   WebSocketSession getWebSocketSession();
-
 }

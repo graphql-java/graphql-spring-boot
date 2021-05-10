@@ -23,5 +23,4 @@ class RequestFactory {
     values.add("variables", forJson(variables, new HttpHeaders()));
     return new HttpEntity<>(values, headers);
   }
-
 }

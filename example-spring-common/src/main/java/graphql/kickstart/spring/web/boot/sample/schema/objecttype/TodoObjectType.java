@@ -24,9 +24,7 @@ import com.oembedler.moon.graphql.engine.relay.EdgeObjectType;
 import com.oembedler.moon.graphql.engine.relay.PageInfoObjectType;
 import com.oembedler.moon.graphql.engine.stereotype.GraphQLObject;
 
-/**
- * @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a>
- */
+/** @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a> */
 @GraphQLObject("Todo")
 public class TodoObjectType extends BaseObjectType {
 
@@ -50,14 +48,9 @@ public class TodoObjectType extends BaseObjectType {
   }
 
   @GraphQLObject
-  public static class TodoConnectionObjectType extends
-      ConnectionObjectType<TodoEdgeObjectType, PageInfoObjectType> {
-
-  }
+  public static class TodoConnectionObjectType
+      extends ConnectionObjectType<TodoEdgeObjectType, PageInfoObjectType> {}
 
   @GraphQLObject
-  public static class TodoEdgeObjectType extends EdgeObjectType<TodoObjectType> {
-
-  }
-
+  public static class TodoEdgeObjectType extends EdgeObjectType<TodoObjectType> {}
 }

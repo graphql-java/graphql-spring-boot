@@ -48,5 +48,4 @@ public class PropsLoader {
       return StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);
     }
   }
-
 }

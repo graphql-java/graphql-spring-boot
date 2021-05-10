@@ -11,7 +11,10 @@ public class StockPriceUpdate {
   private final BigDecimal stockPrice;
   private final BigDecimal stockPriceChange;
 
-  public StockPriceUpdate(String stockCode, LocalDateTime dateTime, BigDecimal stockPrice,
+  public StockPriceUpdate(
+      String stockCode,
+      LocalDateTime dateTime,
+      BigDecimal stockPrice,
       BigDecimal stockPriceChange) {
     this.stockCode = stockCode;
     this.dateTime = dateTime.format(DateTimeFormatter.ISO_DATE_TIME);

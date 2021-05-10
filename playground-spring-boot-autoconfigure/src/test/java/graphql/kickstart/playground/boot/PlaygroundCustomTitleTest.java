@@ -20,22 +20,24 @@ import org.springframework.test.web.servlet.MvcResult;
 @SpringBootTest(classes = PlaygroundTestConfig.class)
 @AutoConfigureMockMvc
 @TestPropertySource("classpath:application-playground-custom-title.properties")
-class PlaygroundCustomTitleTest {
+public class PlaygroundCustomTitleTest {
 
-  private static final String CUSTOM_TITLE = "My CustomTest Title";
-
-  @Autowired
-  private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
   @Test
-  void shouldUseTheCustomPageTitle() throws Exception {
-    final MvcResult mvcResult = mockMvc
-        .perform(get(PlaygroundTestHelper.DEFAULT_PLAYGROUND_ENDPOINT))
-        .andExpect(status().isOk())
-        .andExpect(model().attribute(PlaygroundTestHelper.PAGE_TITLE_FIELD_NAME, CUSTOM_TITLE))
-        .andReturn();
+  public void shouldUseTheCustomPageTitle() throws Exception {
+    final MvcResult mvcResult =
+        mockMvc
+            .perform(get(PlaygroundTestHelper.DEFAULT_PLAYGROUND_ENDPOINT))
+            .andExpect(status().isOk())
+            .andExpect(
+                model()
+                    .attribute(
+                        PlaygroundTestHelper.PAGE_TITLE_FIELD_NAME,
+                        PlaygroundTestHelper.CUSTOM_TITLE))
+            .andReturn();
 
     final Document document = Jsoup.parse(mvcResult.getResponse().getContentAsString());
-    PlaygroundTestHelper.assertTitle(document, CUSTOM_TITLE);
+    PlaygroundTestHelper.assertTitle(document, PlaygroundTestHelper.CUSTOM_TITLE);
   }
 }

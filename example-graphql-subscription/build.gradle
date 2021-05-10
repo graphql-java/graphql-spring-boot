@@ -3,6 +3,7 @@ apply plugin: "org.springframework.boot"
 dependencies {
     implementation(project(":graphql-spring-boot-starter"))
     implementation(project(":graphiql-spring-boot-starter"))
+    implementation(project(":playground-spring-boot-starter"))
     implementation "com.graphql-java-kickstart:graphql-java-tools:$LIB_GRAPHQL_JAVA_TOOLS_VER"
 
     implementation "io.reactivex.rxjava2:rxjava"
@@ -13,6 +14,5 @@ dependencies {
 }
 
 jar.enabled = false
-uploadArchives.enabled = false
-bintrayUpload.enabled = false
+publish.enabled = false
 publishToMavenLocal.enabled = false

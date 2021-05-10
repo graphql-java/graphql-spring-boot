@@ -16,15 +16,14 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles({"test", "directive-test"})
 class GraphQLAnnotationsDirectiveTest {
 
-  @Autowired
-  private GraphQLTestTemplate graphQLTestTemplate;
+  @Autowired private GraphQLTestTemplate graphQLTestTemplate;
 
   @Test
   @DisplayName("Assert that directives are properly registered.")
   void testDirectivesAreProperlyRegistered() throws IOException {
     // WHEN
-    final GraphQLResponse actual
-        = graphQLTestTemplate.postForResource("queries/test-directive-query.graphql");
+    final GraphQLResponse actual =
+        graphQLTestTemplate.postForResource("queries/test-directive-query.graphql");
     // THEN
     assertThat(actual.get("$.data.queryWithDirective")).isEqualTo("THIS SHOULD BE UPPERCASE");
   }

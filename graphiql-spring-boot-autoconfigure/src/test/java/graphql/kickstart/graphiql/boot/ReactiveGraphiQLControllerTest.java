@@ -15,22 +15,22 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 @WebFluxTest
 class ReactiveGraphiQLControllerTest {
 
-  @Autowired
-  private WebTestClient webTestClient;
+  @Autowired private WebTestClient webTestClient;
 
   @Test
   void shouldBeAbleToAccessGraphiQL() {
-    webTestClient.get()
+    webTestClient
+        .get()
         .uri("/graphiql")
         .exchange()
-        .expectStatus().is2xxSuccessful()
-        .expectHeader().contentType(MediaType.TEXT_HTML);
+        .expectStatus()
+        .is2xxSuccessful()
+        .expectHeader()
+        .contentType(MediaType.TEXT_HTML);
   }
 
   @SpringBootConfiguration
   @TestPropertySource(properties = "graphiql.enabled=true")
   @Import(GraphiQLAutoConfiguration.class)
-  public static class ReactiveTestApplication {
-
-  }
+  public static class ReactiveTestApplication {}
 }

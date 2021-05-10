@@ -24,17 +24,18 @@ import reactor.core.publisher.Mono;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class MonoGenericWrapperAlreadyDefinedTest {
 
-  @Autowired
-  private WebTestClient webTestClient;
+  @Autowired private WebTestClient webTestClient;
 
   @Test
   void monoWrapper() throws JSONException {
-    val result = webTestClient.post()
-        .uri("/graphql")
-        .contentType(MediaType.APPLICATION_JSON)
-        .bodyValue("{ \"query\": \"query { hello } \"}")
-        .exchange()
-        .returnResult(String.class);
+    val result =
+        webTestClient
+            .post()
+            .uri("/graphql")
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue("{ \"query\": \"query { hello } \"}")
+            .exchange()
+            .returnResult(String.class);
     val response = result.getResponseBody().blockFirst();
     val json = new JSONObject(response);
     assertThat(json.getJSONObject("data").get("hello")).isEqualTo("Hello world");
@@ -44,13 +45,7 @@ class MonoGenericWrapperAlreadyDefinedTest {
   static class MonoConfiguration {
     @Bean
     GenericWrapper genericWrapper() {
-      return GenericWrapper.withTransformer(
-          Mono.class,
-          0,
-          Mono::toFuture,
-          t -> t
-      );
+      return GenericWrapper.withTransformer(Mono.class, 0, Mono::toFuture, t -> t);
     }
   }
-
 }

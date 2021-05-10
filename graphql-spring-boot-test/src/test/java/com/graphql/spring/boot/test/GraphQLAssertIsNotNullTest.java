@@ -7,7 +7,6 @@ import static org.mockito.BDDMockito.given;
 
 import com.graphql.spring.boot.test.assertions.GraphQLFieldAssert;
 import com.jayway.jsonpath.PathNotFoundException;
-import lombok.EqualsAndHashCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -19,8 +18,8 @@ class GraphQLAssertIsNotNullTest extends GraphQLFieldAssertTestBase {
   void shouldPassIfIsNotNull() {
     // GIVEN
     given(graphQLResponse.getRaw(MOCK_PATH)).willReturn(NON_NULL_VALUE);
-    final GraphQLFieldAssert graphQLFieldAssert = new GraphQLFieldAssert(graphQLResponse,
-        MOCK_PATH);
+    final GraphQLFieldAssert graphQLFieldAssert =
+        new GraphQLFieldAssert(graphQLResponse, MOCK_PATH);
     // WHEN - THEN
     assertThatCode(graphQLFieldAssert::isNotNull).doesNotThrowAnyException();
     assertThat(graphQLFieldAssert.isNotNull().and()).isSameAs(graphQLResponse);
@@ -31,8 +30,8 @@ class GraphQLAssertIsNotNullTest extends GraphQLFieldAssertTestBase {
   void shouldFailIfPathNotFound(final @Mock PathNotFoundException pathNotFoundException) {
     // GIVEN
     given(graphQLResponse.getRaw(MOCK_PATH)).willThrow(pathNotFoundException);
-    final GraphQLFieldAssert graphQLFieldAssert = new GraphQLFieldAssert(graphQLResponse,
-        MOCK_PATH);
+    final GraphQLFieldAssert graphQLFieldAssert =
+        new GraphQLFieldAssert(graphQLResponse, MOCK_PATH);
     // WHEN - THEN
     assertThatExceptionOfType(AssertionError.class)
         .isThrownBy(graphQLFieldAssert::isNotNull)
@@ -45,8 +44,8 @@ class GraphQLAssertIsNotNullTest extends GraphQLFieldAssertTestBase {
   void shouldFailIfIsNotNull() {
     // GIVEN
     given(graphQLResponse.getRaw(MOCK_PATH)).willReturn(null);
-    final GraphQLFieldAssert graphQLFieldAssert = new GraphQLFieldAssert(graphQLResponse,
-        MOCK_PATH);
+    final GraphQLFieldAssert graphQLFieldAssert =
+        new GraphQLFieldAssert(graphQLResponse, MOCK_PATH);
     // WHEN - THEN
     assertThatExceptionOfType(AssertionError.class)
         .isThrownBy(graphQLFieldAssert::isNotNull)

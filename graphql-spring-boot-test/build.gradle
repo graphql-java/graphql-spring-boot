@@ -21,7 +21,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-test")
     implementation("com.fasterxml.jackson.core:jackson-databind")
     implementation("com.jayway.jsonpath:json-path")
-    implementation 'org.awaitility:awaitility:4.0.3'
+    implementation 'org.awaitility:awaitility:4.1.0'
     compileOnly("com.graphql-java:graphql-java:$LIB_GRAPHQL_JAVA_VER")
     compileOnly("com.graphql-java-kickstart:graphql-java-servlet:$LIB_GRAPHQL_SERVLET_VER")
     testImplementation("org.springframework.boot:spring-boot-starter-web")

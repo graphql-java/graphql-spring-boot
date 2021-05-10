@@ -13,14 +13,13 @@ import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 
-/**
- * Provides fluent assertions for a field (specified by a json path) of the GraphQL response.
- */
+/** Provides fluent assertions for a field (specified by a json path) of the GraphQL response. */
 @RequiredArgsConstructor
 public class GraphQLFieldAssert implements GraphQLResponseAssertion {
 
   public static final String EXPECTED_FIELD_S_TO_BE_PRESENT = "Expected field %s to be present.";
-  public static final String EXPECTED_THAT_CONTENT_OF_FIELD_S_CAN_BE_CONVERTED_TO_S = "Expected that content of field %s can be converted to %s.";
+  public static final String EXPECTED_THAT_CONTENT_OF_FIELD_S_CAN_BE_CONVERTED_TO_S =
+      "Expected that content of field %s can be converted to %s.";
   private final GraphQLResponse graphQLResponse;
   private final String jsonPath;
 
@@ -97,7 +96,7 @@ public class GraphQLFieldAssert implements GraphQLResponseAssertion {
    *
    * @return a {@link GraphQLBigDecimalAssert} instance
    * @throws AssertionError if the path does not exist or the content could not be converted to
-   * {@link BigDecimal}
+   *     {@link BigDecimal}
    */
   public GraphQLBigDecimalAssert asBigDecimal() {
     return new GraphQLBigDecimalAssert(graphQLResponse, getFieldAs(BigDecimal.class));
@@ -108,7 +107,7 @@ public class GraphQLFieldAssert implements GraphQLResponseAssertion {
    *
    * @return a {@link GraphQLBigIntegerAssert} instance
    * @throws AssertionError if the path does not exist or the content could not be converted to
-   * {@link BigInteger}
+   *     {@link BigInteger}
    */
   public GraphQLBigIntegerAssert asBigInteger() {
     return new GraphQLBigIntegerAssert(graphQLResponse, getFieldAs(BigInteger.class));
@@ -119,7 +118,7 @@ public class GraphQLFieldAssert implements GraphQLResponseAssertion {
    *
    * @return a {@link GraphQLLongAssert} instance
    * @throws AssertionError if the path does not exist or the content could not be converted to
-   * {@link Long}
+   *     {@link Long}
    */
   public GraphQLLongAssert asLong() {
     return new GraphQLLongAssert(graphQLResponse, getFieldAs(Long.class));
@@ -130,7 +129,7 @@ public class GraphQLFieldAssert implements GraphQLResponseAssertion {
    *
    * @return a {@link GraphQLIntegerAssert} instance
    * @throws AssertionError if the path does not exist or the content could not be converted to
-   * {@link Integer}
+   *     {@link Integer}
    */
   public GraphQLIntegerAssert asInteger() {
     return new GraphQLIntegerAssert(graphQLResponse, getFieldAs(Integer.class));
@@ -141,7 +140,7 @@ public class GraphQLFieldAssert implements GraphQLResponseAssertion {
    *
    * @return a {@link GraphQLShortAssert} instance
    * @throws AssertionError if the path does not exist or the content could not be converted to
-   * {@link Short}
+   *     {@link Short}
    */
   public GraphQLShortAssert asShort() {
     return new GraphQLShortAssert(graphQLResponse, getFieldAs(Short.class));
@@ -152,7 +151,7 @@ public class GraphQLFieldAssert implements GraphQLResponseAssertion {
    *
    * @return a {@link GraphQLByteAssert} instance
    * @throws AssertionError if the path does not exist or the content could not be converted to
-   * {@link Byte}
+   *     {@link Byte}
    */
   public GraphQLByteAssert asByte() {
     return new GraphQLByteAssert(graphQLResponse, getFieldAs(Byte.class));
@@ -163,7 +162,7 @@ public class GraphQLFieldAssert implements GraphQLResponseAssertion {
    *
    * @return a {@link GraphQLBooleanAssert} instance
    * @throws AssertionError if the path does not exist or the content could not be converted to
-   * {@link Boolean}
+   *     {@link Boolean}
    */
   public GraphQLBooleanAssert asBoolean() {
     return new GraphQLBooleanAssert(graphQLResponse, getFieldAs(Boolean.class));
@@ -174,7 +173,7 @@ public class GraphQLFieldAssert implements GraphQLResponseAssertion {
    *
    * @return a {@link GraphQLStringAssert} instance
    * @throws AssertionError if the path does not exist or the content could not be converted to
-   * {@link String}
+   *     {@link String}
    */
   public GraphQLStringAssert asString() {
     return new GraphQLStringAssert(graphQLResponse, getFieldAs(String.class));
@@ -186,7 +185,7 @@ public class GraphQLFieldAssert implements GraphQLResponseAssertion {
    * @param clazz The class of the object. to assert
    * @return a {@link GraphQLGenericObjectAssert} instance
    * @throws AssertionError if the path does not exist or the content could not be converted to the
-   * specified class
+   *     specified class
    */
   public <T> GraphQLGenericObjectAssert<T> as(final Class<T> clazz) {
     return new GraphQLGenericObjectAssert<>(graphQLResponse, getFieldAs(clazz));
@@ -198,7 +197,7 @@ public class GraphQLFieldAssert implements GraphQLResponseAssertion {
    * @param javaType The java type definition.
    * @return a {@link GraphQLGenericObjectAssert} instance
    * @throws AssertionError if the path does not exist or the content could not be converted to the
-   * specified class
+   *     specified class
    */
   public <T> GraphQLGenericObjectAssert<T> as(final JavaType javaType) {
     return new GraphQLGenericObjectAssert<>(graphQLResponse, getFieldAs(javaType));
@@ -210,7 +209,7 @@ public class GraphQLFieldAssert implements GraphQLResponseAssertion {
    * @param javaListType The java type definition. Expected to define a list type.
    * @return a {@link GraphQLListAssert} instance
    * @throws AssertionError if the path does not exist or the content could not be converted to the
-   * specified class or if the provided type is not a list type.
+   *     specified class or if the provided type is not a list type.
    */
   public <T> GraphQLListAssert<T> asList(final JavaType javaListType) {
     return new GraphQLListAssert<>(graphQLResponse, getFieldAs(javaListType));
@@ -222,15 +221,13 @@ public class GraphQLFieldAssert implements GraphQLResponseAssertion {
    * @param elementClass the type of objects in the list
    * @return a {@link GraphQLGenericObjectAssert} instance
    * @throws AssertionError if the path does not exist or the content could not be converted to the
-   * specified class
+   *     specified class
    */
   public <T> GraphQLListAssert<T> asListOf(final Class<T> elementClass) {
     return new GraphQLListAssert<>(graphQLResponse, getFieldAsList(elementClass));
   }
 
-  /**
-   * {@inheritDoc}
-   */
+  /** {@inheritDoc} */
   @Override
   public GraphQLResponse and() {
     return graphQLResponse;
@@ -243,8 +240,10 @@ public class GraphQLFieldAssert implements GraphQLResponseAssertion {
       fail(String.format(EXPECTED_FIELD_S_TO_BE_PRESENT, jsonPath), e);
       return null;
     } catch (IllegalArgumentException e) {
-      fail(String.format(EXPECTED_THAT_CONTENT_OF_FIELD_S_CAN_BE_CONVERTED_TO_S, jsonPath,
-          targetClass), e);
+      fail(
+          String.format(
+              EXPECTED_THAT_CONTENT_OF_FIELD_S_CAN_BE_CONVERTED_TO_S, jsonPath, targetClass),
+          e);
       return null;
     }
   }
@@ -256,8 +255,8 @@ public class GraphQLFieldAssert implements GraphQLResponseAssertion {
       fail(String.format(EXPECTED_FIELD_S_TO_BE_PRESENT, jsonPath), e);
       return null;
     } catch (IllegalArgumentException e) {
-      fail(String
-              .format(EXPECTED_THAT_CONTENT_OF_FIELD_S_CAN_BE_CONVERTED_TO_S, jsonPath, javaType),
+      fail(
+          String.format(EXPECTED_THAT_CONTENT_OF_FIELD_S_CAN_BE_CONVERTED_TO_S, jsonPath, javaType),
           e);
       return null;
     }
@@ -270,8 +269,10 @@ public class GraphQLFieldAssert implements GraphQLResponseAssertion {
       fail(String.format(EXPECTED_FIELD_S_TO_BE_PRESENT, jsonPath), e);
       return emptyList();
     } catch (IllegalArgumentException e) {
-      fail(String.format(EXPECTED_THAT_CONTENT_OF_FIELD_S_CAN_BE_CONVERTED_TO_S, jsonPath,
-          targetClass), e);
+      fail(
+          String.format(
+              EXPECTED_THAT_CONTENT_OF_FIELD_S_CAN_BE_CONVERTED_TO_S, jsonPath, targetClass),
+          e);
       return emptyList();
     }
   }

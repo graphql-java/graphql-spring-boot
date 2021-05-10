@@ -13,8 +13,8 @@ public class TestQuery {
   @GraphQLField
   @GraphQLConnection
   public static PaginatedData<TestModel> somePaginatedValue() {
-    return new AbstractPaginatedData<TestModel>(false, false,
-        Collections.singletonList(new TestModel("some value"))) {
+    return new AbstractPaginatedData<TestModel>(
+        false, false, Collections.singletonList(new TestModel("some value"))) {
       @Override
       public String getCursor(final TestModel entity) {
         return "test cursor";

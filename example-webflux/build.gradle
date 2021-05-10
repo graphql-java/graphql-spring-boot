@@ -23,12 +23,12 @@ dependencies {
     implementation(project(":graphql-kickstart-spring-boot-starter-webflux"))
     implementation(project(":graphql-kickstart-spring-boot-starter-tools"))
     implementation(project(":voyager-spring-boot-starter"))
+    implementation(project(":playground-spring-boot-starter"))
 
     implementation("org.springframework.boot:spring-boot-starter-webflux:$LIB_SPRING_BOOT_VER")
     implementation("org.springframework.boot:spring-boot-starter-actuator:$LIB_SPRING_BOOT_VER")
 }
 
 jar.enabled = false
-uploadArchives.enabled = false
-bintrayUpload.enabled = false
+publish.enabled = false
 publishToMavenLocal.enabled = false

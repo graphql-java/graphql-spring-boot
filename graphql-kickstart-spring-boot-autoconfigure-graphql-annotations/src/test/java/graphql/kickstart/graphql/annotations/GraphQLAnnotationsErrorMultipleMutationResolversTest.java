@@ -12,7 +12,8 @@ import org.springframework.context.ApplicationContextException;
 class GraphQLAnnotationsMultipleMutationResolversTest {
 
   @Test
-  @DisplayName("Assert that MultipleMutationResolversException is thrown when multiple mutation resolvers are found.")
+  @DisplayName(
+      "Assert that MultipleMutationResolversException is thrown when multiple mutation resolvers are found.")
   void testMultipleMutationResolversExceptionIsThrown() {
     // GIVEN
     final SpringApplication app = new SpringApplication(TestApplication.class);

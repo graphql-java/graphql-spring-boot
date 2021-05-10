@@ -17,8 +17,8 @@ import org.mockito.Mock;
 
 class GraphQLFieldAssertAsJavaListTypeTest extends GraphQLFieldAssertTestBase {
 
-  private static final JavaType STRING_LIST_TYPE = TypeFactory.defaultInstance()
-      .constructCollectionLikeType(List.class, String.class);
+  private static final JavaType STRING_LIST_TYPE =
+      TypeFactory.defaultInstance().constructCollectionLikeType(List.class, String.class);
 
   @Test
   @DisplayName("Should return a String list assertion (value at specific path is valid list).")
@@ -26,8 +26,8 @@ class GraphQLFieldAssertAsJavaListTypeTest extends GraphQLFieldAssertTestBase {
     // GIVEN
     final List<String> values = Arrays.asList("value1", "value2");
     given(graphQLResponse.get(MOCK_PATH, STRING_LIST_TYPE)).willReturn(values);
-    final GraphQLFieldAssert graphQLFieldAssert = new GraphQLFieldAssert(graphQLResponse,
-        MOCK_PATH);
+    final GraphQLFieldAssert graphQLFieldAssert =
+        new GraphQLFieldAssert(graphQLResponse, MOCK_PATH);
     // WHEN
     final GraphQLListAssert<String> actual = graphQLFieldAssert.asList(STRING_LIST_TYPE);
     // THEN
@@ -42,8 +42,8 @@ class GraphQLFieldAssertAsJavaListTypeTest extends GraphQLFieldAssertTestBase {
   void shouldReturnStringListAssertIfFieldIsNull() {
     // GIVEN
     given(graphQLResponse.get(MOCK_PATH, STRING_LIST_TYPE)).willReturn(null);
-    final GraphQLFieldAssert graphQLFieldAssert = new GraphQLFieldAssert(graphQLResponse,
-        MOCK_PATH);
+    final GraphQLFieldAssert graphQLFieldAssert =
+        new GraphQLFieldAssert(graphQLResponse, MOCK_PATH);
     // WHEN
     final GraphQLListAssert<String> actual = graphQLFieldAssert.asList(STRING_LIST_TYPE);
     // THEN
@@ -57,8 +57,8 @@ class GraphQLFieldAssertAsJavaListTypeTest extends GraphQLFieldAssertTestBase {
   void shouldFailIfPathNotFound(final @Mock PathNotFoundException pathNotFoundException) {
     // GIVEN
     given(graphQLResponse.get(MOCK_PATH, STRING_LIST_TYPE)).willThrow(pathNotFoundException);
-    final GraphQLFieldAssert graphQLFieldAssert = new GraphQLFieldAssert(graphQLResponse,
-        MOCK_PATH);
+    final GraphQLFieldAssert graphQLFieldAssert =
+        new GraphQLFieldAssert(graphQLResponse, MOCK_PATH);
     // WHEN - THEN
     assertThatExceptionOfType(AssertionError.class)
         .isThrownBy(() -> graphQLFieldAssert.asList(STRING_LIST_TYPE))
@@ -72,13 +72,14 @@ class GraphQLFieldAssertAsJavaListTypeTest extends GraphQLFieldAssertTestBase {
       final @Mock IllegalArgumentException illegalArgumentException) {
     // GIVEN
     given(graphQLResponse.get(MOCK_PATH, STRING_LIST_TYPE)).willThrow(illegalArgumentException);
-    final GraphQLFieldAssert graphQLFieldAssert = new GraphQLFieldAssert(graphQLResponse,
-        MOCK_PATH);
+    final GraphQLFieldAssert graphQLFieldAssert =
+        new GraphQLFieldAssert(graphQLResponse, MOCK_PATH);
     // WHEN - THEN
     assertThatExceptionOfType(AssertionError.class)
         .isThrownBy(() -> graphQLFieldAssert.asList(STRING_LIST_TYPE))
-        .withMessage("Expected that content of field %s can be converted to %s.", MOCK_PATH,
-            STRING_LIST_TYPE)
+        .withMessage(
+            "Expected that content of field %s can be converted to %s.",
+            MOCK_PATH, STRING_LIST_TYPE)
         .withCause(illegalArgumentException);
   }
 }

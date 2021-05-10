@@ -11,5 +11,4 @@ class Query implements GraphQLQueryResolver {
   String hello() {
     return HELLO;
   }
-
 }

@@ -29,27 +29,26 @@ class GraphQLTestTemplateTest {
   private static final String BASIC_AUTH_PREFIX = "Basic ";
   private static final String BEARER_AUTH_PREFIX = "Bearer ";
 
-  @Mock
-  private ResourceLoader resourceLoader;
+  @Mock private ResourceLoader resourceLoader;
 
-  @Mock
-  private TestRestTemplate testRestTemplate;
+  @Mock private TestRestTemplate testRestTemplate;
 
   private GraphQLTestTemplate graphQLTestTemplate;
 
   @BeforeEach
   void setUp() {
-    graphQLTestTemplate = new GraphQLTestTemplate(resourceLoader, testRestTemplate,
-        GRAPHQL_ENDPOINT,
-        new ObjectMapper());
+    graphQLTestTemplate =
+        new GraphQLTestTemplate(
+            resourceLoader, testRestTemplate, GRAPHQL_ENDPOINT, new ObjectMapper());
   }
 
   @Test
   void testWithAdditionalHeader() {
     // WHEN
-    final GraphQLTestTemplate actual = graphQLTestTemplate
-        .withAdditionalHeader(HEADER_NAME_1, HEADER_VALUE_1)
-        .withAdditionalHeader(HEADER_NAME_2, HEADER_VALUE_2);
+    final GraphQLTestTemplate actual =
+        graphQLTestTemplate
+            .withAdditionalHeader(HEADER_NAME_1, HEADER_VALUE_1)
+            .withAdditionalHeader(HEADER_NAME_2, HEADER_VALUE_2);
     // THEN
     assertThat(actual).isSameAs(graphQLTestTemplate);
     assertThatContainsAllHeaders();
@@ -62,8 +61,8 @@ class GraphQLTestTemplateTest {
     final HttpHeaders additionalHeaders = new HttpHeaders();
     additionalHeaders.add(HEADER_NAME_2, HEADER_VALUE_2);
     // WHEN
-    final GraphQLTestTemplate actualGraphqlTestTemplate = graphQLTestTemplate
-        .withAdditionalHeaders(additionalHeaders);
+    final GraphQLTestTemplate actualGraphqlTestTemplate =
+        graphQLTestTemplate.withAdditionalHeaders(additionalHeaders);
     // THEN
     assertThat(actualGraphqlTestTemplate).isSameAs(graphQLTestTemplate);
     assertThatContainsAllHeaders();
@@ -76,8 +75,7 @@ class GraphQLTestTemplateTest {
     final HttpHeaders newHeaders = new HttpHeaders();
     newHeaders.add(HEADER_NAME_2, HEADER_VALUE_2);
     // WHEN
-    final GraphQLTestTemplate actual = graphQLTestTemplate
-        .withHeaders(newHeaders);
+    final GraphQLTestTemplate actual = graphQLTestTemplate.withHeaders(newHeaders);
     // THEN
     assertThat(actual).isSameAs(graphQLTestTemplate);
     assertThat(actual.getHeaders()).hasSize(1);
@@ -116,8 +114,8 @@ class GraphQLTestTemplateTest {
   @Test
   void testWithBasicAuth() {
     // WHEN
-    final GraphQLTestTemplate actual = graphQLTestTemplate
-        .withBasicAuth(TEST_USERNAME, TEST_PASSWORD);
+    final GraphQLTestTemplate actual =
+        graphQLTestTemplate.withBasicAuth(TEST_USERNAME, TEST_PASSWORD);
     // THEN
     assertThat(actual).isSameAs(graphQLTestTemplate);
     assertAuthHeader(BASIC_AUTH_PREFIX, ENCODED_BASIC_AUTH);
@@ -126,9 +124,8 @@ class GraphQLTestTemplateTest {
   @Test
   void testWithBasicAuthCharset() {
     // WHEN
-    final GraphQLTestTemplate actual = graphQLTestTemplate
-        .withBasicAuth(TEST_USERNAME, TEST_PASSWORD,
-            StandardCharsets.UTF_8);
+    final GraphQLTestTemplate actual =
+        graphQLTestTemplate.withBasicAuth(TEST_USERNAME, TEST_PASSWORD, StandardCharsets.UTF_8);
     // THEN
     assertThat(actual).isSameAs(graphQLTestTemplate);
     assertAuthHeader(BASIC_AUTH_PREFIX, ENCODED_BASIC_AUTH);

@@ -23,13 +23,10 @@ import com.oembedler.moon.graphql.engine.relay.RelayNode;
 import com.oembedler.moon.graphql.engine.stereotype.GraphQLIgnore;
 import graphql.relay.Relay;
 
-/**
- * @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a>
- */
+/** @author <a href="mailto:java.lang.RuntimeException@gmail.com">oEmbedler Inc.</a> */
 public class BaseObjectType implements RelayNode {
 
-  @GraphQLIgnore
-  private String id;
+  @GraphQLIgnore private String id;
 
   public String getId(RelayNode relayNode) {
     BaseObjectType baseObjectType = (BaseObjectType) relayNode;

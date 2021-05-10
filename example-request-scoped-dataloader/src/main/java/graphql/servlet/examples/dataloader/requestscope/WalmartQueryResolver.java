@@ -19,8 +19,8 @@ public class WalmartQueryResolver implements GraphQLQueryResolver {
   }
 
   public List<Customer> walmartCustomers(int storeNumber) {
-    return walmartData.get(storeNumber).parallelStream().map(Customer::new)
+    return walmartData.get(storeNumber).parallelStream()
+        .map(Customer::new)
         .collect(Collectors.toList());
   }
-
 }

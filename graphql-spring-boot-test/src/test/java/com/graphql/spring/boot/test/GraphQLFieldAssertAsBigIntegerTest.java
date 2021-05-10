@@ -20,8 +20,8 @@ class GraphQLFieldAssertAsBigIntegerTest extends GraphQLFieldAssertTestBase {
     // GIVEN
     final BigInteger value = new BigInteger("123");
     given(graphQLResponse.get(MOCK_PATH, BigInteger.class)).willReturn(value);
-    final GraphQLFieldAssert graphQLFieldAssert = new GraphQLFieldAssert(graphQLResponse,
-        MOCK_PATH);
+    final GraphQLFieldAssert graphQLFieldAssert =
+        new GraphQLFieldAssert(graphQLResponse, MOCK_PATH);
     // WHEN
     final GraphQLBigIntegerAssert actual = graphQLFieldAssert.asBigInteger();
     // THEN
@@ -36,8 +36,8 @@ class GraphQLFieldAssertAsBigIntegerTest extends GraphQLFieldAssertTestBase {
   void shouldReturnBigIntegerAssertIfFieldIsNull() {
     // GIVEN
     given(graphQLResponse.get(MOCK_PATH, BigInteger.class)).willReturn(null);
-    final GraphQLFieldAssert graphQLFieldAssert = new GraphQLFieldAssert(graphQLResponse,
-        MOCK_PATH);
+    final GraphQLFieldAssert graphQLFieldAssert =
+        new GraphQLFieldAssert(graphQLResponse, MOCK_PATH);
     // WHEN
     final GraphQLBigIntegerAssert actual = graphQLFieldAssert.asBigInteger();
     // THEN
@@ -51,8 +51,8 @@ class GraphQLFieldAssertAsBigIntegerTest extends GraphQLFieldAssertTestBase {
   void shouldFailIfPathNotFound(final @Mock PathNotFoundException pathNotFoundException) {
     // GIVEN
     given(graphQLResponse.get(MOCK_PATH, BigInteger.class)).willThrow(pathNotFoundException);
-    final GraphQLFieldAssert graphQLFieldAssert = new GraphQLFieldAssert(graphQLResponse,
-        MOCK_PATH);
+    final GraphQLFieldAssert graphQLFieldAssert =
+        new GraphQLFieldAssert(graphQLResponse, MOCK_PATH);
     // WHEN - THEN
     assertThatExceptionOfType(AssertionError.class)
         .isThrownBy(graphQLFieldAssert::asBigInteger)
@@ -66,13 +66,14 @@ class GraphQLFieldAssertAsBigIntegerTest extends GraphQLFieldAssertTestBase {
       final @Mock IllegalArgumentException illegalArgumentException) {
     // GIVEN
     given(graphQLResponse.get(MOCK_PATH, BigInteger.class)).willThrow(illegalArgumentException);
-    final GraphQLFieldAssert graphQLFieldAssert = new GraphQLFieldAssert(graphQLResponse,
-        MOCK_PATH);
+    final GraphQLFieldAssert graphQLFieldAssert =
+        new GraphQLFieldAssert(graphQLResponse, MOCK_PATH);
     // WHEN - THEN
     assertThatExceptionOfType(AssertionError.class)
         .isThrownBy(graphQLFieldAssert::asBigInteger)
-        .withMessage("Expected that content of field %s can be converted to %s.", MOCK_PATH,
-            BigInteger.class)
+        .withMessage(
+            "Expected that content of field %s can be converted to %s.",
+            MOCK_PATH, BigInteger.class)
         .withCause(illegalArgumentException);
   }
 }

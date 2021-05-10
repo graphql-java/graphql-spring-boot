@@ -11,8 +11,7 @@ import lombok.EqualsAndHashCode;
 import org.assertj.core.api.AbstractIntegerAssert;
 
 @EqualsAndHashCode(callSuper = true)
-public class NumberOfErrorsAssertion
-    extends AbstractIntegerAssert<NumberOfErrorsAssertion>
+public class NumberOfErrorsAssertion extends AbstractIntegerAssert<NumberOfErrorsAssertion>
     implements GraphQLResponseAssertion {
 
   private final GraphQLResponse graphQLResponse;
@@ -25,8 +24,8 @@ public class NumberOfErrorsAssertion
   private static Integer getNumberOfErrors(final GraphQLResponse response) {
     int numErrors = 0;
     try {
-      final List<GraphQLTestError> errorList = response
-          .getList(ERRORS_PATH, GraphQLTestError.class);
+      final List<GraphQLTestError> errorList =
+          response.getList(ERRORS_PATH, GraphQLTestError.class);
       if (nonNull(errorList)) {
         numErrors = errorList.size();
       }

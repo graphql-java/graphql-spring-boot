@@ -9,5 +9,4 @@ public interface ReactiveSubscriptionsProtocolFactory {
   Consumer<String> createConsumer(SubscriptionSession session);
 
   SubscriptionSession createSession(WebSocketSession session);
-
 }

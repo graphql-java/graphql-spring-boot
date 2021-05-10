@@ -16,5 +16,4 @@ public class DefaultGraphQLSpringWebfluxRootObjectBuilder
   public Object build(WebSocketSession webSocketSession) {
     return new Object();
   }
-
 }

@@ -27,7 +27,8 @@ public class CustomGraphQLContextBuilder implements GraphQLServletContextBuilder
   @Override
   public GraphQLContext build(HttpServletRequest req, HttpServletResponse response) {
     return DefaultGraphQLServletContext.createServletContext(buildDataLoaderRegistry(), null)
-        .with(req).with(response)
+        .with(req)
+        .with(response)
         .build();
   }
 
@@ -40,14 +41,15 @@ public class CustomGraphQLContextBuilder implements GraphQLServletContextBuilder
   public GraphQLContext build(Session session, HandshakeRequest request) {
     return DefaultGraphQLWebSocketContext.createWebSocketContext(buildDataLoaderRegistry(), null)
         .with(session)
-        .with(request).build();
+        .with(request)
+        .build();
   }
 
   private DataLoaderRegistry buildDataLoaderRegistry() {
     DataLoaderRegistry dataLoaderRegistry = new DataLoaderRegistry();
-    DataLoader<Integer, String> customerLoader = new DataLoader<>(
-        customerIds -> supplyAsync(() -> customerRepository.getUserNamesForIds(customerIds))
-    );
+    DataLoader<Integer, String> customerLoader =
+        new DataLoader<>(
+            customerIds -> supplyAsync(() -> customerRepository.getUserNamesForIds(customerIds)));
     dataLoaderRegistry.register("customerDataLoader", customerLoader);
     return dataLoaderRegistry;
   }

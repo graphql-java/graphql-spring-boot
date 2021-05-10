@@ -72,8 +72,8 @@ public class GraphQLSpringWebfluxAutoConfiguration {
 
   @Bean
   @ConditionalOnMissingBean
-  public GraphQLObjectMapper graphQLObjectMapper(ObjectProvider<ObjectMapperProvider> provider,
-      ErrorHandlerSupplier errorHandlerSupplier) {
+  public GraphQLObjectMapper graphQLObjectMapper(
+      ObjectProvider<ObjectMapperProvider> provider, ErrorHandlerSupplier errorHandlerSupplier) {
     GraphQLObjectMapper.Builder builder = newBuilder();
     builder.withGraphQLErrorHandler(errorHandlerSupplier);
     provider.ifAvailable(builder::withObjectMapperProvider);
@@ -103,10 +103,9 @@ public class GraphQLSpringWebfluxAutoConfiguration {
   public GraphQLSpringWebfluxInvocationInputFactory graphQLSpringInvocationInputFactory(
       GraphQLSchemaProvider graphQLSchemaProvider,
       @Autowired(required = false) GraphQLSpringWebfluxContextBuilder contextBuilder,
-      @Autowired(required = false) GraphQLSpringWebfluxRootObjectBuilder rootObjectBuilder
-  ) {
-    return new GraphQLSpringWebfluxInvocationInputFactory(graphQLSchemaProvider, contextBuilder,
-        rootObjectBuilder);
+      @Autowired(required = false) GraphQLSpringWebfluxRootObjectBuilder rootObjectBuilder) {
+    return new GraphQLSpringWebfluxInvocationInputFactory(
+        graphQLSchemaProvider, contextBuilder, rootObjectBuilder);
   }
 
   @Bean
@@ -118,14 +117,15 @@ public class GraphQLSpringWebfluxAutoConfiguration {
   @Bean
   @ConditionalOnMissingBean
   public BatchedDataLoaderGraphQLBuilder batchedDataLoaderGraphQLBuilder(
-      @Autowired(required = false) Supplier<DataLoaderDispatcherInstrumentationOptions> optionsSupplier
-  ) {
+      @Autowired(required = false)
+          Supplier<DataLoaderDispatcherInstrumentationOptions> optionsSupplier) {
     return new BatchedDataLoaderGraphQLBuilder(optionsSupplier);
   }
 
   @Bean
   @ConditionalOnMissingBean
-  public GraphQLInvoker graphQLInvoker(GraphQLBuilder graphQLBuilder,
+  public GraphQLInvoker graphQLInvoker(
+      GraphQLBuilder graphQLBuilder,
       BatchedDataLoaderGraphQLBuilder batchedDataLoaderGraphQLBuilder) {
     return new GraphQLInvoker(graphQLBuilder, batchedDataLoaderGraphQLBuilder);
   }
@@ -136,8 +136,8 @@ public class GraphQLSpringWebfluxAutoConfiguration {
       GraphQLObjectMapper graphQLObjectMapper,
       GraphQLSubscriptionInvocationInputFactory invocationInputFactory,
       GraphQLInvoker graphQLInvoker,
-      @Autowired(required = false) Collection<ApolloSubscriptionConnectionListener> connectionListeners
-  ) {
+      @Autowired(required = false)
+          Collection<ApolloSubscriptionConnectionListener> connectionListeners) {
     Set<ApolloSubscriptionConnectionListener> listeners = new HashSet<>();
     if (connectionListeners != null) {
       listeners.addAll(connectionListeners);
@@ -146,11 +146,7 @@ public class GraphQLSpringWebfluxAutoConfiguration {
       listeners.add(new KeepAliveSubscriptionConnectionListener());
     }
     return new ReactiveApolloSubscriptionProtocolFactory(
-        graphQLObjectMapper,
-        invocationInputFactory,
-        graphQLInvoker,
-        listeners
-    );
+        graphQLObjectMapper, invocationInputFactory, graphQLInvoker, listeners);
   }
 
   @Bean
@@ -171,5 +167,4 @@ public class GraphQLSpringWebfluxAutoConfiguration {
   WebSocketHandlerAdapter webSocketHandlerAdapter() {
     return new WebSocketHandlerAdapter();
   }
-
 }

@@ -37,10 +37,13 @@ public class StockTickerReactorPublisher {
   private final Flux<StockPriceUpdate> publisher;
 
   public StockTickerReactorPublisher() {
-    Flux<StockPriceUpdate> stockPriceUpdateFlux = Flux.create(emitter -> {
-      ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
-      executorService.scheduleAtFixedRate(newStockTick(emitter), 0, 2, TimeUnit.SECONDS);
-    }, FluxSink.OverflowStrategy.BUFFER);
+    Flux<StockPriceUpdate> stockPriceUpdateFlux =
+        Flux.create(
+            emitter -> {
+              ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
+              executorService.scheduleAtFixedRate(newStockTick(emitter), 0, 2, TimeUnit.SECONDS);
+            },
+            FluxSink.OverflowStrategy.BUFFER);
     ConnectableFlux<StockPriceUpdate> connectableFlux = stockPriceUpdateFlux.share().publish();
     connectableFlux.connect();
 
@@ -72,8 +75,8 @@ public class StockTickerReactorPublisher {
     };
   }
 
-  private void emitStocks(FluxSink<StockPriceUpdate> emitter,
-      List<StockPriceUpdate> stockPriceUpdates) {
+  private void emitStocks(
+      FluxSink<StockPriceUpdate> emitter, List<StockPriceUpdate> stockPriceUpdates) {
     for (StockPriceUpdate stockPriceUpdate : stockPriceUpdates) {
       try {
         emitter.next(stockPriceUpdate);
@@ -89,8 +92,8 @@ public class StockTickerReactorPublisher {
 
   public Flux<StockPriceUpdate> getPublisher(List<String> stockCodes) {
     if (stockCodes != null) {
-      return publisher
-          .filter(stockPriceUpdate -> stockCodes.contains(stockPriceUpdate.getStockCode()));
+      return publisher.filter(
+          stockPriceUpdate -> stockCodes.contains(stockPriceUpdate.getStockCode()));
     }
     return publisher;
   }
@@ -119,5 +122,4 @@ public class StockTickerReactorPublisher {
     CURRENT_STOCK_PRICES.put(stockCode, newPrice);
     return new StockPriceUpdate(stockCode, LocalDateTime.now(), newPrice, incrementDollars);
   }
-
 }

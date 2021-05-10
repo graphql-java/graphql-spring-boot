@@ -16,15 +16,14 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles({"test", "extend-type-test"})
 class GraphQLAnnotationsExtendTypeTest {
 
-  @Autowired
-  private GraphQLTestTemplate graphQLTestTemplate;
+  @Autowired private GraphQLTestTemplate graphQLTestTemplate;
 
   @Test
   @DisplayName("Assert that extend types are properly registered.")
   void testExtendTypesAreProperlyRegistered() throws IOException {
     // WHEN
-    final GraphQLResponse actual = graphQLTestTemplate
-        .postForResource("queries/test-extend-type-query.graphql");
+    final GraphQLResponse actual =
+        graphQLTestTemplate.postForResource("queries/test-extend-type-query.graphql");
     // THEN
     assertThat(actual.get("$.data.someValue.baseTypeField")).isEqualTo("Test value");
     assertThat(actual.get("$.data.someValue.extendTypeField")).isEqualTo("TEST VALUE");

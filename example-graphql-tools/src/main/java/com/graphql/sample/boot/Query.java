@@ -9,5 +9,4 @@ class Query implements GraphQLQueryResolver {
   Post getPost(Long id) {
     return new Post(id);
   }
-
 }

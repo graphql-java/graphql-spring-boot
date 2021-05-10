@@ -27,13 +27,15 @@ public class ReactiveGraphiQLController extends GraphiQLController {
   }
 
   @GetMapping(value = "${graphiql.mapping:/graphiql}")
-  public Mono<Void> graphiql(ServerHttpRequest request, ServerHttpResponse response,
+  public Mono<Void> graphiql(
+      ServerHttpRequest request,
+      ServerHttpResponse response,
       @PathVariable Map<String, String> params) {
     response.getHeaders().setContentType(MediaType.TEXT_HTML);
     Object csrf = request.getQueryParams().getFirst("_csrf");
-    return response.writeWith(Mono.just(request.getPath().contextPath().value())
-        .map(contextPath -> super.graphiql(contextPath, params, csrf))
-        .map(dataBufferFactory::wrap));
+    return response.writeWith(
+        Mono.just(request.getPath().contextPath().value())
+            .map(contextPath -> super.graphiql(contextPath, params, csrf))
+            .map(dataBufferFactory::wrap));
   }
-
 }
