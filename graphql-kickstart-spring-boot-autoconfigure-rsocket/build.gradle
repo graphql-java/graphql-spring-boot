@@ -1,0 +1,11 @@
+dependencies {
+    api(project(':graphql-kickstart-spring-rsocket'))
+    compileOnly(project(":graphql-kickstart-spring-boot-starter-tools"))
+
+    implementation "org.springframework.boot:spring-boot-autoconfigure"
+    implementation "com.graphql-java-kickstart:graphql-java-kickstart:$LIB_GRAPHQL_SERVLET_VER"
+    implementation "org.springframework.boot:spring-boot-starter-rsocket"
+
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation(project(":graphql-kickstart-spring-boot-starter-tools"))
+}

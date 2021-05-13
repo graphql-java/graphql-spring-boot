@@ -1,0 +1,3 @@
+dependencies {
+    api(project(':graphql-kickstart-spring-boot-autoconfigure-rsocket'))
+}
