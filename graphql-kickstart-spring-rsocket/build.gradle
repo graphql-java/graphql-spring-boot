@@ -1,0 +1,6 @@
+dependencies {
+    api(project(':graphql-kickstart-spring-support'))
+
+    api "com.graphql-java-kickstart:graphql-java-kickstart:$LIB_GRAPHQL_SERVLET_VER"
+    api "org.springframework.boot:spring-boot-starter-rsocket"
+}

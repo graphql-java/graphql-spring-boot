@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  graphql.kickstart.spring.rsocket.boot.GraphQlSpringRSocketAutoConfiguration,\
+  graphql.kickstart.spring.rsocket.boot.MonoAutoConfiguration

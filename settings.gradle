@@ -46,8 +46,11 @@ include ':graphql-kickstart-spring-boot-autoconfigure-tools'
 include ':graphql-kickstart-spring-boot-starter-tools'
 include ':graphql-kickstart-spring-support'
 include ':graphql-kickstart-spring-webflux'
+include ':graphql-kickstart-spring-rsocket'
 include ':graphql-kickstart-spring-boot-autoconfigure-webflux'
+include ':graphql-kickstart-spring-boot-autoconfigure-rsocket'
 include ':graphql-kickstart-spring-boot-starter-webflux'
+include ':graphql-kickstart-spring-boot-starter-rsocket'
 
 include ":graphql-spring-boot-starter-test"
 
