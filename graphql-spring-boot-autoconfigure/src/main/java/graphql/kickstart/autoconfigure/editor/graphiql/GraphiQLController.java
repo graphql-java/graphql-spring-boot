@@ -143,7 +143,7 @@ public abstract class GraphiQLController {
     }
     replacements.put(
         "subscriptionClientTimeout",
-        String.valueOf(graphiQLProperties.getSubscriptions().getTimeout() * 1000));
+        String.valueOf(graphiQLProperties.getSubscriptions().getTimeout().toMillis()));
     replacements.put(
         "subscriptionClientReconnect",
         String.valueOf(graphiQLProperties.getSubscriptions().isReconnect()));

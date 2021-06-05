@@ -13,13 +13,13 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Queue;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import javax.websocket.ClientEndpointConfig;
@@ -49,7 +49,7 @@ public class GraphQLTestSubscription {
 
   private static final WebSocketContainer WEB_SOCKET_CONTAINER =
       ContainerProvider.getWebSocketContainer();
-  private static final int ACKNOWLEDGEMENT_AND_CONNECTION_TIMEOUT = 60000;
+  private static final Duration ACKNOWLEDGEMENT_AND_CONNECTION_TIMEOUT = Duration.ofMinutes(1);
   private static final AtomicInteger ID_COUNTER = new AtomicInteger(1);
   private static final UriBuilderFactory URI_BUILDER_FACTORY = new DefaultUriBuilderFactory();
   private static final Object STATE_LOCK = new Object();
@@ -206,7 +206,7 @@ public class GraphQLTestSubscription {
    *     subscription until the timeout expires.
    * @return The received response.
    */
-  public GraphQLResponse awaitAndGetNextResponse(final int timeout) {
+  public GraphQLResponse awaitAndGetNextResponse(final Duration timeout) {
     return awaitAndGetNextResponses(timeout, 1, true).get(0);
   }
 
@@ -219,7 +219,7 @@ public class GraphQLTestSubscription {
    *     timeout).
    * @return The received response.
    */
-  public GraphQLResponse awaitAndGetNextResponse(final int timeout, final boolean stopAfter) {
+  public GraphQLResponse awaitAndGetNextResponse(final Duration timeout, final boolean stopAfter) {
     return awaitAndGetNextResponses(timeout, 1, stopAfter).get(0);
   }
 
@@ -231,7 +231,7 @@ public class GraphQLTestSubscription {
    * @param timeToWait the time to wait, in milliseconds
    * @return the list of responses received during that time.
    */
-  public List<GraphQLResponse> awaitAndGetAllResponses(final int timeToWait) {
+  public List<GraphQLResponse> awaitAndGetAllResponses(final Duration timeToWait) {
     return awaitAndGetNextResponses(timeToWait, -1, true);
   }
 
@@ -244,7 +244,7 @@ public class GraphQLTestSubscription {
    * @return the list of responses received during that time.
    */
   public List<GraphQLResponse> awaitAndGetAllResponses(
-      final int timeToWait, final boolean stopAfter) {
+      final Duration timeToWait, final boolean stopAfter) {
     return awaitAndGetNextResponses(timeToWait, -1, stopAfter);
   }
 
@@ -263,7 +263,7 @@ public class GraphQLTestSubscription {
    *     {@link #getRemainingResponses()} can be used to retrieved them.
    */
   public List<GraphQLResponse> awaitAndGetNextResponses(
-      final int timeout, final int numExpectedResponses) {
+      final Duration timeout, final int numExpectedResponses) {
     return awaitAndGetNextResponses(timeout, numExpectedResponses, true);
   }
 
@@ -283,7 +283,7 @@ public class GraphQLTestSubscription {
    *     {@link #getRemainingResponses()} can be used to retrieved them.
    */
   public List<GraphQLResponse> awaitAndGetNextResponses(
-      final int timeout, final int numExpectedResponses, final boolean stopAfter) {
+      final Duration timeout, final int numExpectedResponses, final boolean stopAfter) {
     if (!isStarted()) {
       fail("Start message not sent. Please send start message first.");
     }
@@ -293,11 +293,11 @@ public class GraphQLTestSubscription {
 
     if (numExpectedResponses > 0) {
       await()
-          .atMost(timeout, TimeUnit.MILLISECONDS)
+          .atMost(timeout)
           .until(() -> state.getResponses().size() >= numExpectedResponses);
     } else {
       try {
-        Thread.sleep(timeout);
+        Thread.sleep(timeout.toMillis());
       } catch (InterruptedException e) {
         fail("Unable to wait the specified amount of time.", e);
         // Restore interrupted state
@@ -315,13 +315,13 @@ public class GraphQLTestSubscription {
         assertThat(responses)
             .as(
                 String.format(
-                    "Expected no responses in %s MS, but received %s", timeout, responses.size()))
+                    "Expected no responses in %s, but received %s", timeout, responses.size()))
             .isEmpty();
       }
       if (numExpectedResponses > 0) {
         assertThat(responses)
             .as(
-                "Expected at least %s message(s) in %d MS, but %d received.",
+                "Expected at least %s message(s) in %d, but %d received.",
                 numExpectedResponses, timeout, responses.size())
             .hasSizeGreaterThanOrEqualTo(numExpectedResponses);
         responsesToPoll = numExpectedResponses;
@@ -342,7 +342,7 @@ public class GraphQLTestSubscription {
    * @param stopAfter if true, the subscription will be stopped afterwards.
    */
   public GraphQLTestSubscription waitAndExpectNoResponse(
-      final int timeToWait, final boolean stopAfter) {
+      final Duration timeToWait, final boolean stopAfter) {
     awaitAndGetNextResponses(timeToWait, 0, stopAfter);
     return this;
   }
@@ -353,7 +353,7 @@ public class GraphQLTestSubscription {
    *
    * @param timeToWait time to wait, in milliseconds.
    */
-  public GraphQLTestSubscription waitAndExpectNoResponse(final int timeToWait) {
+  public GraphQLTestSubscription waitAndExpectNoResponse(final Duration timeToWait) {
     awaitAndGetNextResponses(timeToWait, 0, true);
     return this;
   }
@@ -392,7 +392,7 @@ public class GraphQLTestSubscription {
         .getUserProperties()
         .put(
             "org.apache.tomcat.websocket.IO_TIMEOUT_MS",
-            String.valueOf(ACKNOWLEDGEMENT_AND_CONNECTION_TIMEOUT));
+            String.valueOf(ACKNOWLEDGEMENT_AND_CONNECTION_TIMEOUT.toMillis()));
     session =
         WEB_SOCKET_CONTAINER.connectToServer(
             new TestWebSocketClient(state), clientEndpointConfig, uri);
@@ -441,7 +441,7 @@ public class GraphQLTestSubscription {
   private void awaitAcknowledgementOrConnection(
       final Predicate<GraphQLTestSubscription> condition, final String timeoutDescription) {
     await(timeoutDescription)
-        .atMost(ACKNOWLEDGEMENT_AND_CONNECTION_TIMEOUT, TimeUnit.MILLISECONDS)
+        .atMost(ACKNOWLEDGEMENT_AND_CONNECTION_TIMEOUT)
         .until(() -> condition.test(this));
   }
 
