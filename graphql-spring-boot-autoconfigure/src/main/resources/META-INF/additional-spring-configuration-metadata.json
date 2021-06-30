@@ -7,8 +7,12 @@
   "properties": [
     {
       "name": "graphql.extended-scalars",
-      "type": "java.util.Set",
+      "type": "java.util.Set<java.lang.String>",
       "description": "List of extended scalars to be used."
+    }, {
+      "name": "graphql.aliased-scalars",
+      "type": "java.util.Map<java.lang.String, java.util.List<java.lang.String>>",
+      "description": "Aliased scalar definitions."
     }
   ]
 }
