@@ -13,13 +13,13 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Queue;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import javax.websocket.ClientEndpointConfig;
@@ -49,7 +49,7 @@ public class GraphQLTestSubscription {
 
   private static final WebSocketContainer WEB_SOCKET_CONTAINER =
       ContainerProvider.getWebSocketContainer();
-  private static final int ACKNOWLEDGEMENT_AND_CONNECTION_TIMEOUT = 60000;
+  private static final Duration ACKNOWLEDGEMENT_AND_CONNECTION_TIMEOUT = Duration.ofMinutes(1);
   private static final AtomicInteger ID_COUNTER = new AtomicInteger(1);
   private static final UriBuilderFactory URI_BUILDER_FACTORY = new DefaultUriBuilderFactory();
   private static final Object STATE_LOCK = new Object();
@@ -205,8 +205,23 @@ public class GraphQLTestSubscription {
    * @param timeout timeout in milliseconds. Test will fail if no message received from the
    *     subscription until the timeout expires.
    * @return The received response.
+   * @see #awaitAndGetNextResponse(Duration)
+   * @deprecated since 12.0.0. Use {@link #awaitAndGetNextResponse(Duration)} instead.
    */
+  @Deprecated
   public GraphQLResponse awaitAndGetNextResponse(final int timeout) {
+    return awaitAndGetNextResponse(Duration.ofMillis(timeout));
+  }
+
+  /**
+   * Awaits and returns the next response received from the subscription. The subscription will be
+   * stopped after receiving the message (or timeout).
+   *
+   * @param timeout Timeout duration. Test will fail if no message received from the
+   *     subscription until the timeout expires.
+   * @return The received response.
+   */
+  public GraphQLResponse awaitAndGetNextResponse(final Duration timeout) {
     return awaitAndGetNextResponses(timeout, 1, true).get(0);
   }
 
@@ -218,8 +233,24 @@ public class GraphQLTestSubscription {
    * @param stopAfter if true, the subscription will be stopped after the message was received (or
    *     timeout).
    * @return The received response.
+   * @see #awaitAndGetNextResponse(Duration,boolean)
+   * @deprecated since 12.0.0. Use {@link #awaitAndGetNextResponse(Duration,boolean)} instead.
    */
+  @Deprecated
   public GraphQLResponse awaitAndGetNextResponse(final int timeout, final boolean stopAfter) {
+    return awaitAndGetNextResponse(Duration.ofMillis(timeout),stopAfter);
+  }
+
+  /**
+   * Awaits and returns the next response received from the subscription.
+   *
+   * @param timeout Timeout duration. Test will fail if no message received from the
+   *     subscription until the timeout expires.
+   * @param stopAfter if true, the subscription will be stopped after the message was received (or
+   *     timeout).
+   * @return The received response.
+   */
+  public GraphQLResponse awaitAndGetNextResponse(final Duration timeout, final boolean stopAfter) {
     return awaitAndGetNextResponses(timeout, 1, stopAfter).get(0);
   }
 
@@ -230,8 +261,23 @@ public class GraphQLTestSubscription {
    *
    * @param timeToWait the time to wait, in milliseconds
    * @return the list of responses received during that time.
+   * @see #awaitAndGetAllResponses(Duration)
+   * @deprecated since 12.0.0. Use {@link #awaitAndGetAllResponses(Duration)} instead.
    */
+  @Deprecated
   public List<GraphQLResponse> awaitAndGetAllResponses(final int timeToWait) {
+    return awaitAndGetAllResponses(Duration.ofMillis(timeToWait));
+  }
+
+  /**
+   * Waits a specified amount time and returns all responses received during that time. This method
+   * does not have any expectation regarding the number of messages. The subscription will be
+   * stopped after the time elapsed.
+   *
+   * @param timeToWait the time to wait.
+   * @return the list of responses received during that time.
+   */
+  public List<GraphQLResponse> awaitAndGetAllResponses(final Duration timeToWait) {
     return awaitAndGetNextResponses(timeToWait, -1, true);
   }
 
@@ -242,9 +288,25 @@ public class GraphQLTestSubscription {
    * @param timeToWait the time to wait, in milliseconds
    * @param stopAfter if true, the subscription will be stopped after the time elapsed.
    * @return the list of responses received during that time.
+   * @see #awaitAndGetAllResponses(Duration,boolean)
+   * @deprecated since 12.0.0. Use {@link #awaitAndGetAllResponses(Duration,boolean)} instead.
    */
+  @Deprecated
   public List<GraphQLResponse> awaitAndGetAllResponses(
       final int timeToWait, final boolean stopAfter) {
+    return awaitAndGetNextResponses(Duration.ofMillis(timeToWait), -1, stopAfter);
+  }
+
+  /**
+   * Waits a specified amount time and returns all responses received during that time. This method
+   * does not have any expectation regarding the number of messages.
+   *
+   * @param timeToWait the time to wait
+   * @param stopAfter if true, the subscription will be stopped after the time elapsed.
+   * @return the list of responses received during that time.
+   */
+  public List<GraphQLResponse> awaitAndGetAllResponses(
+      final Duration timeToWait, final boolean stopAfter) {
     return awaitAndGetNextResponses(timeToWait, -1, stopAfter);
   }
 
@@ -261,9 +323,31 @@ public class GraphQLTestSubscription {
    * @return The list containing the expected number of responses. The list contains the responses
    *     in the order they were received. If more responses are received than minimally expected,
    *     {@link #getRemainingResponses()} can be used to retrieved them.
+   * @see #awaitAndGetNextResponses(Duration,int)
+   * @deprecated since 12.0.0. Use {@link #awaitAndGetNextResponses(Duration,int)} instead.
    */
+  @Deprecated
   public List<GraphQLResponse> awaitAndGetNextResponses(
       final int timeout, final int numExpectedResponses) {
+    return awaitAndGetNextResponses(Duration.ofMillis(timeout), numExpectedResponses, true);
+  }
+
+  /**
+   * Awaits and returns the specified number of responses. The subscription will be stopped after
+   * receiving the messages (or timeout).
+   *
+   * @param timeout timeout duration. Test will fail if the expected number of responses is
+   *     not received.
+   * @param numExpectedResponses the number of expected responses. If negative, the method will wait
+   *     the timeout and return all responses received during that time. In this case, no assertion
+   *     is made regarding the number of responses, and the returned list may be empty. If zero, it
+   *     is expected that no responses are sent during the timeout period.
+   * @return The list containing the expected number of responses. The list contains the responses
+   *     in the order they were received. If more responses are received than minimally expected,
+   *     {@link #getRemainingResponses()} can be used to retrieved them.
+   */
+  public List<GraphQLResponse> awaitAndGetNextResponses(
+      final Duration timeout, final int numExpectedResponses) {
     return awaitAndGetNextResponses(timeout, numExpectedResponses, true);
   }
 
@@ -281,9 +365,32 @@ public class GraphQLTestSubscription {
    * @return The list containing the expected number of responses. The list contains the responses
    *     in the order they were received. If more responses are received than minimally expected,
    *     {@link #getRemainingResponses()} can be used to retrieved them.
+   * @see #awaitAndGetNextResponses(Duration,int,boolean)
+   * @deprecated since 12.0.0. Use {@link #awaitAndGetNextResponses(Duration,int,boolean)} instead.
    */
+  @Deprecated
   public List<GraphQLResponse> awaitAndGetNextResponses(
       final int timeout, final int numExpectedResponses, final boolean stopAfter) {
+    return awaitAndGetNextResponses(Duration.ofMillis(timeout),numExpectedResponses,stopAfter);
+  }
+
+  /**
+   * Awaits and returns the specified number of responses.
+   *
+   * @param timeout timeout duration. Test will fail if the expected number of responses is
+   *     not received.
+   * @param numExpectedResponses the number of expected responses. If negative, the method will wait
+   *     the timeout and return all responses received during that time. In this case, no assertion
+   *     is made regarding the number of responses, and the returned list may be empty. If zero, it
+   *     is expected that no responses are sent during the timeout period.
+   * @param stopAfter if true, the subscription will be stopped after the messages were received (or
+   *     timeout).
+   * @return The list containing the expected number of responses. The list contains the responses
+   *     in the order they were received. If more responses are received than minimally expected,
+   *     {@link #getRemainingResponses()} can be used to retrieved them.
+   */
+  public List<GraphQLResponse> awaitAndGetNextResponses(
+      final Duration timeout, final int numExpectedResponses, final boolean stopAfter) {
     if (!isStarted()) {
       fail("Start message not sent. Please send start message first.");
     }
@@ -293,11 +400,11 @@ public class GraphQLTestSubscription {
 
     if (numExpectedResponses > 0) {
       await()
-          .atMost(timeout, TimeUnit.MILLISECONDS)
+          .atMost(timeout)
           .until(() -> state.getResponses().size() >= numExpectedResponses);
     } else {
       try {
-        Thread.sleep(timeout);
+        Thread.sleep(timeout.toMillis());
       } catch (InterruptedException e) {
         fail("Unable to wait the specified amount of time.", e);
         // Restore interrupted state
@@ -315,13 +422,13 @@ public class GraphQLTestSubscription {
         assertThat(responses)
             .as(
                 String.format(
-                    "Expected no responses in %s MS, but received %s", timeout, responses.size()))
+                    "Expected no responses in %s, but received %s", timeout, responses.size()))
             .isEmpty();
       }
       if (numExpectedResponses > 0) {
         assertThat(responses)
             .as(
-                "Expected at least %s message(s) in %d MS, but %d received.",
+                "Expected at least %d message(s) in %s, but %d received.",
                 numExpectedResponses, timeout, responses.size())
             .hasSizeGreaterThanOrEqualTo(numExpectedResponses);
         responsesToPoll = numExpectedResponses;
@@ -340,9 +447,24 @@ public class GraphQLTestSubscription {
    *
    * @param timeToWait time to wait, in milliseconds.
    * @param stopAfter if true, the subscription will be stopped afterwards.
+   * @see #waitAndExpectNoResponse(Duration,boolean)
+   * @deprecated since 12.0.0. Use {@link #waitAndExpectNoResponse(Duration,boolean)} instead.
    */
+  @Deprecated
   public GraphQLTestSubscription waitAndExpectNoResponse(
       final int timeToWait, final boolean stopAfter) {
+    waitAndExpectNoResponse(Duration.ofMillis(timeToWait),stopAfter);
+    return this;
+  }
+
+  /**
+   * Waits a specified amount of time and asserts that no responses were received during that time.
+   *
+   * @param timeToWait time to wait.
+   * @param stopAfter if true, the subscription will be stopped afterwards.
+   */
+  public GraphQLTestSubscription waitAndExpectNoResponse(
+      final Duration timeToWait, final boolean stopAfter) {
     awaitAndGetNextResponses(timeToWait, 0, stopAfter);
     return this;
   }
@@ -352,8 +474,21 @@ public class GraphQLTestSubscription {
    * The subscription will be stopped afterwards.
    *
    * @param timeToWait time to wait, in milliseconds.
+   * @see #waitAndExpectNoResponse(Duration)
+   * @deprecated since 12.0.0. Use {@link #waitAndExpectNoResponse(Duration)} instead.
    */
+  @Deprecated
   public GraphQLTestSubscription waitAndExpectNoResponse(final int timeToWait) {
+    return waitAndExpectNoResponse(Duration.ofMillis(timeToWait));
+  }
+
+  /**
+   * Waits a specified amount of time and asserts that no responses were received during that time.
+   * The subscription will be stopped afterwards.
+   *
+   * @param timeToWait time to wait.
+   */
+  public GraphQLTestSubscription waitAndExpectNoResponse(final Duration timeToWait) {
     awaitAndGetNextResponses(timeToWait, 0, true);
     return this;
   }
@@ -392,7 +527,7 @@ public class GraphQLTestSubscription {
         .getUserProperties()
         .put(
             "org.apache.tomcat.websocket.IO_TIMEOUT_MS",
-            String.valueOf(ACKNOWLEDGEMENT_AND_CONNECTION_TIMEOUT));
+            String.valueOf(ACKNOWLEDGEMENT_AND_CONNECTION_TIMEOUT.toMillis()));
     session =
         WEB_SOCKET_CONTAINER.connectToServer(
             new TestWebSocketClient(state), clientEndpointConfig, uri);
@@ -441,7 +576,7 @@ public class GraphQLTestSubscription {
   private void awaitAcknowledgementOrConnection(
       final Predicate<GraphQLTestSubscription> condition, final String timeoutDescription) {
     await(timeoutDescription)
-        .atMost(ACKNOWLEDGEMENT_AND_CONNECTION_TIMEOUT, TimeUnit.MILLISECONDS)
+        .atMost(ACKNOWLEDGEMENT_AND_CONNECTION_TIMEOUT)
         .until(() -> condition.test(this));
   }
 

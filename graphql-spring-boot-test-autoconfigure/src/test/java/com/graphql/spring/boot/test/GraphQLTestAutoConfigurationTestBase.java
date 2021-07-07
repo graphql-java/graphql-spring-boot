@@ -1,6 +1,7 @@
 package com.graphql.spring.boot.test;
 
 import java.io.IOException;
+import java.time.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
@@ -19,7 +20,7 @@ public class GraphQLTestAutoConfigurationTestBase {
     // WHEN - THEN
     testSubscription
         .start("test-subscription.graphql")
-        .awaitAndGetNextResponse(1000)
+        .awaitAndGetNextResponse(Duration.ofSeconds(1))
         .assertThatNoErrorsArePresent()
         .assertThatField("$.data.testSubscription")
         .asString()

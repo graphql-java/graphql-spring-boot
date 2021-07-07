@@ -1,7 +1,10 @@
 package graphql.kickstart.autoconfigure.editor.graphiql;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.convert.DurationUnit;
 
 @Data
 @ConfigurationProperties("graphql.graphiql")
@@ -65,7 +68,11 @@ class GraphiQLProperties {
   @Data
   static class Subscriptions {
 
-    private int timeout = 30;
+    /**
+     * Subscription timeout. If a duration suffix is not specified, second will be used.
+     */
+    @DurationUnit(ChronoUnit.SECONDS)
+    private Duration timeout = Duration.ofSeconds(30);
     private boolean reconnect = false;
   }
 }

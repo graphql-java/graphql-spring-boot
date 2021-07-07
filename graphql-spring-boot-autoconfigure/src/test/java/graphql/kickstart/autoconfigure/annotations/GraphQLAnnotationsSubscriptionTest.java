@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.graphql.spring.boot.test.GraphQLResponse;
 import com.graphql.spring.boot.test.GraphQLTestSubscription;
+import java.time.Duration;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ class GraphQLAnnotationsSubscriptionTest {
         graphQLTestSubscription
             .init()
             .start("annotations/subscriptions/test-subscription.graphql")
-            .awaitAndGetNextResponse(10000);
+            .awaitAndGetNextResponse(Duration.ofSeconds(10));
     // THEN
     assertThat(graphQLResponse.get("$.data.testSubscription")).isEqualTo("some value");
   }

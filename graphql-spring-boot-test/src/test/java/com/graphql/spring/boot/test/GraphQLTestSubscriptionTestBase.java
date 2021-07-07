@@ -30,7 +30,7 @@ public class GraphQLTestSubscriptionTestBase {
       "$.data.subscriptionWithParameter";
   protected static final String DATA_SUBSCRIPTION_WITH_INIT_PAYLOAD_FIELD =
       "$.data.subscriptionWithInitPayload";
-  protected static final int TIMEOUT = 2000;
+  protected static final Duration TIMEOUT = Duration.ofSeconds(2);
 
   @Autowired protected Environment environment;
 
@@ -70,6 +70,6 @@ public class GraphQLTestSubscriptionTestBase {
   protected void assertThatMinimumRequiredTimeElapsedSince(final Instant timeBeforeTestStart) {
     assertThat(Duration.between(timeBeforeTestStart, Instant.now()))
         .as("Should wait the specified amount of time")
-        .isGreaterThanOrEqualTo(Duration.ofMillis(TIMEOUT));
+        .isGreaterThanOrEqualTo(TIMEOUT);
   }
 }

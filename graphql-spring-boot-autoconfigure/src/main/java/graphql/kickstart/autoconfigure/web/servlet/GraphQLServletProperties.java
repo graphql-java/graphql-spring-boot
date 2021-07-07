@@ -19,22 +19,31 @@
 package graphql.kickstart.autoconfigure.web.servlet;
 
 import graphql.kickstart.execution.context.ContextSetting;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.convert.DurationUnit;
 
 /** @author Michiel Oliemans */
 @Data
 @ConfigurationProperties(prefix = "graphql.servlet")
 public class GraphQLServletProperties {
 
+  public final static Duration DEFAULT_SUBSCRIPTION_TIMEOUT = Duration.ZERO;
+
   private boolean enabled = true;
   private boolean corsEnabled = true;
   private String mapping = "/graphql";
   private boolean exceptionHandlersEnabled = false;
-  private long subscriptionTimeout = 0;
+  /**
+   * Subscription timeout. If a duration suffix is not specified, millisecond will be used.
+   */
+  @DurationUnit(ChronoUnit.MILLIS)
+  private Duration subscriptionTimeout = DEFAULT_SUBSCRIPTION_TIMEOUT;
   private ContextSetting contextSetting = ContextSetting.PER_QUERY_WITH_INSTRUMENTATION;
-  /** @deprecated Use <tt>graphql.servlet.async.timeout</tt> instead */
-  @Deprecated private Long asyncTimeout;
+  /** Asynchronous execution timeout. If a duration suffix is not specified, millisecond will be used. @deprecated Use <tt>graphql.servlet.async.timeout</tt> instead */
+  @Deprecated @DurationUnit(ChronoUnit.MILLIS) private Duration asyncTimeout;
   /** @deprecated Use <tt>graphql.servlet.async.enabled</tt> instead */
   @Deprecated private Boolean asyncModeEnabled;
 

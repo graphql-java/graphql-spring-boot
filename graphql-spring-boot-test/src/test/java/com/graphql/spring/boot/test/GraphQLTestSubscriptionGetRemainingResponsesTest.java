@@ -18,7 +18,7 @@ class GraphQLTestSubscriptionGetRemainingResponsesTest extends GraphQLTestSubscr
     graphQLTestSubscription
         .start(TIMER_SUBSCRIPTION_RESOURCE)
         .awaitAndGetNextResponse(TIMEOUT, false);
-    await().atMost(TIMEOUT, MILLISECONDS);
+    await().atMost(TIMEOUT);
     graphQLTestSubscription.stop();
     // THEN
     assertThatSubscriptionWasStopped();

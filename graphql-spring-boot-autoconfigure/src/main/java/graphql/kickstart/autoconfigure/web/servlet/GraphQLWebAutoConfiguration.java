@@ -57,11 +57,13 @@ import graphql.kickstart.servlet.input.GraphQLInvocationInputFactory;
 import graphql.kickstart.spring.error.ErrorHandlerSupplier;
 import graphql.kickstart.spring.error.GraphQLErrorStartupListener;
 import graphql.schema.GraphQLSchema;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.concurrent.Executor;
 import javax.servlet.MultipartConfigElement;
 import lombok.RequiredArgsConstructor;
@@ -301,19 +303,21 @@ public class GraphQLWebAutoConfiguration {
       @Autowired(required = false) GraphQLResponseCacheManager responseCacheManager,
       @Autowired(required = false) AsyncTaskDecorator asyncTaskDecorator,
       @Autowired(required = false) @Qualifier("graphqlAsyncTaskExecutor") Executor asyncExecutor) {
-    long asyncTimeout =
-        graphQLServletProperties.getAsyncTimeout() != null
-            ? graphQLServletProperties.getAsyncTimeout()
-            : asyncServletProperties.getTimeout();
+    Duration asyncTimeout = Optional.ofNullable(asyncServletProperties.getTimeout()) //
+        .orElse(AsyncServletProperties.DEFAULT_TIMEOUT);
+    long asyncTimeoutMilliseconds = Optional.ofNullable(graphQLServletProperties.getAsyncTimeout()) //
+        .orElse(asyncTimeout).toMillis();
+    long subscriptionTimeoutMilliseconds = Optional.ofNullable(graphQLServletProperties.getSubscriptionTimeout()) //
+        .orElse(GraphQLServletProperties.DEFAULT_SUBSCRIPTION_TIMEOUT).toMillis();
     return GraphQLConfiguration.with(invocationInputFactory)
         .with(graphQLInvoker)
         .with(graphQLObjectMapper)
         .with(listeners)
-        .with(graphQLServletProperties.getSubscriptionTimeout())
+        .with(subscriptionTimeoutMilliseconds)
         .with(batchInputPreProcessor)
         .with(graphQLServletProperties.getContextSetting())
         .with(responseCacheManager)
-        .asyncTimeout(asyncTimeout)
+        .asyncTimeout(asyncTimeoutMilliseconds)
         .with(asyncTaskDecorator)
         .asyncCorePoolSize(asyncServletProperties.getThreads().getMin())
         .asyncMaxPoolSize(asyncServletProperties.getThreads().getMax())
