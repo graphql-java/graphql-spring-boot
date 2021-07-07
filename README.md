@@ -82,19 +82,6 @@ Set the Kotlin version in your `<properties>` section
 
 See our new [Documentation](https://www.graphql-java-kickstart.com/spring-boot/).
 
-Repository contains:
-
-* `graphql-spring-boot-starter` to turn your boot application into GraphQL server (
-  see [graphql-java-servlet](https://github.com/graphql-java-kickstart/graphql-java-servlet))
-* `altair-spring-boot-starter` to embed `Altair` tool for schema introspection and query debugging (
-  see [altair](https://github.com/imolorhe/altair))
-* `graphiql-spring-boot-starter` to embed `GraphiQL` tool for schema introspection and query
-  debugging (see [graphiql](https://github.com/graphql/graphiql))
-* `playground-spring-boot-starter` to embed `GraphQL Playground` tool for schema introspection and
-  query debugging (see [GraphQL Playground](https://github.com/prisma/graphql-playground))
-* `voyager-spring-boot-starter` to embed `Voyager` tool for visually explore GraphQL APIs as an
-  interactive graph (see [voyger](https://github.com/APIs-guru/graphql-voyager))
-
 ## Requirements and Downloads
 
 Requirements:
@@ -112,18 +99,6 @@ repositories {
 dependencies {
   implementation 'com.graphql-java-kickstart:graphql-spring-boot-starter:12.0.0'
   
-  // to embed Altair tool
-  runtimeOnly 'com.graphql-java-kickstart:altair-spring-boot-starter:12.0.0'
-
-  // to embed GraphiQL tool
-  runtimeOnly 'com.graphql-java-kickstart:graphiql-spring-boot-starter:12.0.0'
-
-  // to embed GraphQL Playground tool
-  runtimeOnly 'com.graphql-java-kickstart:playground-spring-boot-starter:12.0.0'
-
-  // to embed Voyager tool
-  runtimeOnly 'com.graphql-java-kickstart:voyager-spring-boot-starter:12.0.0'
-  
   // testing facilities
   testImplementation 'com.graphql-java-kickstart:graphql-spring-boot-starter-test:12.0.0'
 }
@@ -132,46 +107,13 @@ dependencies {
 Maven:
 
 ```xml
-
 <dependency>
   <groupId>com.graphql-java-kickstart</groupId>
   <artifactId>graphql-spring-boot-starter</artifactId>
   <version>12.0.0</version>
 </dependency>
 
-        <!-- to embed Altair tool -->
-<dependency>
-<groupId>com.graphql-java-kickstart</groupId>
-<artifactId>altair-spring-boot-starter</artifactId>
-<version>12.0.0</version>
-<scope>runtime</scope>
-</dependency>
-
-        <!-- to embed GraphiQL tool -->
-<dependency>
-<groupId>com.graphql-java-kickstart</groupId>
-<artifactId>graphiql-spring-boot-starter</artifactId>
-<version>12.0.0</version>
-<scope>runtime</scope>
-</dependency>
-
-        <!-- to embed GraphQL Playground tool -->
-<dependency>
-<groupId>com.graphql-java-kickstart</groupId>
-<artifactId>playground-spring-boot-starter</artifactId>
-<version>12.0.0</version>
-<scope>runtime</scope>
-</dependency>
-
-        <!-- to embed Voyager tool -->
-<dependency>
-<groupId>com.graphql-java-kickstart</groupId>
-<artifactId>voyager-spring-boot-starter</artifactId>
-<version>12.0.0</version>
-<scope>runtime</scope>
-</dependency>
-
-        <!-- testing facilities -->
+<!-- testing facilities -->
 <dependency>
 <groupId>com.graphql-java-kickstart</groupId>
 <artifactId>graphql-spring-boot-starter-test</artifactId>
@@ -184,7 +126,6 @@ Maven:
 ### Snapshots
 
 ```xml
-
 <repositories>
   <repository>
     <id>osshr-snapshots</id>
@@ -243,8 +184,8 @@ to `false` to disable it.
 
 # Enable Graph*i*QL
 
-Graph*i*QL becomes accessible at the root `/graphiql` if `graphiql-spring-boot-starter` is added as
-a dependency to a boot application.
+Graph*i*QL becomes accessible at the root `/graphiql` if the `graphql.graphiql.enabled` property 
+is true.
 
 Note that GraphQL server must be available at `/graphql/*` context to be discovered by Graph*i*QL.
 
@@ -290,8 +231,7 @@ the `graphiql.headers` group.
 
 # Enable Altair
 
-Altair becomes accessible at the root `/altair` if `altair-spring-boot-starter` is added as a
-dependency to a boot application.
+Altair becomes accessible at the root `/altair` if the `graphql.altair.enabled` property is true.
 
 Note that GraphQL server must be available at `/graphql/*` context to be discovered by Altair.
 
@@ -336,8 +276,7 @@ the `graphql.altair.resources` group to set the classpath resources that should 
 # Enable GraphQL Playground
 
 GraphQL Playground becomes accessible at root `/playground` (or as configured
-in `graphql.playground.mapping`)
-if `playground-spring-boot-starter` is added as a dependency to a boot application.
+in `graphql.playground.mapping`) if the `graphql.playground.enabled` property is true.
 
 It uses an embedded `GraphQL Playground React`, in accordance to
 the [official guide](https://github.com/prisma/graphql-playground#as-html-page), using the 'minimum
@@ -443,7 +382,7 @@ for `query`, JSON for `variables` and `responses`).
 # Enable GraphQL Voyager
 
 **GraphQL Voyager** becomes accessible at root `/voyager` (or as configured in `voyager.mapping`)
-if `voyager-spring-boot-starter` is added as a dependency to a boot application.
+if the `graphql.voyager.enabled` property is true.
 
 Available Spring Boot configuration parameters (either `application.yml`
 or `application.properties`):
@@ -529,9 +468,8 @@ the classpath. Use the `schemaLocationPattern` property to customize this patter
 
 https://github.com/Enigmatis/graphql-java-annotations
 
-The GraphQL Annotations library is used instead of GraphQL Java Tools if
-the `graphql-spring-boot-starter`
-dependency is replaced by `graphql-kickstart-spring-boot-starter-graphql-annotations`.
+To use GraphQL Annotations library instead of GraphQL Java Tools, set the `graphql.schema-strategy`
+property to `annotations`.
 
 The schema will be built using the GraphQL Annotations library in a code-first approach - instead of
 writing it manually, the schema will be constructed based on the Java code. Please see the
@@ -679,8 +617,7 @@ the [Code of Conduct](http://contributor-covenant.org/version/1/3/0/).
 
 # Licenses
 
-`graphql-spring-boot-starter`, `altair-spring-boot-starter`, `graphiql-spring-boot-starter`
-and `voyager-spring-boot-starter` are licensed under the MIT License. See [LICENSE](LICENSE.md) for
+`graphql-spring-boot-starter` is licensed under the MIT License. See [LICENSE](LICENSE.md) for
 details.
 
 [graphql-java License](https://github.com/andimarek/graphql-java/blob/master/LICENSE.md)
