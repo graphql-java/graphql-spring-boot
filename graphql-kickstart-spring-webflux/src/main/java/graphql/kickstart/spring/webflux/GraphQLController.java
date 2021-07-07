@@ -33,10 +33,11 @@ public class GraphQLController extends AbstractGraphQLController {
       String query,
       String operationName,
       Map<String, Object> variables,
+      Map<String, Object> extensions,
       ServerWebExchange serverWebExchange) {
     GraphQLSingleInvocationInput invocationInput =
         invocationInputFactory.create(
-            new GraphQLRequest(query, variables, operationName), serverWebExchange);
+            new GraphQLRequest(query, variables, extensions, operationName), serverWebExchange);
     Mono<ExecutionResult> executionResult =
         Mono.fromCompletionStage(graphQLInvoker.executeAsync(invocationInput));
     return executionResult.map(objectMapper::createResultFromExecutionResult);

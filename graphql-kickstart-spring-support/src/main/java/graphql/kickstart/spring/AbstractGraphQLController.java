@@ -39,6 +39,7 @@ public abstract class AbstractGraphQLController {
       @Nullable @RequestParam(value = "query", required = false) String query,
       @Nullable @RequestParam(value = "operationName", required = false) String operationName,
       @Nullable @RequestParam(value = "variables", required = false) String variablesJson,
+      @Nullable @RequestParam(value = "extensions", required = false) String extensionsJson,
       @Nullable @RequestBody(required = false) String body,
       ServerWebExchange serverWebExchange) {
 
@@ -58,6 +59,7 @@ public abstract class AbstractGraphQLController {
           request.getQuery(),
           request.getOperationName(),
           request.getVariables(),
+          request.getExtensions(),
           serverWebExchange);
     }
 
@@ -68,7 +70,11 @@ public abstract class AbstractGraphQLController {
 
     if (query != null) {
       return executeRequest(
-          query, operationName, convertVariablesJson(variablesJson), serverWebExchange);
+          query,
+          operationName,
+          convertVariablesJson(variablesJson),
+          convertExtensionsJson(extensionsJson),
+          serverWebExchange);
     }
 
     // * If the "application/graphql" Content-Type header is present,
@@ -76,7 +82,8 @@ public abstract class AbstractGraphQLController {
 
     if ("application/graphql".equals(contentType.toString())
         || "application/graphql; charset=utf-8".equals(contentType.toString())) {
-      return executeRequest(body, null, Collections.emptyMap(), serverWebExchange);
+      return executeRequest(
+          body, null, Collections.emptyMap(), Collections.emptyMap(), serverWebExchange);
     }
 
     throw new ResponseStatusException(
@@ -88,10 +95,14 @@ public abstract class AbstractGraphQLController {
       @Nullable @RequestParam("query") String query,
       @Nullable @RequestParam(value = "operationName", required = false) String operationName,
       @Nullable @RequestParam(value = "variables", required = false) String variablesJson,
+      @Nullable @RequestParam(value = "extensions", required = false) String extensionsJson,
       ServerWebExchange serverWebExchange) {
-
     return executeRequest(
-        query, operationName, convertVariablesJson(variablesJson), serverWebExchange);
+        query == null ? "" : query,
+        operationName,
+        convertVariablesJson(variablesJson),
+        convertExtensionsJson(extensionsJson),
+        serverWebExchange);
   }
 
   private Map<String, Object> convertVariablesJson(String jsonMap) {
@@ -100,10 +111,17 @@ public abstract class AbstractGraphQLController {
         .orElseGet(Collections::emptyMap);
   }
 
+  private Map<String, Object> convertExtensionsJson(String jsonMap) {
+    return Optional.ofNullable(jsonMap)
+        .map(objectMapper::deserializeExtensions)
+        .orElseGet(Collections::emptyMap);
+  }
+
   protected abstract Object executeRequest(
       String query,
       String operationName,
       Map<String, Object> variables,
+      Map<String, Object> extensions,
       ServerWebExchange serverWebExchange);
 
   protected Object handleBodyParsingException(Exception exception) {
