@@ -1,0 +1,4 @@
+graphql:
+  aliased-scalars:
+    BigDecimal: Number, Decimal
+    String: Text

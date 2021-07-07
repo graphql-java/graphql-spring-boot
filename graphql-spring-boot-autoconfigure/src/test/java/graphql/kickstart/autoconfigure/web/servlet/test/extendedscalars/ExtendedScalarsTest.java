@@ -3,7 +3,7 @@ package graphql.kickstart.autoconfigure.web.servlet.test.extendedscalars;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-import graphql.kickstart.autoconfigure.web.servlet.GraphQLExtendedScalarsInitializer;
+import graphql.kickstart.autoconfigure.scalars.GraphQLExtendedScalarsInitializer;
 import graphql.scalars.ExtendedScalars;
 import graphql.schema.GraphQLScalarType;
 import java.util.AbstractMap;

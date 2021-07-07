@@ -1,5 +1,6 @@
 org.springframework.context.ApplicationContextInitializer=\
-    graphql.kickstart.autoconfigure.web.servlet.GraphQLExtendedScalarsInitializer
+    graphql.kickstart.autoconfigure.scalars.GraphQLExtendedScalarsInitializer,\
+    graphql.kickstart.autoconfigure.scalars.GraphQLAliasedScalarsInitializer
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
     graphql.kickstart.autoconfigure.web.servlet.GraphQLWebAutoConfiguration,\
     graphql.kickstart.autoconfigure.web.servlet.GraphQLWebSecurityAutoConfiguration,\

@@ -1,4 +1,4 @@
-package graphql.kickstart.autoconfigure.web.servlet;
+package graphql.kickstart.autoconfigure.scalars;
 
 import graphql.scalars.ExtendedScalars;
 import graphql.schema.GraphQLScalarType;
