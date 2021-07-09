@@ -8,6 +8,7 @@ import org.springframework.web.reactive.socket.WebSocketSession;
 public class ReactiveWebSocketSubscriptionSession extends DefaultSubscriptionSession {
 
   private final WebSocketSession webSocketSession;
+  private boolean opened = true;
 
   public ReactiveWebSocketSubscriptionSession(
       GraphQLSubscriptionMapper mapper, WebSocketSession webSocketSession) {
@@ -17,7 +18,7 @@ public class ReactiveWebSocketSubscriptionSession extends DefaultSubscriptionSes
 
   @Override
   public boolean isOpen() {
-    return true;
+    return opened;
   }
 
   @Override
@@ -33,5 +34,11 @@ public class ReactiveWebSocketSubscriptionSession extends DefaultSubscriptionSes
   @Override
   public WebSocketSession unwrap() {
     return webSocketSession;
+  }
+
+  @Override
+  public void close(final String reason) {
+    super.close(reason);
+    this.opened = false;
   }
 }
